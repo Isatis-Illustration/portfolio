@@ -1,0 +1,45 @@
+﻿name: Deploy Angular app to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Angular app
+      run: npx ng build portfolio --configuration production
+    - name: List build output (debug)
+      run: ls -R dist/portfolio
+
+    - name: Show index.html content (debug)
+      run: cat dist/portfolio/browser/index.html
+
+    - name: Configure Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages        # branch di destinazione
+        folder: dist/portfolio/browser  # cartella da pubblicare
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Confirm deployment success
+      run: echo "✅ Deploy completato con successo!"

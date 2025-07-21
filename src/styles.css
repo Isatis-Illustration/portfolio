@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+/** nuova direttiva tailwind per far funzionare le classi relative*/
+@theme {
+  --color-primary:   #446D74;  /**Sidebar  /verde pastello #ACBC8A*/
+  --color-secondary: #FEFBD0;  /**BG   /giallo pastello #FEFBD0*/
+  --color-info:      #FEFBD0;
+  --color-success:   #10b981;
+  --color-warning:   #f59e0b;
+  --color-danger:    #ef4444;
+  --color-border:    #665C75;
+  --color-title:     #000000;
+}
+
+/* body {
+  font-family: 'Winky Rough', cursive;
+} */
+
+
+@layer utilities {
+  @keyframes dropdown {
+    0% {
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-dropdown {
+    animation: dropdown 0.3s ease-out forwards;
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .scrollbar-show {
+    scrollbar-width: auto; /* Firefox */
+    -ms-overflow-style: auto;  /* IE 10+ */
+  }
+
+  .scrollbar-show::-webkit-scrollbar {
+    display: block; /* Chrome, Safari, Opera */
+  }
+}
+
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #8cd5e2; /* emerald-100 */
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #446D74; /* emerald-500 */
+  border-radius: 9999px;
+  border: 2px solid #8cd5e2; /* padding effetto */
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #446D74 #8cd5e2;
+  /* scrollbar-color: #446D74 #d1fae5; */
+}
