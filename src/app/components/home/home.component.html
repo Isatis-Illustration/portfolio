@@ -1,25 +1,26 @@
-<div class="h-4/12 hidden justify-center items-end sm:flex gap-8 select-none">
-  <img [src]="fNameGif" class="h-4/6 object-contain" />
-  <img [src]="lNameGif" class="h-4/6 object-contain" />
+<div>
+  <!-- Prima sezione: Titolo -->
+   <div class="flex justify-center">
+     <div class="grid grid-cols-1 md:grid-cols-2 xl:gap-8 p-2 sm:w-4/5 xl:w-auto sm:mt-10 xl:mt-20 xl:mb-20">
+       <img [src]="fNameGif" class="px-3 xl:pl-80" />
+       <img [src]="lNameGif" class="px-3 xl:pr-80" />
+     </div>
+   </div>
+
+  <!-- Seconda sezione: 4 bottoni -->
+   <div class="flex justify-center">
+     <div class="h-4/6 w-5/6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 pt-10 justify-center items-center">
+       <button *ngFor="let btn of buttons" class="flex justify-center mb-5" (click)="navigate()">
+         <img
+           class="w-4/5 md:w-64 lg:w-80 hover:scale-[1.1] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
+           [src]="btn.imageUrl" [alt]="btn.name" (load)="onImageLoad($event)">
+       </button>
+     </div>
+   </div>
 </div>
 
-<!-- Top row: 3 images -->
-<div class="flex h-8/12  flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:overflow-hidden select-none">
-  <!-- <button *ngFor="let btn of buttons.slice(0, 2)" class="md:px-10" (click)="navigate()">  -->
-  <button *ngFor="let btn of buttons" class="md:px-10" (click)="navigate()"> 
-    <img class="object-cover hover:scale-[1.1] rounded-xl opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
-         [ngClass]="{
-                      'w-72': btn.name === 'illustration',
-                      'w-80': btn.name !== 'illustration',
-                    }"
-         [src]="btn.imageUrl"
-         alt="image"
-         (load)="onImageLoad($event)">
-  </button>
-</div>
-
-<!-- Bottom row: 2 images -->
-<!-- <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:mt-2">
+  <!-- Bottom row: 2 images -->
+  <!-- <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:mt-2">
 
   <button *ngFor="let btn of buttons.slice(4)" class="md:px-10">
     <img class="w-60 object-cover rounded-xl hover:scale-[1.05] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
@@ -28,4 +29,3 @@
          (load)="onImageLoad($event)">
   </button>
 </div> -->
-
