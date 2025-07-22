@@ -9,6 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # 👈 Required for pushing to gh-pages
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
