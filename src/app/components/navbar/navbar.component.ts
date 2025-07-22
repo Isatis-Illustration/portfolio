@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
+import { IconService } from '../../services/icon.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,5 +10,22 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
-  nameGif = 'assets/home/artist.gif'
+  iconService: IconService = inject(IconService);
+  isMenuOpen: boolean = false;
+
+  buttons = [
+      'home',
+      'illustration',
+      'character',
+      'profile',
+      'contacts',
+  ];
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
+  }
+
+  toggleMenu(): void{
+    this.isMenuOpen = !this.isMenuOpen
+  }
 }
