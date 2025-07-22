@@ -19,13 +19,25 @@ export class HomeComponent {
 
   route: Router = inject(Router)
   
-  nameGif = 'assets/home/artist.gif'
+  fNameGif = 'assets/home/name.gif';
+  lNameGif = 'assets/home/surname.gif'
   buttons = [
-    'assets/home/illustration.png',
-    'assets/home/character.png',
-    'assets/home/backgrounds.png',
-    'assets/home/profile.png',
-    'assets/home/contacts.png',
+    {
+      name: 'illustration',
+      imageUrl: 'assets/home/illustration.png',
+    },
+    {
+      name: 'character',
+      imageUrl: 'assets/home/character.png',
+    },
+    {
+      name: 'profile',
+      imageUrl: 'assets/home/profile.png',
+    },
+    {
+      name: 'contacts',
+      imageUrl: 'assets/home/contacts.png',
+    },
   ];
 
   navigate(): void{

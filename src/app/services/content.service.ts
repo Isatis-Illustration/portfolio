@@ -12,8 +12,7 @@ export class ContentService {
   http: HttpClient = inject(HttpClient);
     
   //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive                                                                                                                
-  private DB_URL: string = `https://www.googleapis.com/drive/v3/files?q=%27${environment.folderId}%27+in+parents&key=${environment.apiKey}&fields=files(id,name,webContentLink,description)`;
-  private cloudinaryUrl: string = `CLOUDINARY_URL=cloudinary://${environment.cApiKey}:${environment.cApiSecret}@djyhltusj`;
+  private cloudinaryEndpoint: string = `https://cloudinary-backend-iota.vercel.app/api/images`;
 
   contents: WritableSignal<Content[]> = signal([])
   hasRefresh: boolean = environment.hasRefresh;
@@ -21,35 +20,69 @@ export class ContentService {
 
 
   constructor(){
-    // this.populateSite(20);
-    this.getDriveImages()
+    // this.getDriveImages()
+    this.getCloudinaryImages()
     if(this.hasRefresh)
-      interval(this.refreshTime).subscribe(() => this.getDriveImages());
+      interval(this.refreshTime).subscribe(() => {
+      // this.getDriveImages()
+      this.getCloudinaryImages()
+    });
+  }
+
+  getCloudinaryImages(): void {
+    this.http.get<any>(this.cloudinaryEndpoint).subscribe((res) => {
+      let cloudContents: Content[] = [];
+
+      for (let i = 0; i < res.images.length; i++) {
+        let cont: Content = {
+          id: i + "",
+          name: this.getNameByUrl(res.images[i]),
+          imageUrl: res.images[i]
+        };
+        cloudContents.push(cont);
+      }
+
+      const currentIds = this.contents().map(f => f.id).sort();
+      const newIds = cloudContents.map(f => f.id).sort();
+
+      const isSame = currentIds.length === newIds.length &&
+                    currentIds.every((id, i) => id === newIds[i]);
+
+      if (!isSame) {
+        this.contents.set(cloudContents);
+      }
+    });
   }
 
 
-
-  getDriveImages(): void {
-    this.http.get<any>(this.DB_URL).subscribe((googleFiles) => 
-      {
-        let files: Content[] = googleFiles.files as Content[];
-        // files.forEach(file => file.webContentLink = file.webContentLink.split('&')[0])
-        files.forEach(file => {
-          // file.imageUrl = this.googleUrl+file.id;
-          file.imageUrl = 'https://res.cloudinary.com/djyhltusj/image/upload/v1753126632/IMG_2001_f6biyc.png'
-          file.name = file.name.split('.')[0];
-        })
-
-        const currentIds = this.contents().map(f => f.id).sort();
-        const newIds = files.map(f => f.id).sort();
-
-        const isSame = currentIds.length === newIds.length &&
-                      currentIds.every((id, i) => id === newIds[i]);
-
-        if (!isSame){
-          this.contents.set(files);
-        }
-      });
+  getNameByUrl(url: string): string {
+    const parts = url.split("/");
+    const filenameWithExt = parts[parts.length - 1];  
+    const name = filenameWithExt.split(".")[0];       
+    return name;
   }
+
+  // getDriveImages(): void {
+  //   this.http.get<any>(this.DB_URL).subscribe((googleFiles) => 
+  //     {
+  //       let files: Content[] = googleFiles.files as Content[];
+  //       // files.forEach(file => file.webContentLink = file.webContentLink.split('&')[0])
+  //       files.forEach(file => {
+  //         // file.imageUrl = this.googleUrl+file.id;
+  //         file.imageUrl = file.imageUrl
+  //         file.name = file.name.split('.')[0];
+  //       })
+
+  //       const currentIds = this.contents().map(f => f.id).sort();
+  //       const newIds = files.map(f => f.id).sort();
+
+  //       const isSame = currentIds.length === newIds.length &&
+  //                     currentIds.every((id, i) => id === newIds[i]);
+
+  //       if (!isSame){
+  //         this.contents.set(files);
+  //       }
+  //     });
+  // }
 
 }

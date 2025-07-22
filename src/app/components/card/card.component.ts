@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Content } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 
@@ -10,10 +10,14 @@ import { CommonModule } from '@angular/common';
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
 })
-export class CardComponent {
+export class CardComponent implements OnInit {
 
   @Input() content!: Content;
   @Output() onClickImageEvent: EventEmitter<Content> = new EventEmitter<Content>;
+
+  ngOnInit(): void{
+    console.log(this.content)
+  }
 
   hasTitle: boolean = false;
   hasLoaded: boolean = false;
