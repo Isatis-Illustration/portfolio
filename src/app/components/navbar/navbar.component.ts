@@ -11,8 +11,21 @@ import { IconService } from '../../services/icon.service';
 export class NavbarComponent {
 
   iconService: IconService = inject(IconService);
+  isMenuOpen: boolean = false;
+
+  buttons = [
+      'home',
+      'illustration',
+      'character',
+      'profile',
+      'contacts',
+  ];
 
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
+  }
+
+  toggleMenu(): void{
+    this.isMenuOpen = !this.isMenuOpen
   }
 }
