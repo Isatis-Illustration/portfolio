@@ -18,7 +18,7 @@ export interface Content{
     name: string;
     imageUrl?: string;
     description?: string;
-    webContentLink: string;
+    webContentLink?: string;
 }
 
 export interface User{

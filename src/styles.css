@@ -17,6 +17,12 @@
 } */
 
 
+::selection {
+  background-color: #ff9d7f; /* giallo */
+  color: #6b1313; /* testo nero */
+}
+
+
 @layer utilities {
   @keyframes dropdown {
     0% {

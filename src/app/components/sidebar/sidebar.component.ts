@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SidebarButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../environment/environment';
+import { SafeHtml } from '@angular/platform-browser';
+import { IconService } from '../../services/icon.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,8 +17,12 @@ import { environment } from '../../environment/environment';
 })
 export class SidebarComponent {
 
-  user: User = environment.user;
+  iconService: IconService = inject(IconService);
 
+  fNameGif = 'assets/home/name.gif';
+  lNameGif = 'assets/home/surname.gif'
+
+  user: User = environment.user;
   year: number = new Date().getFullYear()
 
   buttons: SidebarButton[] = [
@@ -24,42 +30,40 @@ export class SidebarComponent {
       id:0,
       label: 'Home',
       path: 'home',
-      image: ''
+      image: 'home'
     },
     {
       id:1,
       label: 'Illustrations',
       path: 'gallery',
-      image: ''
+      image: 'illustration'
     },
     {
       id:1,
       label: 'Character Design',
       path: 'gallery',
-      image: ''
-    },
-    {
-      id:1,
-      label: 'Backgrounds',
-      path: 'gallery',
-      image: ''
+      image: 'character'
     },
     {
       id:0,
-      label: 'About me',
-      path: 'about',
-      image: ''
+      label: 'Profile',
+      path: 'profile',
+      image: 'profile'
     },
     {
       id:0,
       label: 'Contacts',
       path: 'contacts',
-      image: ''
+      image: 'contacts'
     }
   ]
 
 
   trackById(item: any): number {
     return item.id;
+  }
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
   }
 }

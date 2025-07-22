@@ -1,26 +1,31 @@
-<div class="h-3/12 hidden justify-center pt-10 sm:flex">
-  <img [src]="nameGif" class="w-full h-auto object-contain" />
+<div class="h-4/12 hidden justify-center items-end sm:flex gap-8 select-none">
+  <img [src]="fNameGif" class="h-4/6 object-contain" />
+  <img [src]="lNameGif" class="h-4/6 object-contain" />
 </div>
 
 <!-- Top row: 3 images -->
-<div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5">
-  <button *ngFor="let btn of buttons.slice(0, 2)" class="md:px-10" (click)="navigate()"> 
-    <img class="w-60 object-cover hover:scale-[1.1] rounded-xl opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
-         [src]="btn"
+<div class="flex h-8/12  flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:overflow-hidden select-none">
+  <!-- <button *ngFor="let btn of buttons.slice(0, 2)" class="md:px-10" (click)="navigate()">  -->
+  <button *ngFor="let btn of buttons" class="md:px-10" (click)="navigate()"> 
+    <img class="object-cover hover:scale-[1.1] rounded-xl opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
+         [ngClass]="{
+                      'w-72': btn.name === 'illustration',
+                      'w-80': btn.name !== 'illustration',
+                    }"
+         [src]="btn.imageUrl"
          alt="image"
          (load)="onImageLoad($event)">
   </button>
 </div>
 
 <!-- Bottom row: 2 images -->
-<div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:mt-2">
-  <!-- Spacer visibili solo su desktop -->
+<!-- <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:mt-2">
 
-  <button *ngFor="let btn of buttons.slice(3)" class="md:px-10">
+  <button *ngFor="let btn of buttons.slice(4)" class="md:px-10">
     <img class="w-60 object-cover rounded-xl hover:scale-[1.05] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
          [src]="btn"
          alt="image"
          (load)="onImageLoad($event)">
   </button>
-</div>
+</div> -->
 
