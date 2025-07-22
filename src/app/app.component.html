@@ -25,13 +25,14 @@
     </div>
 
     <!-- Spazio per contenuto scrollabile -->
-    <div class="flex-1 sm:ml-64 overflow-y-auto p-6 mt-24 sm:mt-0" 
-    [ngClass]="{ 
-                'sm:ml-64': !isHome(),
-                'scrollbar-hide': isScreenSm,
-                'scrollbar-show': !isScreenSm,
-                }">
+    <div class="flex-1 sm:ml-64 overflow-y-auto p-6 mt-24 sm:mt-0 h-screen" 
+        [ngClass]="{ 
+          'sm:ml-64': !isHome(),
+          'scrollbar-hide': isScreenSm,
+          'scrollbar-show': !isScreenSm,
+        }">
       <router-outlet></router-outlet>
     </div>
+
   </div>
 </div>

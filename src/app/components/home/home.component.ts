@@ -21,8 +21,8 @@ export class HomeComponent {
   
   nameGif = 'assets/home/artist.gif'
   buttons = [
-    'assets/home/illustrations.png',
-    'assets/home/characters.png',
+    'assets/home/illustration.png',
+    'assets/home/character.png',
     'assets/home/backgrounds.png',
     'assets/home/profile.png',
     'assets/home/contacts.png',

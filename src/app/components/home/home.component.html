@@ -5,7 +5,7 @@
 <!-- Top row: 3 images -->
 <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5">
   <button *ngFor="let btn of buttons.slice(0, 2)" class="md:px-10" (click)="navigate()"> 
-    <img class="w-60 object-cover rounded-xl shadow-md opacity-0 transition-opacity duration-300 ease-in"
+    <img class="w-60 object-cover hover:scale-[1.1] rounded-xl opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
          [src]="btn"
          alt="image"
          (load)="onImageLoad($event)">
@@ -17,7 +17,7 @@
   <!-- Spacer visibili solo su desktop -->
 
   <button *ngFor="let btn of buttons.slice(3)" class="md:px-10">
-    <img class="w-60 object-cover rounded-xl shadow-md opacity-0 transition-opacity duration-300 ease-in"
+    <img class="w-60 object-cover rounded-xl hover:scale-[1.05] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
          [src]="btn"
          alt="image"
          (load)="onImageLoad($event)">

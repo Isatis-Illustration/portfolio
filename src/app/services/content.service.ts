@@ -13,7 +13,7 @@ export class ContentService {
     
   //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive                                                                                                                
   private DB_URL: string = `https://www.googleapis.com/drive/v3/files?q=%27${environment.folderId}%27+in+parents&key=${environment.apiKey}&fields=files(id,name,webContentLink,description)`;
-  private googleUrl: string = `https://drive.google.com/thumbnail?id=`;
+  private cloudinaryUrl: string = `CLOUDINARY_URL=cloudinary://${environment.cApiKey}:${environment.cApiSecret}@djyhltusj`;
 
   contents: WritableSignal<Content[]> = signal([])
   hasRefresh: boolean = environment.hasRefresh;
@@ -35,7 +35,8 @@ export class ContentService {
         let files: Content[] = googleFiles.files as Content[];
         // files.forEach(file => file.webContentLink = file.webContentLink.split('&')[0])
         files.forEach(file => {
-          file.imageUrl = this.googleUrl+file.id;
+          // file.imageUrl = this.googleUrl+file.id;
+          file.imageUrl = 'https://res.cloudinary.com/djyhltusj/image/upload/v1753126632/IMG_2001_f6biyc.png'
           file.name = file.name.split('.')[0];
         })
 
@@ -47,7 +48,6 @@ export class ContentService {
 
         if (!isSame){
           this.contents.set(files);
-          console.log("afas")
         }
       });
   }
