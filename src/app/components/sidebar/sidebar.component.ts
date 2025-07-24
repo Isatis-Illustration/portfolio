@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { SidebarButton, User } from '../../services/models/models';
+import { CustomButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../environment/environment';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
+import { ButtonService } from '../../services/button.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,6 +19,7 @@ import { IconService } from '../../services/icon.service';
 export class SidebarComponent {
 
   iconService: IconService = inject(IconService);
+  buttonService: ButtonService = inject(ButtonService);
 
   fNameGif = 'assets/home/name.gif';
   lNameGif = 'assets/home/surname.gif'
@@ -25,39 +27,7 @@ export class SidebarComponent {
   user: User = environment.user;
   year: number = new Date().getFullYear()
 
-  buttons: SidebarButton[] = [
-    {
-      id:0,
-      label: 'Home',
-      path: 'home',
-      image: 'home'
-    },
-    {
-      id:1,
-      label: 'Illustrations',
-      path: 'gallery',
-      image: 'illustration'
-    },
-    {
-      id:1,
-      label: 'Character Design',
-      path: 'gallery',
-      image: 'character'
-    },
-    {
-      id:0,
-      label: 'Profile',
-      path: 'profile',
-      image: 'profile'
-    },
-    {
-      id:0,
-      label: 'Contacts',
-      path: 'contacts',
-      image: 'contacts'
-    }
-  ]
-
+  buttons: CustomButton[] = this.buttonService.buttons;
 
   trackById(item: any): number {
     return item.id;

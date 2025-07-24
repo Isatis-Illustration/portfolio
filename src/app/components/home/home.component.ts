@@ -1,11 +1,9 @@
-import { Component, computed, effect, HostListener, inject, Signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CardComponent } from '../card/card.component';
-import { Content } from '../../services/models/models';
-import { ContentService } from '../../services/content.service';
-import { Route, Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+import { ButtonService } from '../../services/button.service';
+import { CustomButton } from '../../services/models/models';
 
 @Component({
   selector: 'app-home',
@@ -15,30 +13,18 @@ import { UserService } from '../../services/user.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  route: Router = inject(Router)
+  route: Router = inject(Router);
+  buttonService: ButtonService = inject(ButtonService);
   
   fNameGif = 'assets/home/name.gif';
   lNameGif = 'assets/home/surname.gif'
-  buttons = [
-    {
-      name: 'illustration',
-      imageUrl: 'assets/home/illustration.png',
-    },
-    {
-      name: 'character',
-      imageUrl: 'assets/home/character.png',
-    },
-    {
-      name: 'profile',
-      imageUrl: 'assets/home/profile.png',
-    },
-    {
-      name: 'contacts',
-      imageUrl: 'assets/home/contacts.png',
-    },
-  ];
+  buttons: CustomButton[] = []
+
+  ngOnInit(): void{
+    this.buttons = this.buttonService.buttons.filter(b => b.id != 0);
+  }
 
   navigate(): void{
     this.route.navigate(['gallery']);

@@ -6,11 +6,12 @@
 //     doc?: Date;
 // }
 
-export interface SidebarButton{
+export interface CustomButton{
     id: number;
     label: string;
     path: string;
-    image?: string;
+    imageUrl?: string;
+    imageSVG?: string;
 }
 
 export interface Content{

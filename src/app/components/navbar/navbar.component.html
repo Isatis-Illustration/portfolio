@@ -1,10 +1,11 @@
 <div class="h-24 w-screen bg-primary rounded-bl-3xl rounded-br-3xl flex text-info ">
-    <div class=" w-1/6 h-full flex items-center justify-center" [innerHTML]="getIcon('flower')">
-   </div>
-    <div class=" w-4/6 h-full pr-2 flex items-center justify-center text-3xl font-bold text-info  font-serif">
-        Isatis
+    <div class="cursor-pointer w-1/6 h-full flex items-center justify-center"> 
+        <div (click)="navigateToHome()" [innerHTML]="getIcon('flower')"></div>
     </div>
-    <div class=" w-1/6 h-full flex items-center justify-center" (click)="toggleMenu()">
+    <div class="w-4/6 h-full pr-2 flex items-center justify-center text-3xl font-bold text-info  font-serif">
+        {{ user.nick }}
+    </div>
+    <div class="w-1/6 h-full flex items-center justify-center" (click)="toggleMenu()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
