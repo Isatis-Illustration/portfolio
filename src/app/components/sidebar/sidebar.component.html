@@ -9,7 +9,7 @@
       <a *ngFor="let b of buttons; trackBy: trackById;" 
         [routerLink]="[`/${b.path}`]" routerLinkActive="router-link-active" 
         class="flex items-center text-info hover:text-emerald-600 transition-colors">
-        <div [innerHTML]="getIcon(b.image!)" class="pr-4"></div>
+        <div [innerHTML]="getIcon(b.imageSVG!)" class="pr-4"></div>
         {{ b.label }}
       </a>
 

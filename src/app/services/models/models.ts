@@ -10,7 +10,8 @@ export interface SidebarButton{
     id: number;
     label: string;
     path: string;
-    image?: string;
+    imageUrl?: string;
+    imageSVG?: string;
 }
 
 export interface Content{
