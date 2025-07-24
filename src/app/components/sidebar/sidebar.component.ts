@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { SidebarButton, User } from '../../services/models/models';
+import { CustomButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { environment } from '../../environment/environment';
@@ -27,7 +27,7 @@ export class SidebarComponent {
   user: User = environment.user;
   year: number = new Date().getFullYear()
 
-  buttons: SidebarButton[] = this.buttonService.buttons;
+  buttons: CustomButton[] = this.buttonService.buttons;
 
   trackById(item: any): number {
     return item.id;

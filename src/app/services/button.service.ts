@@ -1,13 +1,12 @@
-import { inject, Injectable } from '@angular/core';
-import { SidebarButton } from './models/models';
-import { IconService } from './icon.service';
+import { Injectable } from '@angular/core';
+import { CustomButton } from './models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ButtonService {
 
-  buttons: SidebarButton[] = [
+  buttons: CustomButton[] = [
     {
       id:0,
       label: 'Home',

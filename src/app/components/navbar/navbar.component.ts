@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
+import { ButtonService } from '../../services/button.service';
+import { CustomButton } from '../../services/models/models';
 
 @Component({
   selector: 'app-navbar',
@@ -11,15 +13,12 @@ import { IconService } from '../../services/icon.service';
 export class NavbarComponent {
 
   iconService: IconService = inject(IconService);
+  buttonService: ButtonService = inject(ButtonService);
+
+  
   isMenuOpen: boolean = false;
 
-  buttons = [
-      'home',
-      'illustration',
-      'character',
-      'profile',
-      'contacts',
-  ];
+  buttons: CustomButton[] = this.buttonService.buttons
 
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);

@@ -6,7 +6,7 @@
 //     doc?: Date;
 // }
 
-export interface SidebarButton{
+export interface CustomButton{
     id: number;
     label: string;
     path: string;

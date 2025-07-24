@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SidebarButton } from '../../services/models/models';
 import { Router } from '@angular/router';
 import { ButtonService } from '../../services/button.service';
+import { CustomButton } from '../../services/models/models';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   
   fNameGif = 'assets/home/name.gif';
   lNameGif = 'assets/home/surname.gif'
-  buttons: SidebarButton[] = []
+  buttons: CustomButton[] = []
 
   ngOnInit(): void{
     this.buttons = this.buttonService.buttons.filter(b => b.id != 0);
