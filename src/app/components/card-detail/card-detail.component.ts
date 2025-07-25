@@ -27,7 +27,6 @@ export class CardDetailComponent {
       this.route.paramMap.subscribe(params => {
         let id: string = params.get('id')!;
         this.content = this.contentService.contents().find(c => c.id === id)!;
-        console.log(this.content);
       })
     });
   }
