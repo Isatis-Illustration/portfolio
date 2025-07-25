@@ -3,6 +3,9 @@ import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from "./components/navbar/navbar.component";
+import { ContentService } from './services/content.service';
+import { SafeHtml } from '@angular/platform-browser';
+import { IconService } from './services/icon.service';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,8 @@ export class AppComponent {
   title = 'portfolio';
 
   router: Router = inject(Router);
+  contentService: ContentService = inject(ContentService);
+  iconService: IconService = inject(IconService);
 
   currentUrl: string = '';
   screenWidth: number = window.screen.width;
@@ -38,5 +43,9 @@ export class AppComponent {
 
   isScreenSmall(): void{
     this.isScreenSm = this.screenWidth <= 640;
+  }
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
   }
 }
