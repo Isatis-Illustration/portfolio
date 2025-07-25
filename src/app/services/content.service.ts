@@ -22,6 +22,7 @@ export class ContentService {
   constructor(){
     // this.getDriveImages()
     this.getCloudinaryImages()
+    console.log("services")
     if(this.hasRefresh)
       interval(this.refreshTime).subscribe(() => {
       // this.getDriveImages()
