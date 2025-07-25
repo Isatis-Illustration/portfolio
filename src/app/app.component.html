@@ -1,10 +1,10 @@
-<div class="flex h-screen bg-secondary overflow-hidden border-4 border-green-500">
+<div class="flex h-screen bg-secondary overflow-hidden">
 
   <!-- Sfondo pattern sotto -->
   <div class="fixed top-0 left-0 w-screen h-screen bg-opacity-50" [innerHTML]="getIcon('background')"></div>
   
   <!-------------------------------->
-  <div class="flex w-full z-10 border-4 border-amber-700">
+  <div class="flex w-full z-10">
 
     <!-- Sidebar ms+ -->
     <div *ngIf="!isHome()" class="top-0 left-0 h-screen z-20 hidden sm:block">
@@ -17,7 +17,7 @@
     </div>
 
     <!-- Spazio per contenuto scrollabile -->
-    <div class="flex-1 overflow-y-auto sm:mt-0 mt-24 border-4 border-blue-600" 
+    <div class="flex-1 overflow-y-auto sm:mt-0 mt-24" 
         [ngClass]="{ 
           'scrollbar-hide': isScreenSm,
           'scrollbar-show': !isScreenSm,
