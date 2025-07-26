@@ -20,6 +20,7 @@ export interface Content{
     imageUrl?: string;
     description?: string;
     webContentLink?: string;
+    type: string;
 }
 
 export interface User{

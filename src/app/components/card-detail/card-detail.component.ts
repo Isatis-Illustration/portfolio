@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
+import { StorageKey } from '../../services/models/enums';
 
 @Component({
   selector: 'app-card-detail',
@@ -23,30 +24,33 @@ export class CardDetailComponent {
 
   constructor(){
     effect(() => {
+      const filterStorage = localStorage.getItem(StorageKey.FILTER);
+      this.contentService.filter.set(filterStorage!)
       const list = this.contentService.contents();
       this.route.paramMap.subscribe(params => {
         let id: string = params.get('id')!;
         this.content = this.contentService.contents().find(c => c.id === id)!;
-        console.log(this.content);
       })
     });
   }
 
   goToNext(): void{
-    let nextIndex: number = this.contentService.contents().indexOf(this.content)+1;
+    let nextIndex: number = this.contentService.getFilteredContent().indexOf(this.content)+1;
     nextIndex = nextIndex > this.getMaxContentsIndex() ? 0 : nextIndex;
-    const nextContent: Content = this.contentService.contents().at(nextIndex)!;
+    let nextContent: Content = this.contentService.getFilteredContent().at(nextIndex)!;
+    nextContent = nextContent ? nextContent : this.content;
     this.router.navigate([`detail/${nextContent.id}`])
   }
 
   goToPrevious(): void{
-    let prevIndex: number = this.contentService.contents().indexOf(this.content)-1;
+    let prevIndex: number = this.contentService.getFilteredContent().indexOf(this.content)-1;
     prevIndex = prevIndex < 0 ? this.getMaxContentsIndex() : prevIndex;
-    const prevContent: Content = this.contentService.contents().at(prevIndex)!;
+    let prevContent: Content = this.contentService.getFilteredContent().at(prevIndex)!;
+    prevContent = prevContent ? prevContent : this.content;
     this.router.navigate([`detail/${prevContent.id}`])
   }
 
   getMaxContentsIndex(): number{
-    return this.contentService.contents().length - 1;
+    return this.contentService.getFilteredContent().length - 1;
   }
 }

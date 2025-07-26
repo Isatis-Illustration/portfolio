@@ -26,8 +26,8 @@ export class HomeComponent implements OnInit {
     this.buttons = this.buttonService.buttons.filter(b => b.id != 0);
   }
 
-  navigate(): void{
-    this.route.navigate(['gallery']);
+  navigate(path: string): void{
+    this.route.navigate([path]);
   }
 
   onImageLoad(event: Event) {

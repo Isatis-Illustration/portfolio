@@ -1,23 +1,28 @@
 <div class="h-screen bg-primary w-64 p-6 shadow-xl rounded-tr-3xl rounded-br-3xl flex flex-col justify-between">
   <div>
-    <h1 class="pt-12 text-3xl font-bold text-info mb-10 font-serif w-5/6">
+    <h1 class="pt-12 text-3xl font-bold text-info mb-10 font-serif w-5/6 select-none">
       <img [src]="fNameGif">
       <img [src]="lNameGif">
     </h1>
     <nav class="space-y-4">
       
       <a *ngFor="let b of buttons; trackBy: trackById;" 
-        [routerLink]="[`/${b.path}`]" routerLinkActive="router-link-active" 
-        class="flex items-center text-info hover:text-emerald-600 transition-colors">
+        class="flex items-center text-info hover:text-emerald-600 transition-colors"
+        [routerLink]="[`/${b.path}`]" routerLinkActive="router-link-active" >
         <div [innerHTML]="getIcon(b.imageSVG!)" class="pr-4"></div>
         {{ b.label }}
+      </a>
+      <a [href]="instaram.link" target="_blank" and rel="noopener noreferrer"
+        class="flex items-center text-info hover:text-emerald-600 transition-colors">
+        <div [innerHTML]="getIcon(instaram.icon)" class="pr-4"></div>
+        {{ instaram.nick }}
       </a>
 
     </nav>
   </div>
   <div class="text-sm text-info mt-10">
-   <p><a href="https://www.instagram.com/blooming.isatis/" target="_blank" rel="noopener noreferrer">Cliccami</a></p>
-    <p>&copy; {{ `${year} ${user.firstName} ${user.lastName}`}}</p>
+    <p class="w-fit py-2"><a href="https://www.instagram.com/blooming.isatis/"  target="_blank" rel="noopener noreferrer" [innerHTML]="getIcon('instagram')"></a></p>
+    <p>&copy; {{ `2025 ${user.firstName} ${user.lastName}`}}</p>
     <p *ngIf="user.slogan" class="italic">"{{user.slogan}}"</p>
   </div>
 </div>

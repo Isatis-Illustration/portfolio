@@ -3,6 +3,7 @@ import { Content } from './models/models';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { environment } from '../environment/environment';
+import { Type } from './models/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,13 @@ export class ContentService {
     
   //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive                                                                                                                
   private cloudinaryEndpoint: string = `https://cloudinary-backend-iota.vercel.app/api/images`;
-
+  
+  filter: WritableSignal<string> = signal('');
   contents: WritableSignal<Content[]> = signal([])
+  
   hasRefresh: boolean = environment.hasRefresh;
   refreshTime: number = environment.refreshTime*1000 //in millisecondi
+
 
 
   constructor(){
@@ -29,17 +33,26 @@ export class ContentService {
     });
   }
 
+  
+  getFilteredContent(): Content[]{
+    return this.contents().filter(c => c.type === this.filter()[0]).sort();
+  }
+
+
   getCloudinaryImages(): void {
     this.http.get<any>(this.cloudinaryEndpoint).subscribe((res) => {
       let cloudContents: Content[] = [];
 
       for (let i = 0; i < res.images.length; i++) {
+
         let cont: Content = {
           id: i + "",
           name: this.getNameByUrl(res.images[i]),
-          imageUrl: res.images[i]
+          imageUrl: res.images[i],
+          type: this.getType(res.images[i]),
         };
         cloudContents.push(cont);
+
       }
 
       const currentIds = this.contents().map(f => f.id).sort();
@@ -52,6 +65,14 @@ export class ContentService {
         this.contents.set(cloudContents);
       }
     });
+  }
+
+
+  getType(url: string): string {
+    const parts = url.split("/");
+    const filenameWithExt = parts[parts.length - 1];  
+    const type = filenameWithExt.split(".")[1] === Type.CHARACTER ? Type.CHARACTER : Type.ILLUSTRATION;
+    return type;
   }
 
 
