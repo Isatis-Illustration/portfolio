@@ -1,4 +1,4 @@
-<div [ngClass]="{'bg-primary rounded-bl-3xl rounded-br-3xl': isMenuOpen}">
+<div [ngClass]="{'bg-navbar rounded-bl-3xl rounded-br-3xl': isMenuOpen}">
     <div class="h-24 w-screen bg-primary rounded-bl-3xl rounded-br-3xl flex text-info border border-black">
         <div class="cursor-pointer w-1/6 h-full flex items-center justify-center"> 
             <div (click)="navigateToHome()" [innerHTML]="getIcon('flower')"></div>
@@ -12,7 +12,7 @@
             </svg>
         </div>
     </div>
-    <nav #navMenu *ngIf="isMenuOpen" class="space-y-4 bg-primary py-6">
+    <nav #navMenu *ngIf="isMenuOpen" class="space-y-4 bg-navbar py-6">
       
       <a *ngFor="let b of buttons;" 
         class="flex items-center text-info hover:text-emerald-600 transition-colors justify-center"
