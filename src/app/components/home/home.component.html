@@ -12,20 +12,9 @@
      <div class="h-4/6 w-5/6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 pt-10 justify-center items-center">
        <button *ngFor="let btn of buttons" class="flex justify-center mb-5" (click)="navigate(btn.path)">
          <img
-           class="w-4/5 md:w-64 lg:w-80 hover:scale-[1.1] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
+           class="w-4/5 md:w-72 lg:w-80 hover:scale-[1.1] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
            [src]="btn.imageUrl" [alt]="btn.label" (load)="onImageLoad($event)">
        </button>
      </div>
    </div>
 </div>
-
-  <!-- Bottom row: 2 images -->
-  <!-- <div class="flex flex-col items-center sm:flex-row sm:justify-center gap-6 p-5 sm:mt-2">
-
-  <button *ngFor="let btn of buttons.slice(4)" class="md:px-10">
-    <img class="w-60 object-cover rounded-xl hover:scale-[1.05] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
-         [src]="btn"
-         alt="image"
-         (load)="onImageLoad($event)">
-  </button>
-</div> -->
