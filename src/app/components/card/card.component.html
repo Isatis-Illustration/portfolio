@@ -20,7 +20,7 @@
     class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-primary"
     (click)="onClickImageEvent.emit(content)">
     <img *ngIf="content.imageUrl; else noImage" (load)="loaded()" [src]="content.imageUrl" alt="Artwork"
-      class="w-full h-auto object-contain" />
+      class="w-full h-auto object-contain select-none" />
     <ng-template #noImage>
       <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
         <div class="text-4xl mb-2">🌿</div>

@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { CardDetailComponent } from './components/card-detail/card-detail.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
-import { CarouselComponent } from './components/carousel/carousel.component';
 
 export const routes: Routes = [
     {
@@ -17,10 +16,6 @@ export const routes: Routes = [
     {
         path:"gallery/:filter",
         component: GalleryComponent,
-    },
-    {
-        path:"carousel",
-        component: CarouselComponent,
     },
     {
         path:"detail/:id",

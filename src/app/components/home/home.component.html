@@ -2,8 +2,8 @@
   <!-- Prima sezione: Titolo -->
    <div class="flex justify-center">
      <div class="grid grid-cols-1 md:grid-cols-2 xl:gap-8 p-2 sm:w-4/5 xl:w-auto mt-5 sm:mt-10 xl:mt-20 xl:mb-20">
-       <img [src]="fNameGif" class="px-3 xl:pl-80" />
-       <img [src]="lNameGif" class="px-3 xl:pr-80" />
+       <img [src]="fNameGif" class="px-3 xl:pl-80 select-none" />
+       <img [src]="lNameGif" class="px-3 xl:pr-80 select-none" />
      </div>
    </div>
 
@@ -12,7 +12,7 @@
      <div class="h-4/6 w-5/6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 pt-10 justify-center items-center">
        <button *ngFor="let btn of buttons" class="flex justify-center mb-5" (click)="navigate(btn.path)">
          <img
-           class="w-4/5 md:w-72 lg:w-80 hover:scale-[1.1] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
+           class="select-none w-4/5 md:w-72 lg:w-80 hover:scale-[1.1] opacity-0 cursor-pointer transition-opacity duration-300 ease-in"
            [src]="btn.imageUrl" [alt]="btn.label" (load)="onImageLoad($event)">
        </button>
        <div class="mt-15 sm:hidden"></div>
