@@ -30,10 +30,14 @@ export class NavbarComponent {
 
   @HostListener('document:click', ['$event'])
   clickout(event: any) {
+    if (!this.navMenu || !this.navMenu.nativeElement) {
+      return;
+    }
     if (!this.navMenu.nativeElement.contains(event.target)) {
       this.isMenuOpen = false;
     }
   }
+
 
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);

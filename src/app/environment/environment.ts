@@ -11,7 +11,7 @@ export const environment = {
         description: '',
         gender: 'Female',
         city: 'Rome',
-        slogan: 'Grand Soleir, il nettare degli Dei',
+        slogan: '',
         image: '',
         instagram: {
             nick: '@blooming.isatis',
