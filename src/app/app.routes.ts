@@ -15,7 +15,7 @@ export const routes: Routes = [
         component: HomeComponent,
     },
     {
-        path:"gallery",
+        path:"gallery/:filter",
         component: GalleryComponent,
     },
     {

@@ -5,12 +5,18 @@ export const environment = {
         firstName: 'Isabella',
         lastName: 'Laurenzi',
         nick: 'Isatis',
+        role: 'Illustrator',
         birthDate: '2001-03-19',
         age: 0,
         description: '',
         gender: 'Female',
         city: 'Rome',
         slogan: 'Grand Soleir, il nettare degli Dei',
-        image: ''
+        image: '',
+        instagram: {
+            nick: '@blooming.isatis',
+            icon: 'instagram',
+            link: 'https://www.instagram.com/blooming.isatis/'
+        }
     }
 }

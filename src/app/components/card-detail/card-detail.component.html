@@ -2,7 +2,7 @@
   <div>
     <!-- Pulsante SINISTRO (precedente) -->
     <button
-      class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-black rounded-full p-3 shadow-md transition-colors"
+      class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info  rounded-full p-3 shadow-md transition-colors"
       (click)="goToPrevious()" aria-label="Precedente">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -11,7 +11,7 @@
 
     <!-- Pulsante DESTRO (successiva) -->
     <button
-      class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-black rounded-full p-3 shadow-md transition-colors"
+      class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors"
       (click)="goToNext()" aria-label="Successiva">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -21,8 +21,8 @@
     <!-- Contenuto principale -->
     <div class="w-full sm:h-screen max-w-fit mx-auto overflow-hidden">
       <div class="flex items-center justify-center h-full p-4">
-        <img [src]="content.imageUrl" alt="Immagine"
-          class="max-h-full max-w-full object-contain border-4 border-primary bg-primary"/>
+        <img *ngIf="content" [src]="content.imageUrl" alt="Immagine"
+          class="max-h-full max-w-full object-contain border-4 border-primary select-none"/>
       </div>
 
       <!-- AREA DI HOVER E OVERLAY -->

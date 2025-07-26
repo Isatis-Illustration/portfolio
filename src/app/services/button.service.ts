@@ -17,14 +17,14 @@ export class ButtonService {
     {
       id:1,
       label: 'Illustrations',
-      path: 'gallery',
+      path: 'gallery/illustrations',
       imageUrl: 'assets/home/illustration.png',
       imageSVG: 'illustration'
     },
     {
       id:2,
       label: 'Character Design',
-      path: 'gallery',
+      path: 'gallery/character-design',
       imageUrl: 'assets/home/character.png',
       imageSVG: 'character'
     },

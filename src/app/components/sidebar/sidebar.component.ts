@@ -21,6 +21,8 @@ export class SidebarComponent {
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
 
+  instaram = environment.user.instagram;
+
   fNameGif = 'assets/home/name.gif';
   lNameGif = 'assets/home/surname.gif'
 
@@ -36,4 +38,5 @@ export class SidebarComponent {
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
   }
+
 }

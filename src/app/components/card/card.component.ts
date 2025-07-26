@@ -16,7 +16,6 @@ export class CardComponent implements OnInit {
   @Output() onClickImageEvent: EventEmitter<Content> = new EventEmitter<Content>;
 
   ngOnInit(): void{
-    console.log(this.content)
   }
 
   hasTitle: boolean = false;

@@ -1,10 +1,11 @@
 import { Component, computed, effect, HostListener, inject, Signal } from '@angular/core';
 import { Content } from '../../services/models/models';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ContentService } from '../../services/content.service';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../card/card.component';
+import { StorageKey } from '../../services/models/enums';
 
 @Component({
   selector: 'app-gallery',
@@ -18,10 +19,21 @@ import { CardComponent } from '../card/card.component';
 export class GalleryComponent {
 
   router: Router = inject(Router);
+  route: ActivatedRoute = inject(ActivatedRoute);
   userService: UserService = inject(UserService);
   contentService: ContentService = inject(ContentService);
 
+  // Writable signal for the current filter
   contents: Signal<Content[]> = computed(() => this.contentService.contents());
+
+  filteredContents = computed(() => {
+    const f = this.contentService.filter();
+    localStorage.setItem(StorageKey.FILTER, f);
+    const all = this.contents();
+    if (!f) return all;
+    return all.filter(c => c.type === f.charAt(0));
+  });
+
   screenWidth!: number;
   colsAmmount!: number;
 
@@ -29,10 +41,18 @@ export class GalleryComponent {
   column2: Content[] = [];
   column3: Content[] = [];
 
-  constructor(){
-  
+  constructor() {
+    // Subscribe to route changes and update the filter signal
+    this.route.paramMap.subscribe(params => {
+      const f = params.get('filter')?.toLowerCase()!;
+      this.contentService.filter.set(f);
+    });
+
+    // Re-distribute columns whenever filteredContents or screenWidth changes
     effect(() => {
-      const list = this.contents();
+      // Access filteredContents to register dependency
+      this.filteredContents();
+      // Clear and redistribute
       this.clearColumns();
       this.distributeContent();
     });
@@ -50,9 +70,11 @@ export class GalleryComponent {
     this.distributeContent();
   }
 
+
   checkColsAmmount(i: number): boolean {
     return this.colsAmmount == i;
   }
+
 
   clearColumns(): void{
     this.column1 = [];
@@ -60,6 +82,7 @@ export class GalleryComponent {
     this.column3 = [];
   }
 
+  
   distributeContent(){
     if(this.checkScreenSize('xl'))
       this.distribute3ColsContent();
@@ -73,7 +96,7 @@ export class GalleryComponent {
   distribute3ColsContent() {
     this.colsAmmount = 3;
 
-    this.contents().forEach((item, index) => {
+    this.filteredContents().forEach((item, index) => {
       if (index % 3 === 0) this.column1.push(item);
       else if (index % 3 === 1) this.column2.push(item);
       else this.column3.push(item);
@@ -83,7 +106,7 @@ export class GalleryComponent {
   distribute2ColsContent() {
     this.colsAmmount = 2;
 
-    this.contents().forEach((item, index) => {
+    this.filteredContents().forEach((item, index) => {
       if (index % 2 === 0) this.column1.push(item);
       else this.column2.push(item);
     });
@@ -91,7 +114,7 @@ export class GalleryComponent {
 
   distribute1ColsContent() {
     this.colsAmmount  = 1;
-    this.column1 = this.contents()
+    this.column1 = this.filteredContents()
   }
 
   checkScreenSize(bp1: string, bp2?: string):boolean {
