@@ -21,6 +21,7 @@ export class CardDetailComponent {
 
   content!: Content;
   showInfo: boolean = false;
+  zoomed: boolean = false;
 
   constructor(){
     effect(() => {
@@ -53,4 +54,39 @@ export class CardDetailComponent {
   getMaxContentsIndex(): number{
     return this.contentService.getFilteredContent().length - 1;
   }
+
+
+
+  // DRAGGABLE ZOOMED IMAGE
+
+  isDragging = false;
+  lastX = 0;
+  lastY = 0;
+  translateX = 0;
+  translateY = 0;
+
+  onMouseDown(event: MouseEvent) {
+    this.isDragging = true;
+    this.lastX = event.clientX;
+    this.lastY = event.clientY;
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (!this.isDragging) return;
+    const dx = event.clientX - this.lastX;
+    const dy = event.clientY - this.lastY;
+    this.translateX += dx;
+    this.translateY += dy;
+    this.lastX = event.clientX;
+    this.lastY = event.clientY;
+  }
+
+  onMouseUp() {
+    this.isDragging = false;
+  }
+
+  onMouseLeave() {
+    this.isDragging = false;
+  }
+
 }

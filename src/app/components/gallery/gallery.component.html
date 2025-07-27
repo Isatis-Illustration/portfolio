@@ -2,7 +2,7 @@
 
   <ng-container *ngIf="checkColsAmmount(3)">
     <div *ngFor="let col of [column1, column2, column3]; let i = index">
-      <div *ngFor="let c of col; trackBy: trackById" class="mb-4">
+      <div *ngFor="let c of col; trackBy: trackById" class="mb-10">
 
         <app-card class="flex justify-center items-center"
           [content]="c"
@@ -15,7 +15,7 @@
 
   <ng-container *ngIf="checkColsAmmount(2)">
     <div *ngFor="let col of [column1, column2]; let i = index">
-      <div *ngFor="let c of col; trackBy: trackById" class="mb-4">
+      <div *ngFor="let c of col; trackBy: trackById" class="mb-10">
 
         <app-card class="flex justify-center items-center"
           [content]="c"
@@ -27,7 +27,7 @@
   </ng-container>
 
   <ng-container *ngIf="checkColsAmmount(1)">
-      <div *ngFor="let c of column1; trackBy: trackById" class="mb-4">
+      <div *ngFor="let c of column1; trackBy: trackById" class="mb-10">
 
         <app-card class="flex justify-center items-center"
           [content]="c"

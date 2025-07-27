@@ -1,19 +1,20 @@
 <div class="h-screen bg-primary w-64 p-6 shadow-xl rounded-tr-3xl rounded-br-3xl flex flex-col justify-between">
   <div>
-    <h1 class="pt-12 text-3xl font-bold text-info mb-10 font-serif w-5/6 select-none">
-      <img [src]="fNameGif">
-      <img [src]="lNameGif">
+    <h1 class="pt-6 text-3xl font-bold text-info mb-10 font-serif w-5/6 select-none">
+      <!-- <img [src]="fNameGif">
+      <img [src]="lNameGif"> -->
+      <img [src]="logo">
     </h1>
     <nav class="space-y-4">
       
       <a *ngFor="let b of buttons; trackBy: trackById;" 
-        class="flex items-center text-info hover:text-emerald-600 transition-colors"
+        class="flex items-center text-info"
         [routerLink]="[`/${b.path}`]" routerLinkActive="router-link-active" >
         <div [innerHTML]="getIcon(b.imageSVG!)" class="pr-4"></div>
         {{ b.label }}
       </a>
       <a [href]="instaram.link" target="_blank" and rel="noopener noreferrer"
-        class="flex items-center text-info hover:text-emerald-600 transition-colors">
+        class="flex items-center text-info">
         <div [innerHTML]="getIcon(instaram.icon)" class="pr-4"></div>
         {{ instaram.nick }}
       </a>

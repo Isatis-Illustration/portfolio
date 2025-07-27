@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { CardDetailComponent } from './components/card-detail/card-detail.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
-import { CarouselComponent } from './components/carousel/carousel.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
 
 export const routes: Routes = [
     {
@@ -19,8 +20,12 @@ export const routes: Routes = [
         component: GalleryComponent,
     },
     {
-        path:"carousel",
-        component: CarouselComponent,
+        path:"profile",
+        component: ProfileComponent,
+    },
+    {
+        path:"contacts",
+        component: ContactsComponent,
     },
     {
         path:"detail/:id",

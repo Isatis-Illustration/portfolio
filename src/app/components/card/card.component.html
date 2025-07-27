@@ -3,7 +3,7 @@
     'opacity-100': hasLoaded,
     'opacity-0': !hasLoaded
   }"
-  class="transition-opacity duration-300 ease-in relative w-full max-w-md overflow-hidden rounded-[18px] border-4 border-primary bg-gradient-to-br from-gray-50 to-white shadow-xl hover:scale-[1.02] hover:shadow-2xl">
+  class="transition-opacity duration-300 ease-in relative w-full max-w-md overflow-hidden rounded-[18px] border-3 border-primary bg-primary shadow-xl hover:scale-[1.02] hover:shadow-2xl">
 
   <div class="transition-all duration-500 ease-in-out overflow-hidden bg-primary" [ngClass]="{
     'max-h-32 py-3 opacity-100': hasTitle,
@@ -20,7 +20,7 @@
     class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-primary"
     (click)="onClickImageEvent.emit(content)">
     <img *ngIf="content.imageUrl; else noImage" (load)="loaded()" [src]="content.imageUrl" alt="Artwork"
-      class="w-full h-auto object-contain" />
+      class="w-full h-auto object-contain select-none" />
     <ng-template #noImage>
       <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
         <div class="text-4xl mb-2">🌿</div>
