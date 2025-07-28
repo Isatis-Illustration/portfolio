@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -6,41 +6,48 @@ import { environment } from '../../environment/environment';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import { ButtonService } from '../../services/button.service';
-import { interval } from 'rxjs';
+import { TranslationService } from '../../services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-sidebar',
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
 
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
+  translateService: TranslationService = inject(TranslationService);
 
-  instaram = environment.user.instagram;
+  instagram = environment.user.contacts.instagram;
 
   // interval: number = 5*1000;
   // logoIndex: number = 0;
   logo: string = `assets/logo/logo.png`
 
+  basePath: string = 'assets/lang/'
+  lang: Signal<string> = this.translateService.getCurrentLanguage();
+  extens: string = '.png';
+  
   user: User = environment.user;
   year: number = new Date().getFullYear()
 
   buttons: CustomButton[] = this.buttonService.buttons;
 
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
     // interval(this.interval).subscribe(() => {
     //   this.logoIndex++
     //   this.logoIndex = this.logoIndex > 3 ? 0 : this.logoIndex
     //   this.logo = `assets/logo/logo${this.logoIndex}.png`;
     // })
-  }
+  // }
 
 
   trackById(item: any): number {
@@ -49,6 +56,11 @@ export class SidebarComponent implements OnInit {
 
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
+  }
+
+  toggleLanguage(): void {
+    console.log(`${this.basePath}${this.lang()}${this.extens}`)
+    this.translateService.toggleLanguage()
   }
 
 }

@@ -11,17 +11,20 @@
         class="flex items-center text-info"
         [routerLink]="[`/${b.path}`]" routerLinkActive="router-link-active" >
         <div [innerHTML]="getIcon(b.imageSVG!)" class="pr-4"></div>
-        {{ b.label }}
+        {{ "ILLUSTRATIONS" | translate }}
       </a>
-      <a [href]="instaram.link" target="_blank" and rel="noopener noreferrer"
+      <a [href]="instagram.link" target="_blank" and rel="noopener noreferrer"
         class="flex items-center text-info">
-        <div [innerHTML]="getIcon(instaram.icon)" class="pr-4"></div>
-        {{ instaram.nick }}
+        <div [innerHTML]="getIcon(instagram.icon)" class="pr-4"></div>
+        {{ instagram.nick }}
       </a>
 
     </nav>
   </div>
   <div class="text-sm text-info mt-10">
+    <button (click)="toggleLanguage()" class="cursor-pointer w-6">
+      <img [src]="`${basePath}${lang()}${extens}`" class="pointer-events-none">
+    </button>
     <p>&copy; {{ `2025 ${user.firstName} ${user.lastName}`}}</p>
     <p *ngIf="user.slogan" class="italic">"{{user.slogan}}"</p>
   </div>
