@@ -23,7 +23,7 @@ export class NavbarComponent {
   router: Router = inject(Router);
 
   logo: string = 'assets/logo/logo.png'
-  instaram = environment.user.instagram;
+  instaram = environment.user.contacts.instagram;
   buttons: CustomButton[] = this.buttonService.buttons
 
   @ViewChild('navMenu') navMenu!: ElementRef;

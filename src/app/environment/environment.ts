@@ -2,11 +2,6 @@ export const environment = {
     hasRefresh: false,
     refreshTime: 30,
     user: {
-        instagram: {
-            nick: '@blooming.isatis',
-            icon: 'instagram',
-            link: 'https://www.instagram.com/blooming.isatis/'
-        },
         firstName: 'Isabella',
         lastName: 'Laurenzi',
         nick: 'Isatis',
@@ -17,6 +12,16 @@ export const environment = {
         city: 'Rome',
         slogan: '',
         image: 'assets/personal/artist.jpeg',
+        
+        contacts: {
+            instagram: {
+                nick: '@isatis.illustration',
+                icon: 'instagram',
+                link: 'https://www.instagram.com/blooming.isatis/'
+            },
+            email: 'laurenzi.isabella@gmail.com',
+            telegram: 'isatis.illustration'
+        },
         
         description: `Ciao! Sono Isabella, una appassionata illustratrice. 
                     
