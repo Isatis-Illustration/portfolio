@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonService } from '../../services/button.service';
 import { CustomButton } from '../../services/models/models';
+import { IconService } from '../../services/icon.service';
+import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -17,10 +19,9 @@ export class HomeComponent implements OnInit {
 
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
+  iconService: IconService = inject(IconService);
   
-  fNameGif = 'assets/home/name.gif';
-  lNameGif = 'assets/home/surname.gif'
-  buttons: CustomButton[] = []
+  buttons: CustomButton[] = [];
 
   ngOnInit(): void{
     this.buttons = this.buttonService.buttons.filter(b => b.id != 0);
@@ -30,10 +31,16 @@ export class HomeComponent implements OnInit {
     this.route.navigate([path]);
   }
 
-  onImageLoad(event: Event) {
+  
+  onImageLoad(event: Event): void {
     const img = event.target as HTMLImageElement;
     img.classList.remove('opacity-0');
     img.classList.add('opacity-100');
+  }
+
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
   }
   
 }

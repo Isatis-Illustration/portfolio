@@ -29,7 +29,6 @@ export class SidebarComponent {
 
   // interval: number = 5*1000;
   // logoIndex: number = 0;
-  logo: string = `assets/logo/logo.png`
 
   basePath: string = 'assets/lang/'
   lang: Signal<string> = this.translateService.getCurrentLanguage();

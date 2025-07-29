@@ -4,6 +4,8 @@ import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { StorageKey } from '../../services/models/enums';
+import { SafeHtml } from '@angular/platform-browser';
+import { IconService } from '../../services/icon.service';
 
 @Component({
   selector: 'app-card-detail',
@@ -18,6 +20,7 @@ export class CardDetailComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   contentService: ContentService = inject(ContentService);
+  iconService: IconService = inject(IconService);
 
   content!: Content;
   showInfo: boolean = false;
@@ -89,4 +92,8 @@ export class CardDetailComponent {
     this.isDragging = false;
   }
 
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
+  }
 }

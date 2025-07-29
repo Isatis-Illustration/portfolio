@@ -3,19 +3,13 @@
     <!-- Pulsante SINISTRO (precedente) -->
     <button
       class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info  rounded-full p-3 shadow-md transition-colors"
-      (click)="goToPrevious()" aria-label="Precedente">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
+      (click)="goToPrevious()" aria-label="Precedente" [innerHTML]="getIcon('prev')">
     </button>
 
     <!-- Pulsante DESTRO (successiva) -->
     <button
       class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors"
-      (click)="goToNext()" aria-label="Successiva">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
+      (click)="goToNext()" aria-label="Successiva" [innerHTML]="getIcon('next')">
     </button>
 
     <!-- Contenuto principale -->
@@ -29,12 +23,7 @@
       <!-- AREA DI HOVER E OVERLAY -->
       <div class="hidden sm:block" (mouseover)="showInfo = true" (mouseout)="showInfo = false">
         <!-- SVG info -->
-        <div class="absolute top-4 right-4 z-20">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="size-10 drop-shadow-lg">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-          </svg>
+        <div class="absolute top-4 right-4 z-20" [innerHTML]="getIcon('info')">
         </div>
 
         <!-- Overlay descrizione -->

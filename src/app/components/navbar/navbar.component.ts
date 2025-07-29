@@ -22,7 +22,6 @@ export class NavbarComponent {
   buttonService: ButtonService = inject(ButtonService);
   router: Router = inject(Router);
 
-  logo: string = 'assets/logo/logo.png'
   instaram = environment.user.contacts.instagram;
   buttons: CustomButton[] = this.buttonService.buttons
 
