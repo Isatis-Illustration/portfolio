@@ -1,11 +1,16 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { CustomButton } from './models/models';
 import { environment } from '../environment/environment';
+import { TranslationService } from './translation.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ButtonService {
+
+  translateService: TranslationService = inject(TranslationService);
+
+  lang: Signal<string> = computed(() => this.translateService.currentLanguage());
 
   buttons: WritableSignal<CustomButton[]> = signal([
     {
@@ -19,7 +24,7 @@ export class ButtonService {
       id:1,
       label: 'ILLUSTRATIONS',
       path: 'gallery/illustrations',
-      imageUrl: 'assets/home/illustration.png',
+      imageUrl: `assets/home/illustration_${this.lang()}.png`,
       imageSVG: 'illustration'
     },
     {
@@ -40,7 +45,7 @@ export class ButtonService {
       id:4,
       label: 'CONTACTS',
       path: 'contacts',
-      imageUrl: 'assets/home/contacts.png',
+      imageUrl: 'assets/home/contacts_en.png',
       imageSVG: 'contacts'
     }
   ]);

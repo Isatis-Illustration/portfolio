@@ -10,7 +10,7 @@ export class TranslationService {
   http: HttpClient = inject(HttpClient);
 
 
-  private currentLanguage: WritableSignal<string> = signal('it');
+  currentLanguage: WritableSignal<string> = signal('it');
   private translations: any = {}
   private basePath: string = 'assets/i18n/'
 
@@ -38,10 +38,5 @@ export class TranslationService {
   toggleLanguage(): void{
     const newLang: Language = this.currentLanguage() === Language.IT ? Language.EN : Language.IT;
     this.loadLanguage(newLang);
-  }
-
-
-  getCurrentLanguage(): WritableSignal<string>{
-    return this.currentLanguage;
   }
 }

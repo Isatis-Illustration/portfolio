@@ -31,7 +31,7 @@ export class SidebarComponent {
   // logoIndex: number = 0;
 
   basePath: string = 'assets/lang/'
-  lang: Signal<string> = this.translateService.getCurrentLanguage();
+  lang: Signal<string> = this.translateService.currentLanguage;
   extens: string = '.png';
   
   user: User = environment.user;
