@@ -19,28 +19,28 @@ export class ButtonService {
       id:1,
       label: 'ILLUSTRATIONS',
       path: 'gallery/illustrations',
-      imageUrl: environment.icons.buttons.button1,
+      imageUrl: 'assets/home/illustration.png',
       imageSVG: 'illustration'
     },
     {
       id:2,
       label: 'CHARACTER',
       path: 'gallery/character-design',
-      imageUrl: environment.icons.buttons.button2,
+      imageUrl: 'assets/home/character.png',
       imageSVG: 'character'
     },
     {
       id:3,
       label: 'PROFILE',
       path: 'profile',
-      imageUrl: environment.icons.buttons.contacts,
+      imageUrl: 'assets/home/profile.png',
       imageSVG: 'profile',
     },
     {
       id:4,
       label: 'CONTACTS',
       path: 'contacts',
-      imageUrl: environment.icons.buttons.profile,
+      imageUrl: 'assets/home/contacts.png',
       imageSVG: 'contacts'
     }
   ]);

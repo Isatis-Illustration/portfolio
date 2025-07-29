@@ -36,11 +36,5 @@ export const environment = {
         nameGif: 'assets/home/name.gif',
         lNameGif: 'assets/home/surname.gif',
         contactDec: 'assets/contacts/dog.png',
-        buttons:{
-            button1: 'assets/home/illustration.png',
-            button2: 'assets/home/character.png',
-            profile: 'assets/home/profile.png',
-            contacts: 'assets/home/contacts.png',
-        }
     }
 }
