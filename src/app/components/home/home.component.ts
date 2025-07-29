@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -7,16 +7,18 @@ import { CustomButton } from '../../services/models/models';
 import { IconService } from '../../services/icon.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { environment } from '../../environment/environment';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-home',
   imports: [
     CommonModule,
+    TranslatePipe
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
@@ -26,8 +28,10 @@ export class HomeComponent implements OnInit {
   lNameGif: string = environment.icons.lNameGif;
   buttons: CustomButton[] = [];
 
-  ngOnInit(): void{
-    this.buttons = this.buttonService.buttons.filter(b => b.id != 0);
+  constructor(){
+    effect(() => {
+      this.buttons = this.buttonService.buttons().filter(b => b.id != 0);
+    })
   }
 
   navigate(path: string): void{

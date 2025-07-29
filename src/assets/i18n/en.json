@@ -1,3 +1,9 @@
 {
-    "ILLUSTRATIONS":"Illustrations"
+    "HOME": "Home",
+    "ILLUSTRATIONS": "Illustrations",
+    "CHARACTER": "Character Desgin",
+    "PROFILE": "Profile",
+    "CONTACTS": "Contacts",
+
+    "NO_IMAGE": "No image available"
 }

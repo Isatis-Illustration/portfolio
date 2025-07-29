@@ -6,12 +6,14 @@ import { CustomButton, User } from '../../services/models/models';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../environment/environment';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    TranslatePipe
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
@@ -23,8 +25,8 @@ export class NavbarComponent {
   router: Router = inject(Router);
 
   instaram = environment.user.contacts.instagram;
-  buttons: CustomButton[] = this.buttonService.buttons
-    logo: string = environment.icons.logo;
+  buttons: CustomButton[] = this.buttonService.buttons();
+  logo: string = environment.icons.logo;
 
   @ViewChild('navMenu') navMenu!: ElementRef;
   isMenuOpen: boolean = false;

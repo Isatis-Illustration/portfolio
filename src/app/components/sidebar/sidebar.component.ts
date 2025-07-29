@@ -37,7 +37,7 @@ export class SidebarComponent {
   user: User = environment.user;
   year: number = new Date().getFullYear()
 
-  buttons: CustomButton[] = this.buttonService.buttons;
+  buttons: CustomButton[] = this.buttonService.buttons();
   logo: string = environment.icons.logo;
 
 

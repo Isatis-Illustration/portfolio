@@ -5,11 +5,11 @@
     </h1>
     <nav class="space-y-4">
       
-      <a *ngFor="let b of buttons; trackBy: trackById;" 
+      <a *ngFor="let btn of buttons; trackBy: trackById;" 
         class="flex items-center text-info"
-        [routerLink]="[`/${b.path}`]" routerLinkActive="router-link-active" >
-        <div [innerHTML]="getIcon(b.imageSVG!)" class="pr-4"></div>
-        {{ "ILLUSTRATIONS" | translate }}
+        [routerLink]="[`/${btn.path}`]" routerLinkActive="router-link-active" >
+        <div [innerHTML]="getIcon(btn.imageSVG!)" class="pr-4"></div>
+        {{ btn.label | translate }}
       </a>
       <a [href]="instagram.link" target="_blank" and rel="noopener noreferrer"
         class="flex items-center text-info">
@@ -23,7 +23,7 @@
     <button (click)="toggleLanguage()" class="cursor-pointer w-6">
       <img [src]="`${basePath}${lang()}${extens}`" class="pointer-events-none">
     </button>
-    <p>&copy; {{ `2025 ${user.firstName} ${user.lastName}`}}</p>
+    <p>&copy; {{`2025 ${user.firstName} ${user.lastName}`}}</p>
     <p *ngIf="user.slogan" class="italic">"{{user.slogan}}"</p>
   </div>
 </div>
