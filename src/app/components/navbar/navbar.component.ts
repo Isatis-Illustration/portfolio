@@ -24,6 +24,7 @@ export class NavbarComponent {
 
   instaram = environment.user.contacts.instagram;
   buttons: CustomButton[] = this.buttonService.buttons
+    logo: string = environment.icons.logo;
 
   @ViewChild('navMenu') navMenu!: ElementRef;
   isMenuOpen: boolean = false;

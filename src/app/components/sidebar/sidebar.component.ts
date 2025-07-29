@@ -38,6 +38,7 @@ export class SidebarComponent {
   year: number = new Date().getFullYear()
 
   buttons: CustomButton[] = this.buttonService.buttons;
+  logo: string = environment.icons.logo;
 
 
   // ngOnInit(): void {

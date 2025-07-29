@@ -13,7 +13,7 @@ export class ContactsComponent {
 
   iconService: IconService = inject(IconService);
 
-
+  contactDec: string = environment.icons.contactDec;
   contacts = environment.user.contacts;
 
   getIcon(name: string): SafeHtml{

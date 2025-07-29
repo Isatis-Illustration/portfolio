@@ -6,6 +6,7 @@ import { ButtonService } from '../../services/button.service';
 import { CustomButton } from '../../services/models/models';
 import { IconService } from '../../services/icon.service';
 import { SafeHtml } from '@angular/platform-browser';
+import { environment } from '../../environment/environment';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,8 @@ export class HomeComponent implements OnInit {
   buttonService: ButtonService = inject(ButtonService);
   iconService: IconService = inject(IconService);
   
+  nameGif: string = environment.icons.nameGif;
+  lNameGif: string = environment.icons.lNameGif;
   buttons: CustomButton[] = [];
 
   ngOnInit(): void{

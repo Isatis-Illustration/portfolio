@@ -30,5 +30,17 @@ export const environment = {
                     Attualmente studio animazione alla Scuola Internazionale di Comics a Roma, questo percorso mi sta aiutando a rendere il mio stile più dinamico e narrativo. Lavoro con passione su personaggi, ambienti e narrazioni visive, sperimentando tecniche e linguaggi diversi.
 
                     Il mio obiettivo è lavorare nell’ambito dell’illustrazione editoriale, con particolare interesse per l’editoria per l’infanzia in quanto credo fermamente che le immagini abbiano un ruolo educativo potente e possano contribuire alla crescita emotiva e cognitiva dei più piccoli. Ad oggi sono aperta a progetti destinati a pubblici e contesti differenti. Sono alla ricerca di opportunità per crescere, collaborare e dare forma a mondi visivi autentici e coinvolgenti.`,
+    },
+    icons: {
+        logo: `assets/logo/logo.png`,
+        nameGif: 'assets/home/name.gif',
+        lNameGif: 'assets/home/surname.gif',
+        contactDec: 'assets/contacts/dog.png',
+        buttons:{
+            button1: 'assets/home/illustration.png',
+            button2: 'assets/home/character.png',
+            profile: 'assets/home/profile.png',
+            contacts: 'assets/home/contacts.png',
+        }
     }
 }
