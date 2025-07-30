@@ -90,14 +90,14 @@
   /* scrollbar-color: #446D74 #d1fae5; */
 }
 
-
+/** VIEWER */
 html body .medium-zoom-overlay {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   width: 100vw !important;
   height: 100vh !important;
-  background-color: #ffffff !important;
+  background-color: #FEFBD0 !important;
   z-index: 99999 !important;
 }
 
