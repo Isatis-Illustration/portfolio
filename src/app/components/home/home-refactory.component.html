@@ -1,0 +1,48 @@
+<div class="w-full h-full">
+  <div class="sm:h-full flex flex-col items-center justify-center xl:gap-16 gap-y-10 sm:gap-y-0 scrollbar-hide">
+
+    <!-- padding -->
+    <div class="sm:hidden mt-3"></div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center p-2 sm:p-0">
+      <img [src]="nameGif" class="select-none flex-1 sm:w-1/2 p-5"/>
+      <img [src]="lNameGif" class="select-none flex-1 sm:w-1/2 p-5"/>
+    </div>
+    
+    <div class="flex flex-col xl:flex-row gap-y-10 sm:gap-y-0">
+
+      <!------------------------------------>
+      <div class="flex flex-col sm:flex-row gap-y-10 sm:gap-y-0">
+        <ng-container *ngFor="let btn of first2Buttons">
+          <button class="flex justify-center items-center"
+                (click)="navigate(btn.path)">
+          <img
+            class="select-none cursor-pointer w-5/6 md:w-4/6 lg:w-1/2 xl:w-5/6"
+            [src]="btn.imageUrl" 
+            [alt]="btn.label | translate" 
+            (load)="onImageLoad($event)">
+        </button>
+        </ng-container>
+      </div>
+
+      <!------------------------------------>
+      <div class="flex flex-col sm:flex-row gap-y-10 sm:gap-y-0">
+        <ng-container *ngFor="let btn of last2Buttons">
+          <button class="flex justify-center items-center"
+                  (click)="navigate(btn.path)">
+            <img
+              class="select-none cursor-pointer w-5/6 md:w-4/6 lg:w-1/2 xl:w-5/6"
+              [src]="btn.imageUrl" 
+              [alt]="btn.label | translate" 
+              (load)="onImageLoad($event)">
+          </button>
+        </ng-container>
+      </div>
+
+    </div>
+    
+    <!-- padding -->
+    <div class="sm:hidden mt-16"></div>
+
+  </div>
+</div>

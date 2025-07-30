@@ -28,6 +28,7 @@ export class SidebarComponent {
   translateService: TranslationService = inject(TranslationService);
 
   instagram = environment.user.contacts.instagram;
+  hasLoaded = false;
 
   // interval: number = 5*1000;
   // logoIndex: number = 0;

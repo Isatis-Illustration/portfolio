@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { AfterViewInit, Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -15,10 +15,10 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
     CommonModule,
     TranslatePipe
   ],
-  templateUrl: './home.component.html',
+  templateUrl: './home-refactory.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent{
 
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
@@ -27,10 +27,14 @@ export class HomeComponent {
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
   buttons: CustomButton[] = [];
+  first2Buttons: CustomButton[] = [];
+  last2Buttons: CustomButton[] = [];
 
   constructor(){
     effect(() => {
       this.buttons = this.buttonService.buttons().filter(b => b.id != 0);
+      this.first2Buttons = this.buttons.slice(0, 2); // Create a copy with the first three buttons
+      this.last2Buttons = this.buttons.slice(2, 5); // Create a copy with the first three buttons
     })
   }
 
