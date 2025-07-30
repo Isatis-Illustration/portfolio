@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { StorageKey } from '../../services/models/enums';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
+import mediumZoom from 'medium-zoom';
 
 @Component({
   selector: 'app-card-detail',
@@ -24,19 +25,46 @@ export class CardDetailComponent {
 
   content!: Content;
   showInfo: boolean = false;
-  zoomed: boolean = false;
+
+  //per zoom
+  zoomInstance: any;
+  lastImageUrl: string | undefined;
 
   constructor(){
     effect(() => {
+
       const filterStorage = localStorage.getItem(StorageKey.FILTER);
       this.contentService.filter.set(filterStorage!)
       const list = this.contentService.contents();
+
       this.route.paramMap.subscribe(params => {
         let id: string = params.get('id')!;
-        this.content = this.contentService.contents().find(c => c.id === id)!;
+        this.content = list.find(c => c.id === id)!;
       })
     });
   }
+
+
+  ngAfterViewInit(): void {
+    this.initZoom()
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.content?.imageUrl && this.content.imageUrl !== this.lastImageUrl) {
+      this.lastImageUrl = this.content.imageUrl;
+      this.initZoom();
+    }
+  }
+
+  initZoom() {
+    if (this.zoomInstance)
+      this.zoomInstance.detach();
+    
+    setTimeout(() => {
+      this.zoomInstance = mediumZoom('[data-zoomable]');
+    }, 10);
+  }
+
 
   goToNext(): void{
     let nextIndex: number = this.contentService.getFilteredContent().indexOf(this.content)+1;
@@ -56,40 +84,6 @@ export class CardDetailComponent {
 
   getMaxContentsIndex(): number{
     return this.contentService.getFilteredContent().length - 1;
-  }
-
-
-
-  // DRAGGABLE ZOOMED IMAGE
-
-  isDragging = false;
-  lastX = 0;
-  lastY = 0;
-  translateX = 0;
-  translateY = 0;
-
-  onMouseDown(event: MouseEvent) {
-    this.isDragging = true;
-    this.lastX = event.clientX;
-    this.lastY = event.clientY;
-  }
-
-  onMouseMove(event: MouseEvent) {
-    if (!this.isDragging) return;
-    const dx = event.clientX - this.lastX;
-    const dy = event.clientY - this.lastY;
-    this.translateX += dx;
-    this.translateY += dy;
-    this.lastX = event.clientX;
-    this.lastY = event.clientY;
-  }
-
-  onMouseUp() {
-    this.isDragging = false;
-  }
-
-  onMouseLeave() {
-    this.isDragging = false;
   }
 
 

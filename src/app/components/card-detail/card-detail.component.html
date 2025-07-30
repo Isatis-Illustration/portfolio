@@ -16,8 +16,8 @@
     <div class="w-full sm:h-screen max-w-fit mx-auto overflow-hidden">
       <div class="flex items-center justify-center h-full p-4">
         <img *ngIf="content" [src]="content.imageUrl" alt="Immagine"
-          class="bg-bg-image max-h-[750px] sm:max-h-full max-w-full object-contain border-4 border-primary select-none cursor-zoom-in"
-          (click)="zoomed = true"/>
+          data-zoomable
+          class="bg-bg-image max-h-[750px] sm:max-h-full max-w-full object-contain border-4 border-primary select-none cursor-zoom-in"/>
       </div>
 
       <!-- AREA DI HOVER E OVERLAY -->
@@ -78,27 +78,4 @@
     </button>
   </div>
   
-</div>
-
-
-<!-- Modal Zoom -->
-<div *ngIf="zoomed"
-  class="hidden sm:flex fixed inset-0 z-50 bg-black/80 items-center justify-center border-8 border-info"
-  (mouseup)="onMouseUp()" (mouseleave)="onMouseLeave()" (mousemove)="onMouseMove($event)">
-  
-  <div class="relative w-full h-full overflow-hidden">
-    <button (click)="zoomed = false"
-      class="absolute pb-1 px-2 top-4 right-4 text-primary text-3xl font-bold z-50 rounded-3xl bg-info cursor-pointer">×</button>
-
-    <div
-      class="w-full h-full flex items-center justify-center cursor-grab active:cursor-grabbing"
-      (mousedown)="onMouseDown($event)">
-      
-      <img [src]="content.imageUrl" alt="Zoom"
-        [ngStyle]="{
-          transform: 'translate(' + translateX + 'px, ' + translateY + 'px) scale(1.10)'
-        }"
-        class="max-w-none max-h-none object-contain transition-transform duration-75 ease-out select-none pointer-events-none" />
-    </div>
-  </div>
 </div>
