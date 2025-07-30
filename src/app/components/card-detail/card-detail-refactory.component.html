@@ -1,7 +1,11 @@
 <div class="flex flex-col h-full">
 
   <!--IMAGE CONTAINER-->
-  <div class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2">
+  <div class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2 transition-opacity duration-300 ease-in"
+    [ngClass]="{
+        'opacity-100': hasLoaded,
+        'opacity-0': !hasLoaded
+    }">
     <!-- Pulsante SINISTRO (precedente) -->
     <button
       class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors cursor-pointer"
@@ -16,12 +20,19 @@
 
     <!-- Contenuto centrale -->
       <img
-        *ngIf="content"
+        *ngIf="content; else noImage"
         [src]="content.imageUrl"
+        (load)="loaded()"
         alt="Immagine"
         data-zoomable
         class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image"
       />
+      <ng-template #noImage>
+        <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
+          <div class="text-4xl mb-2">🌿</div>
+          {{ "NO_IMAGE" | translate }}
+        </div>
+      </ng-template>
   </div>
 
   <!--MOBILE BUTTONS CONTAINER-->

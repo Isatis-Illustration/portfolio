@@ -6,7 +6,7 @@
   <!-- Container principale s-->
   <div class="flex flex-col sm:flex-row h-full w-full z-10">
     
-    <div class="hidden sm:block">
+    <div *ngIf="!isHome()" class="hidden sm:block">
       <app-sidebar></app-sidebar>
     </div>
     
