@@ -7,17 +7,17 @@
   <div class="flex w-full z-10">
 
     <!-- Sidebar ms+ -->
-    <div *ngIf="!isHome()" class="top-0 left-0 h-screen z-20 hidden sm:block">
+    <div *ngIf="!isHome()" class="top-0 left-0 h-screen hidden sm:block">
       <app-sidebar></app-sidebar>
     </div>
 
     <!-- Navbar sm- -->
-    <div class="h-24 fixed top-0 left-0 w-screem z-20 block sm:hidden">
+    <div class="h-24 fixed top-0 left-0 w-screem block sm:hidden">
       <app-navbar></app-navbar>
     </div>
 
     <!-- Spazio per contenuto scrollabile -->
-    <div class="flex-1 overflow-y-auto sm:mt-0 h-screen mt-24" 
+    <div class="flex-1 overflow-y-auto sm:mt-0 h-screen mt-24 z-10" 
         [ngClass]="{ 
           'scrollbar-hide': isScreenSm,
           'scrollbar-show': !isScreenSm,

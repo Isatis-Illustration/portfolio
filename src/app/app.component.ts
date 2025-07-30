@@ -15,7 +15,7 @@ import { IconService } from './services/icon.service';
     CommonModule,
     NavbarComponent
 ],
-  templateUrl: './app.component.html',
+  templateUrl: './app-refactory.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {

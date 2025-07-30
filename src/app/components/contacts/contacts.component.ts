@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { environment } from '../../environment/environment';
+import { SafeHtml } from '@angular/platform-browser';
+import { IconService } from '../../services/icon.service';
 
 @Component({
   selector: 'app-contacts',
@@ -8,4 +11,12 @@ import { Component } from '@angular/core';
 })
 export class ContactsComponent {
 
+  iconService: IconService = inject(IconService);
+
+  contactDec: string = environment.icons.contactDec;
+  contacts = environment.user.contacts;
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
+  }
 }

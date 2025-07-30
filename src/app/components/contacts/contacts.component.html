@@ -1,1 +1,23 @@
-<p>contacts works!</p>
+<div class="flex h-screen justify-start items-center p-10">
+    <div class="h-fit w-1/2 flex justify-center items-center">
+        <img [src]="contactDec" class="w-72">
+    </div>
+    <div class="h-fit w-1/2 flex justify-start flex-col gap-6 text-2xl bg-primary p-10 text-info mr-10">
+        <div class="flex">
+            <div class="w-10 flex items-center" [innerHTML]="getIcon('contacts')"></div>
+            <p>{{ contacts.email }}</p>
+        </div>
+        <div class="flex items-center">
+            <div class="w-10" [innerHTML]="getIcon('telegram')"></div>
+            <p>{{ contacts.telegram }}</p>
+        </div>
+        <div class="flex items-center">
+            <div class="w-10" [innerHTML]="getIcon('instagram')"></div>
+            <a [href]="contacts.instagram.link" target="_blank" and rel="noopener noreferrer"
+                class="flex items-center">
+                <div class=""></div>
+                {{ contacts.instagram.nick }}
+            </a>
+        </div>
+    </div>
+</div>

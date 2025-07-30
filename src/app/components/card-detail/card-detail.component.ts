@@ -4,13 +4,18 @@ import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { StorageKey } from '../../services/models/enums';
+import { SafeHtml } from '@angular/platform-browser';
+import { IconService } from '../../services/icon.service';
+import mediumZoom from 'medium-zoom';
+import { CardDetailSetupComponent } from "../card-detail-setup/card-detail-setup.component";
 
 @Component({
   selector: 'app-card-detail',
   imports: [
     CommonModule,
+    CardDetailSetupComponent
 ],
-  templateUrl: './card-detail.component.html',
+  templateUrl: './card-detail-refactory.component.html',
   styleUrl: './card-detail.component.css'
 })
 export class CardDetailComponent {
@@ -18,22 +23,59 @@ export class CardDetailComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   contentService: ContentService = inject(ContentService);
+  iconService: IconService = inject(IconService);
 
   content!: Content;
   showInfo: boolean = false;
-  zoomed: boolean = false;
 
-  constructor(){
+  //per zoom
+  zoomInstance: any;
+  lastImageUrl: string | undefined;
+
+    constructor() {
+    // Recupera filtro da storage e carica contenuti
     effect(() => {
       const filterStorage = localStorage.getItem(StorageKey.FILTER);
-      this.contentService.filter.set(filterStorage!)
+      if (filterStorage)
+        this.contentService.filter.set(filterStorage);
+      
       const list = this.contentService.contents();
+
       this.route.paramMap.subscribe(params => {
         let id: string = params.get('id')!;
-        this.content = this.contentService.contents().find(c => c.id === id)!;
-      })
+
+        if(!id)
+          id = localStorage.getItem(StorageKey.DETAIL_ID) || '0'!
+
+        console.log(id)
+        localStorage.setItem(StorageKey.DETAIL_ID, id)
+        this.content = list.find(c => c.id === id)!;
+        console.log(this.content)
+      });
     });
   }
+
+
+  ngAfterViewInit(): void {
+    this.initZoom()
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.content?.imageUrl && this.content.imageUrl !== this.lastImageUrl) {
+      this.lastImageUrl = this.content.imageUrl;
+      this.initZoom();
+    }
+  }
+
+  initZoom() {
+    if (this.zoomInstance)
+      this.zoomInstance.detach();
+    
+    setTimeout(() => {
+      this.zoomInstance = mediumZoom('[data-zoomable]');
+    }, 10);
+  }
+
 
   goToNext(): void{
     let nextIndex: number = this.contentService.getFilteredContent().indexOf(this.content)+1;
@@ -56,37 +98,7 @@ export class CardDetailComponent {
   }
 
 
-
-  // DRAGGABLE ZOOMED IMAGE
-
-  isDragging = false;
-  lastX = 0;
-  lastY = 0;
-  translateX = 0;
-  translateY = 0;
-
-  onMouseDown(event: MouseEvent) {
-    this.isDragging = true;
-    this.lastX = event.clientX;
-    this.lastY = event.clientY;
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
   }
-
-  onMouseMove(event: MouseEvent) {
-    if (!this.isDragging) return;
-    const dx = event.clientX - this.lastX;
-    const dy = event.clientY - this.lastY;
-    this.translateX += dx;
-    this.translateY += dy;
-    this.lastX = event.clientX;
-    this.lastY = event.clientY;
-  }
-
-  onMouseUp() {
-    this.isDragging = false;
-  }
-
-  onMouseLeave() {
-    this.isDragging = false;
-  }
-
 }
