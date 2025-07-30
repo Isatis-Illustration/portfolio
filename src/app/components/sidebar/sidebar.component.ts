@@ -8,14 +8,16 @@ import { IconService } from '../../services/icon.service';
 import { ButtonService } from '../../services/button.service';
 import { TranslationService } from '../../services/translation.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageButtonComponent } from "../language-button/language-button.component";
 
 @Component({
   selector: 'app-sidebar',
   imports: [
     CommonModule,
     RouterLink,
-    TranslatePipe
-  ],
+    TranslatePipe,
+    LanguageButtonComponent
+],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
@@ -30,9 +32,7 @@ export class SidebarComponent {
   // interval: number = 5*1000;
   // logoIndex: number = 0;
 
-  basePath: string = 'assets/lang/'
-  lang: Signal<string> = this.translateService.currentLanguage;
-  extens: string = '.png';
+
   
   user: User = environment.user;
   year: number = new Date().getFullYear()
@@ -54,13 +54,9 @@ export class SidebarComponent {
     return item.id;
   }
 
+
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
-  }
-
-  toggleLanguage(): void {
-    console.log(`${this.basePath}${this.lang()}${this.extens}`)
-    this.translateService.toggleLanguage()
   }
 
 }
