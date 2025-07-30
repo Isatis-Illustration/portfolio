@@ -1,6 +1,7 @@
 export enum StorageKey{
     FILTER = 'filter',
-    LANGUAGE = 'lang'
+    LANGUAGE = 'lang',
+    DETAIL_ID = 'detail-id'
 }
 
 export enum Type{
