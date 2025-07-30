@@ -13,7 +13,7 @@ import mediumZoom from 'medium-zoom';
   imports: [
     CommonModule,
 ],
-  templateUrl: './card-detail.component.html',
+  templateUrl: './card-detail-refactory.component.html',
   styleUrl: './card-detail.component.css'
 })
 export class CardDetailComponent {

@@ -89,3 +89,18 @@
   scrollbar-color: #446D74 #8cd5e2;
   /* scrollbar-color: #446D74 #d1fae5; */
 }
+
+
+html body .medium-zoom-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: #ffffff !important;
+  z-index: 99999 !important;
+}
+
+html body .medium-zoom-image--opened {
+  z-index: 100000 !important;
+}

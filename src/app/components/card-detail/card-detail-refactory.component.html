@@ -1,0 +1,60 @@
+<div class="flex flex-col h-full">
+
+  <!--IMAGE CONTAINER-->
+  <div class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 border-2">
+    <!-- Pulsante SINISTRO (precedente) -->
+    <button
+      class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors"
+      (click)="goToPrevious()" aria-label="Precedente" [innerHTML]="getIcon('prev')">
+    </button>
+
+    <!-- Pulsante DESTRO (successiva) -->
+    <button
+      class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors"
+      (click)="goToNext()" aria-label="Successiva" [innerHTML]="getIcon('next')">
+    </button>
+
+    <!-- Contenuto centrale -->
+      <img
+        *ngIf="content"
+        [src]="content.imageUrl"
+        alt="Immagine"
+        data-zoomable
+        class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image"
+      />
+  </div>
+
+  <!--MOBILE BUTTONS CONTAINER-->
+  <div class="border block sm:hidden bg-blue-500 w-full">
+    <div class="h-20 w-full items-center flex justify-between sm:hidden bg-primary">
+
+
+      <!-- Bottone SINISTRA -->
+      <button (click)="goToPrevious()" aria-label="Precedente"
+        class="text-info py-2 ml-10 px-5 rounded-full  border">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      <!-- Bottone INFO -->
+      <button (click)="showInfo = !showInfo" aria-label="Info"
+        class="text-info p-2 rounded-full  border">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+        </svg>
+      </button>
+
+      <!-- Bottone DESTRA -->
+      <button (click)="goToNext()" aria-label="Successiva"
+        class="text-info py-2 mr-10 px-5 rounded-full  border">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+    
+  </div>
+</div>
