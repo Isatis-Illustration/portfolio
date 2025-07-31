@@ -6,17 +6,26 @@
   (touchmove)="onTouchMove($event)"
 >
   <button
+    class="bg-primary fixed right-0 top-0 m-3 rounded-3xl p-1.5 z-20"
     (click)="closeViewer()"
     [innerHTML]="getIcon('xIcon')"
-    class="bg-primary fixed right-0 top-0 m-3 rounded-3xl p-1.5 z-20"
   ></button>
 
   <img
     #zoomImage
     [src]="content?.imageUrl"
     alt="Content image"
-    [style.transform]="'scale(' + zoom + ')'"
+    draggable="false"
+    [style.transform]="'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(' + zoom + ')'"
     [style.transition]="zoomTransition"
-    class="max-w-full max-h-full object-contain z-10"
-  />
+    class="max-w-full max-h-full object-contain z-10 touch-none"
+    (mousedown)="startPan($event)"
+    (mousemove)="onPan($event)"
+    (mouseup)="endPan()"
+    (mouseleave)="endPan()"
+    (touchstart)="onTouchStart($event)"
+    (touchmove)="onTouchMove($event)"
+    (touchend)="endPan()"
+    />
+
 </div>
