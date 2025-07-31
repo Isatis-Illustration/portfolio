@@ -1,7 +1,13 @@
 <div class="flex flex-col h-full">
 
+  <button class="fixed top-0 right-0 m-5 cursor-pointer w-fit z-10" (click)="toggleFlip()"
+    [innerHTML]="getIcon('info')">
+  </button>
+
+
   <!--IMAGE CONTAINER-->
-  <div class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2 transition-opacity duration-300 ease-in"
+  <div
+    class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2 transition-opacity duration-300 ease-in"
     [ngClass]="{
         'opacity-100': hasLoaded,
         'opacity-0': !hasLoaded
@@ -19,29 +25,43 @@
     </button>
 
     <!-- Contenuto centrale -->
-      <img
-        *ngIf="content; else noImage"
-        [src]="content.imageUrl"
-        (load)="loaded()"
-        (click)="showViewer()"
-        alt="Immagine"
-        class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image"
-      />
-      <ng-template #noImage>
-        <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
-          <div class="text-4xl mb-2">🌿</div>
-          {{ "NO_IMAGE" | translate }}
+    <!-- CARD 3D WRAPPER -->
+    <div class="relative w-full h-full max-w-full max-h-full perspective">
+      <div class="w-full h-full transition-transform duration-700 preserve-3d" [class.rotate-y-180]="isFlipped">
+        <!-- FRONT: Immagine -->
+        <div class="absolute inset-0 backface-hidden flex items-center justify-center">
+          <img *ngIf="content; else noImage" 
+                [src]="content.imageUrl" 
+                (load)="loaded()" 
+                (click)="showViewer()"
+            alt="Immagine"
+            class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image" />
         </div>
-      </ng-template>
+
+        <!-- BACK: Info -->
+        <div
+          class="absolute inset-0 backface-hidden rotate-y-180 bg-white flex items-center justify-center p-4 border-4 border-primary">
+          <div class="text-center text-gray-700">
+            <h2 class="text-lg font-semibold mb-2">Informazioni</h2>
+            <p class="text-sm">Qui puoi mettere descrizioni, dati, testo dinamico ecc.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noImage>
+      <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
+        <div class="text-4xl mb-2">🌿</div>
+        {{ "NO_IMAGE" | translate }}
+      </div>
+    </ng-template>
   </div>
 
   <!--MOBILE BUTTONS CONTAINER-->
   <div class="border block sm:hidden w-full">
-    <app-card-detail-footer
-      (goNextEvent)="goToNext()"
-      (goPreviousEvent)="goToPrevious()"
+    <app-card-detail-footer (goNextEvent)="goToNext()" (goPreviousEvent)="goToPrevious()"
       (showInfoEvent)="showInfo = $event">
     </app-card-detail-footer>
   </div>
-  
+
 </div>

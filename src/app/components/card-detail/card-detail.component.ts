@@ -32,6 +32,8 @@ export class CardDetailComponent {
   showInfo: boolean = false;
   hasLoaded: boolean = false;
 
+  isFlipped: boolean = false;
+
   //per zoom
   zoomInstance: any;
   lastImageUrl: string | undefined;
@@ -89,6 +91,10 @@ export class CardDetailComponent {
 
   loaded(): void{
     this.hasLoaded = true;
+  }
+
+  toggleFlip(): void{
+    this.isFlipped = !this.isFlipped;
   }
 
   goToNext(): void{

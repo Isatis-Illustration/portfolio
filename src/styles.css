@@ -33,6 +33,7 @@
 
 
 @layer utilities {
+
   @keyframes dropdown {
     0% {
       transform: scaleY(0);
@@ -64,6 +65,19 @@
 
   .scrollbar-show::-webkit-scrollbar {
     display: block; /* Chrome, Safari, Opera */
+  }
+
+  .perspective {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
   }
 }
 
