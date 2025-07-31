@@ -67,6 +67,7 @@
   }
 }
 
+
 /* Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
@@ -103,4 +104,124 @@ html body .medium-zoom-overlay {
 
 html body .medium-zoom-image--opened {
   z-index: 100000 !important;
+}
+
+
+button{
+  cursor: pointer ;
+}
+
+
+/***********************************************************************************************************/
+/* Scrollbar personalizzata per il menu contestuale */
+.custom-scrollbar {
+  /* Per browser WebKit (Chrome, Safari, Edge) */
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #374151;
+}
+
+/* Per Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+/* Versione più sottile e elegante */
+.custom-scrollbar-minimal {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 transparent;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+  width: 6px;
+}
+
+/* Scrollbar che appare solo al hover */
+.custom-scrollbar-on-hover {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.custom-scrollbar-on-hover::-webkit-scrollbar {
+  width: 0px;
+  transition: width 0.2s ease;
+}
+
+.custom-scrollbar-on-hover:hover {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar-track {
+  background: rgba(75, 85, 99, 0.1);
+  border-radius: 3px;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/*Sidebar*/
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }

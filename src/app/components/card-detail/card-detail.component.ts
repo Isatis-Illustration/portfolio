@@ -81,6 +81,11 @@ export class CardDetailComponent {
   }
 
 
+  showViewer(): void{
+    this.contentService.setContentToView(this.content)
+  }
+
+
   loaded(): void{
     this.hasLoaded = true;
   }

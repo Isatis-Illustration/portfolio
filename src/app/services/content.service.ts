@@ -17,9 +17,10 @@ export class ContentService {
   
   filter: WritableSignal<string> = signal('');
   contents: WritableSignal<Content[]> = signal([])
+  contentToView: WritableSignal<Content | null> = signal(null);
   
-  hasRefresh: boolean = environment.hasRefresh;
-  refreshTime: number = environment.refreshTime*1000 //in millisecondi
+  private hasRefresh: boolean = environment.hasRefresh;
+  private refreshTime: number = environment.refreshTime*1000 //in millisecondi
 
 
 
@@ -31,6 +32,16 @@ export class ContentService {
       // this.getDriveImages()
       this.getCloudinaryImages()
     });
+  }
+
+
+  setContentToView(content: Content): void{
+    this.contentToView.set(content);
+  }
+
+
+  clearContentToView(): void{
+    this.contentToView.set(null);
   }
 
   
@@ -68,7 +79,7 @@ export class ContentService {
   }
 
 
-  getType(url: string): string {
+  private getType(url: string): string {
     const parts = url.split("/");
     const filenameWithExt = parts[parts.length - 1];  
     const type = filenameWithExt.split(".")[1] === Type.CHARACTER ? Type.CHARACTER : Type.ILLUSTRATION;
@@ -76,7 +87,7 @@ export class ContentService {
   }
 
 
-  getNameByUrl(url: string): string {
+  private getNameByUrl(url: string): string {
     const parts = url.split("/");
     const filenameWithExt = parts[parts.length - 1];  
     const name = filenameWithExt.split(".")[0];       

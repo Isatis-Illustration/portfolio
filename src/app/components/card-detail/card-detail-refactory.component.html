@@ -23,8 +23,8 @@
         *ngIf="content; else noImage"
         [src]="content.imageUrl"
         (load)="loaded()"
+        (click)="showViewer()"
         alt="Immagine"
-        data-zoomable
         class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image"
       />
       <ng-template #noImage>
