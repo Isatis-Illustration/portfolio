@@ -7,15 +7,16 @@ import { StorageKey } from '../../services/models/enums';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import mediumZoom from 'medium-zoom';
-import { CardDetailSetupComponent } from "../card-detail-setup/card-detail-setup.component";
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-footer.component';
+
 
 @Component({
   selector: 'app-card-detail',
   imports: [
     CommonModule,
-    CardDetailSetupComponent,
-    TranslatePipe
+    CardDetailFooterComponent,
+    TranslatePipe,
 ],
   templateUrl: './card-detail-refactory.component.html',
   styleUrl: './card-detail.component.css'
