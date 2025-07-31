@@ -36,7 +36,7 @@ export class ViewerComponent {
   //PAN
   offsetX = 0;
   offsetY = 0;
-  private isPanning = false;
+  isPanning = false;
   private startX = 0;
   private startY = 0;
 

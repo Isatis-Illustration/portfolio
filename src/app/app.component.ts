@@ -30,7 +30,7 @@ export class AppComponent {
   contentService: ContentService = inject(ContentService);
   iconService: IconService = inject(IconService);
 
-  contentToView: Signal<Content | null> = computed(() => { console.log("ricevuto"); return this.contentService.contentToView() });
+  contentToView: Signal<Content | null> = computed(() => this.contentService.contentToView());
 
   currentUrl: string = '';
   screenWidth: number = window.screen.width;
