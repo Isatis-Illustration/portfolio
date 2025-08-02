@@ -8,14 +8,16 @@ import { IconService } from '../../services/icon.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { environment } from '../../environment/environment';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageButtonComponent } from "../language-button/language-button.component";
 
 @Component({
   selector: 'app-home',
   imports: [
     CommonModule,
-    TranslatePipe
-  ],
-  templateUrl: './home-refactory.component.html',
+    TranslatePipe,
+    LanguageButtonComponent
+],
+  templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent{

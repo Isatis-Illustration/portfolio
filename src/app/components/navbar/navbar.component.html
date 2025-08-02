@@ -24,6 +24,10 @@
         <div [innerHTML]="getIcon(instaram.icon)" class="pr-4"></div>
         {{ instaram.nick }}
       </a>
+      <a (click)="translate()"class="flex items-center text-info justify-center cursor-pointer">
+        <div [innerHTML]="getIcon('translate')" class="pr-4"></div>
+        {{ "TRANSLATE" | translate }}
+      </a>
 
     </nav>
 </div>
