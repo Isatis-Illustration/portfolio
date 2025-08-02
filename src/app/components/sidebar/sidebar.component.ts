@@ -1,7 +1,7 @@
 import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../environment/environment';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
@@ -26,6 +26,7 @@ export class SidebarComponent {
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
   translateService: TranslationService = inject(TranslationService);
+  router: Router = inject(Router);
 
   instagram = environment.user.contacts.instagram;
   hasLoaded = false;
@@ -49,6 +50,9 @@ export class SidebarComponent {
     //   this.logo = `assets/logo/logo${this.logoIndex}.png`;
     // })
   // }
+  redirectToHome(): void{
+    this.router.navigate(['home'])
+  }
 
 
   trackById(item: any): number {
