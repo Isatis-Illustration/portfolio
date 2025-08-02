@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full">
 
-  <button class="fixed top-0 right-0 m-5 cursor-pointer w-fit z-10" (click)="toggleFlip()"
+  <button class="hidden sm:block fixed top-0 right-0 m-5 cursor-pointer w-fit z-10" (click)="toggleFlip()"
     [innerHTML]="getIcon('info')">
   </button>
 
@@ -43,7 +43,7 @@
           class="absolute inset-0 backface-hidden rotate-y-180 bg-white flex items-center justify-center p-4 border-4 border-primary">
           <div class="text-center text-gray-700">
             <h2 class="text-lg font-semibold mb-2">Informazioni</h2>
-            <p class="text-sm">Qui puoi mettere descrizioni, dati, testo dinamico ecc.</p>
+            <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
           </div>
         </div>
       </div>
@@ -59,8 +59,10 @@
 
   <!--MOBILE BUTTONS CONTAINER-->
   <div class="border block sm:hidden w-full">
-    <app-card-detail-footer (goNextEvent)="goToNext()" (goPreviousEvent)="goToPrevious()"
-      (showInfoEvent)="showInfo = $event">
+    <app-card-detail-footer 
+      (goNextEvent)="goToNext()" 
+      (goPreviousEvent)="goToPrevious()"
+      (showInfoEvent)="toggleFlip()">
     </app-card-detail-footer>
   </div>
 

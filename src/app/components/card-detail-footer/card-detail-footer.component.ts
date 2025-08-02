@@ -15,13 +15,10 @@ export class CardDetailFooterComponent {
   
   @Output() goPreviousEvent: EventEmitter<void> = new EventEmitter<void>()
   @Output() goNextEvent: EventEmitter<void> = new EventEmitter<void>()
-  @Output() showInfoEvent: EventEmitter<boolean> = new EventEmitter<boolean>()
-
-  private showInfo: boolean = false;
+  @Output() showInfoEvent: EventEmitter<void> = new EventEmitter<void>()
 
   toggleInfoVisibility(): void{
-    this.showInfo = !this.showInfo;
-    this.showInfoEvent.emit(this.showInfo);
+    this.showInfoEvent.emit();
   }
 
 
