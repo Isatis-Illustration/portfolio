@@ -18,7 +18,7 @@ import { Content } from './services/models/models';
     NavbarComponent,
     ViewerComponent
 ],
-  templateUrl: './app-refactory.component.html',
+  templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
