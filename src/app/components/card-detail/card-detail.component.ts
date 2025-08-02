@@ -18,7 +18,7 @@ import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-foo
     CardDetailFooterComponent,
     TranslatePipe,
 ],
-  templateUrl: './card-detail-refactory.component.html',
+  templateUrl: './card-detail.component.html',
   styleUrl: './card-detail.component.css'
 })
 export class CardDetailComponent {
