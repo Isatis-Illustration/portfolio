@@ -34,7 +34,7 @@ export class ButtonService {
       id: 3,
       label: 'PROFILE',
       path: 'profile',
-      imageUrl: 'assets/home/profile.png',
+      imageUrl: `assets/home/profile_${this.lang()}.png`,
       imageSVG: 'profile',
     },
     {
