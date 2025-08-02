@@ -17,7 +17,7 @@ export const environment = {
             instagram: {
                 nick: '@isatis.illustration',
                 icon: 'instagram',
-                link: 'https://www.instagram.com/blooming.isatis/'
+                link: 'https://www.instagram.com/isatis.illustration/'
             },
             email: 'laurenzi.isabella@gmail.com',
             telegram: 'isatis.illustration'

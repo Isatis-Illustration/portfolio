@@ -7,6 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../environment/environment';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,6 +23,7 @@ export class NavbarComponent {
 
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
+  translateService: TranslationService = inject(TranslationService);
   router: Router = inject(Router);
 
   instaram = environment.user.contacts.instagram;
@@ -53,5 +55,10 @@ export class NavbarComponent {
 
   navigateToHome(): void{
     this.router.navigate(['home']);
+  }
+
+
+  translate(): void{
+    this.translateService.toggleLanguage();
   }
 }

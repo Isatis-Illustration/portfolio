@@ -12,13 +12,15 @@
 } */
 
 @theme {
-  --color-primary:   #6E8787;  /**Sidebar  /viola #493548  arancio D36135 aaaaaaaa CC7161  VERDE 16747e*/  
-  --color-secondary: #FEFBD0;  /**BG   /giallo pastello #FEFBD0*/
-  --color-info:      #FEFBD0;  /** TESTO 000000 */
-  --color-border:    #665C75;
-  --color-bg-image:  #ffffff;
-  --color-title:     #000000;
-  --color-navbar:    #548891;
+  --color-primary:          #6E8787;  /**Sidebar  /viola #493548  arancio D36135 aaaaaaaa CC7161  VERDE 16747e*/  
+  --color-secondary:        #FEFBD0;  /**BG   /giallo pastello #FEFBD0*/
+  --color-info:             #FEFBD0;  /** TESTO 000000 */
+
+  --color-border:           #665C75;
+  --color-bg-image:         #ffffff;
+  --color-title:            #000000;
+  --color-navbar-menu:      #548891;  /**Bg menu navbar*/
+  --color-navbar-bor:       #000000;  /**Bordo navbar*/
 }
 
 /* body {
@@ -33,6 +35,7 @@
 
 
 @layer utilities {
+
   @keyframes dropdown {
     0% {
       transform: scaleY(0);
@@ -65,7 +68,21 @@
   .scrollbar-show::-webkit-scrollbar {
     display: block; /* Chrome, Safari, Opera */
   }
+
+  .perspective {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
 }
+
 
 /* Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
@@ -103,4 +120,119 @@ html body .medium-zoom-overlay {
 
 html body .medium-zoom-image--opened {
   z-index: 100000 !important;
+}
+
+
+/***********************************************************************************************************/
+/* Scrollbar personalizzata per il menu contestuale */
+.custom-scrollbar {
+  /* Per browser WebKit (Chrome, Safari, Edge) */
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:active {
+  background: #374151;
+}
+
+/* Per Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+/* Versione più sottile e elegante */
+.custom-scrollbar-minimal {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 transparent;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar-thumb {
+  background: #374151;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.custom-scrollbar-minimal::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+  width: 6px;
+}
+
+/* Scrollbar che appare solo al hover */
+.custom-scrollbar-on-hover {
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.custom-scrollbar-on-hover::-webkit-scrollbar {
+  width: 0px;
+  transition: width 0.2s ease;
+}
+
+.custom-scrollbar-on-hover:hover {
+  scrollbar-width: thin;
+  scrollbar-color: #4b5563 transparent;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar-track {
+  background: rgba(75, 85, 99, 0.1);
+  border-radius: 3px;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+.custom-scrollbar-on-hover:hover::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/*Sidebar*/
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }

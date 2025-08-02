@@ -7,15 +7,18 @@ import { StorageKey } from '../../services/models/enums';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import mediumZoom from 'medium-zoom';
-import { CardDetailSetupComponent } from "../card-detail-setup/card-detail-setup.component";
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-footer.component';
+
 
 @Component({
   selector: 'app-card-detail',
   imports: [
     CommonModule,
-    CardDetailSetupComponent
+    CardDetailFooterComponent,
+    TranslatePipe,
 ],
-  templateUrl: './card-detail-refactory.component.html',
+  templateUrl: './card-detail.component.html',
   styleUrl: './card-detail.component.css'
 })
 export class CardDetailComponent {
@@ -27,15 +30,20 @@ export class CardDetailComponent {
 
   content!: Content;
   showInfo: boolean = false;
+  hasLoaded: boolean = false;
+
+  isFlipped: boolean = false;
 
   //per zoom
   zoomInstance: any;
   lastImageUrl: string | undefined;
 
-    constructor() {
-    // Recupera filtro da storage e carica contenuti
+  constructor() {
+
     effect(() => {
+
       const filterStorage = localStorage.getItem(StorageKey.FILTER);
+
       if (filterStorage)
         this.contentService.filter.set(filterStorage);
       
@@ -47,10 +55,8 @@ export class CardDetailComponent {
         if(!id)
           id = localStorage.getItem(StorageKey.DETAIL_ID) || '0'!
 
-        console.log(id)
         localStorage.setItem(StorageKey.DETAIL_ID, id)
         this.content = list.find(c => c.id === id)!;
-        console.log(this.content)
       });
     });
   }
@@ -59,6 +65,7 @@ export class CardDetailComponent {
   ngAfterViewInit(): void {
     this.initZoom()
   }
+  
 
   ngAfterViewChecked(): void {
     if (this.content?.imageUrl && this.content.imageUrl !== this.lastImageUrl) {
@@ -76,6 +83,19 @@ export class CardDetailComponent {
     }, 10);
   }
 
+
+  showViewer(): void{
+    this.contentService.setContentToView(this.content)
+  }
+
+
+  loaded(): void{
+    this.hasLoaded = true;
+  }
+
+  toggleFlip(): void{
+    this.isFlipped = !this.isFlipped;
+  }
 
   goToNext(): void{
     let nextIndex: number = this.contentService.getFilteredContent().indexOf(this.content)+1;

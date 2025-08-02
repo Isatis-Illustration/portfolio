@@ -1,11 +1,11 @@
-<div [ngClass]="{'bg-navbar rounded-bl-3xl rounded-br-3xl': isMenuOpen}" class="w-full">
-    <div class="h-24 w-full bg-primary rounded-bl-3xl rounded-br-3xl flex text-info border border-black">
+<div [ngClass]="{'bg-navbar-menu rounded-bl-3xl rounded-br-3xl': isMenuOpen}" class="w-full">
+    <div class="h-24 w-full bg-primary rounded-bl-3xl rounded-br-3xl flex text-info border border-navbar-bor">
         <div class="cursor-pointer w-1/6 h-full flex items-center justify-center"> 
             <div (click)="navigateToHome()">
                  <img [src]="logo" class="w-[72px]">
             </div>
         </div>
-        <div class="w-4/6 h-full pr-2 flex items-center justify-center text-3xl font-bold text-info  font-serif">
+        <div class="w-4/6 h-full flex items-center justify-center text-3xl font-bold text-info  font-serif">
             {{ user.nick }}
         </div>
         <div class="w-1/6 h-full flex items-center justify-center" (click)="toggleMenu()" [innerHTML]="getIcon('burgerMenu')">
@@ -23,6 +23,10 @@
         class="flex items-center text-info justify-center">
         <div [innerHTML]="getIcon(instaram.icon)" class="pr-4"></div>
         {{ instaram.nick }}
+      </a>
+      <a (click)="translate()"class="flex items-center text-info justify-center cursor-pointer">
+        <div [innerHTML]="getIcon('translate')" class="pr-4"></div>
+        {{ "TRANSLATE" | translate }}
       </a>
 
     </nav>

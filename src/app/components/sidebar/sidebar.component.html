@@ -1,8 +1,13 @@
 <div class="h-full bg-primary w-64 p-6 shadow-xl rounded-tr-3xl rounded-br-3xl flex flex-col justify-between">
   <div>
-    <h1 class="pt-6 text-3xl font-bold text-info mb-10 font-serif w-5/6 select-none">
-      <img [src]="logo">
-    </h1>
+    <button class="pt-6 text-3xl font-bold text-info mb-10 font-serif w-5/6 select-none transition-opacity duration-300 ease-in"
+        (click)="redirectToHome()"
+        [ngClass]="{
+          'opacity-100': hasLoaded,
+          'opacity-0': !hasLoaded
+        }">
+      <img [src]="logo" (load)="hasLoaded = true">
+    </button>  
 
     <nav class="flex flex-col space-y-4">
       

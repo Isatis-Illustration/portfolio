@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, computed, HostListener, inject, Signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,8 @@ import { NavbarComponent } from "./components/navbar/navbar.component";
 import { ContentService } from './services/content.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from './services/icon.service';
+import { ViewerComponent } from "./components/viewer/viewer.component";
+import { Content } from './services/models/models';
 
 @Component({
   selector: 'app-root',
@@ -13,17 +15,22 @@ import { IconService } from './services/icon.service';
     RouterOutlet,
     SidebarComponent,
     CommonModule,
-    NavbarComponent
+    NavbarComponent,
+    ViewerComponent
 ],
-  templateUrl: './app-refactory.component.html',
+  templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+
+
   title = 'portfolio';
 
   router: Router = inject(Router);
   contentService: ContentService = inject(ContentService);
   iconService: IconService = inject(IconService);
+
+  contentToView: Signal<Content | null> = computed(() => this.contentService.contentToView());
 
   currentUrl: string = '';
   screenWidth: number = window.screen.width;

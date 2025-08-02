@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -8,17 +8,20 @@ import { IconService } from '../../services/icon.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { environment } from '../../environment/environment';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageButtonComponent } from "../language-button/language-button.component";
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   selector: 'app-home',
   imports: [
     CommonModule,
-    TranslatePipe
-  ],
+    TranslatePipe,
+    LanguageButtonComponent
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent{
 
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
@@ -27,10 +30,20 @@ export class HomeComponent {
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
   buttons: CustomButton[] = [];
+  first2Buttons: CustomButton[] = [];
+  last2Buttons: CustomButton[] = [];
 
   constructor(){
     effect(() => {
-      this.buttons = this.buttonService.buttons().filter(b => b.id != 0);
+      this.buttons = this.buttonService.buttons().filter(b => b.id !== 0);
+      
+      // Scomponi subito l’array in due:
+      this.first2Buttons = this.buttons.slice(0, 2);
+      this.last2Buttons  = this.buttons.slice(2, 4);
+
+      // Poi resettali TUTTI
+      [...this.first2Buttons, ...this.last2Buttons]
+        .forEach(b => b.imageLoaded = false);
     })
   }
 
@@ -38,16 +51,13 @@ export class HomeComponent {
     this.route.navigate([path]);
   }
 
-  
-  onImageLoad(event: Event): void {
-    const img = event.target as HTMLImageElement;
-    img.classList.remove('opacity-0');
-    img.classList.add('opacity-100');
-  }
-
 
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
   }
-  
+
+  areImagesLoaded(): boolean{
+    return this.buttons.slice(0, 4).every(b => b.imageLoaded);
+  }
+
 }
