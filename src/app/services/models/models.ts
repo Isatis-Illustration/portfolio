@@ -12,6 +12,7 @@ export interface CustomButton{
     path: string;
     imageUrl?: string;
     imageSVG?: string;
+    imageLoaded?: boolean;
 }
 
 export interface Content{

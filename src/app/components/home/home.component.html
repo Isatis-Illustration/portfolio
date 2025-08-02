@@ -9,7 +9,11 @@
       <img [src]="lNameGif" class="select-none flex-1 sm:w-1/2 p-5"/>
     </div>
     
-    <div class="flex flex-col xl:flex-row gap-y-10 sm:gap-y-0">
+    <div class="flex flex-col xl:flex-row gap-y-10 sm:gap-y-0 transition-opacity ease-in duration-300"
+      [ngClass]="{
+        'opacity-0': !areImagesLoaded(),
+        'opacity-100': areImagesLoaded(),
+      }">
 
       <!------------------------------------>
       <div class="flex flex-col sm:flex-row gap-y-10 sm:gap-y-0">
@@ -20,7 +24,7 @@
               (click)="navigate(btn.path)"
               [src]="btn.imageUrl" 
               [alt]="btn.label | translate" 
-              (load)="onImageLoad($event)">
+              (load)="btn.imageLoaded = true">
           </button>
         </ng-container>
       </div>
@@ -34,7 +38,7 @@
               (click)="navigate(btn.path)"
               [src]="btn.imageUrl" 
               [alt]="btn.label | translate" 
-              (load)="onImageLoad($event)">
+              (load)="btn.imageLoaded = true">
           </button>
         </ng-container>
       </div>
