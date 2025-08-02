@@ -26,7 +26,6 @@ export class HomeComponent{
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
   iconService: IconService = inject(IconService);
-  transalteService: TranslationService = inject(TranslationService);
   
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
@@ -36,8 +35,6 @@ export class HomeComponent{
 
   constructor(){
     effect(() => {
-      
-      const lang = this.transalteService.currentLanguage();          
       this.buttons = this.buttonService.buttons().filter(b => b.id !== 0);
       
       // Scomponi subito l’array in due:
@@ -47,7 +44,6 @@ export class HomeComponent{
       // Poi resettali TUTTI
       [...this.first2Buttons, ...this.last2Buttons]
         .forEach(b => b.imageLoaded = false);
-
     })
   }
 
@@ -61,8 +57,7 @@ export class HomeComponent{
   }
 
   areImagesLoaded(): boolean{
-    console.log(this.buttons.slice(0, 5).every(b => b.imageLoaded))
-    return this.buttons.slice(0, 5).every(b => b.imageLoaded);
+    return this.buttons.slice(0, 4).every(b => b.imageLoaded);
   }
 
 }
