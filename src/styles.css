@@ -123,11 +123,6 @@ html body .medium-zoom-image--opened {
 }
 
 
-button{
-  cursor: pointer ;
-}
-
-
 /***********************************************************************************************************/
 /* Scrollbar personalizzata per il menu contestuale */
 .custom-scrollbar {
