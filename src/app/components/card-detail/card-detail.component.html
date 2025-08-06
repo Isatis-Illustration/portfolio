@@ -4,7 +4,6 @@
     [innerHTML]="getIcon('info')">
   </button>
 
-
   <!--IMAGE CONTAINER-->
   <div
     class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2 transition-opacity duration-300 ease-in"
@@ -30,22 +29,23 @@
       <div class="w-full h-full transition-transform duration-700 preserve-3d" [class.rotate-y-180]="isFlipped">
         <!-- FRONT: Immagine -->
         <div class="absolute inset-0 backface-hidden flex items-center justify-center">
-          <img *ngIf="content; else noImage" 
-                [src]="content.imageUrl" 
-                (load)="loaded()" 
-                (click)="showViewer()"
+          <img #imageElement
+               *ngIf="content; else noImage" 
+               [src]="content.imageUrl" 
+               (load)="loaded()" 
+               (click)="showViewer()"
             alt="Immagine"
             class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image" />
         </div>
 
         <!-- BACK: Info -->
-          <div
-            class="absolute inset-y-10 inset-x-96 backface-hidden rotate-y-180 bg-white flex items-center justify-center border-4 border-primary p-26">
-            <div class="text-center text-gray-700">
-              <h2 class="text-lg font-semibold mb-2">Informazioni</h2>
-              <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
-            </div>
+        <div #backElement
+             class="absolute backface-hidden rotate-y-180 bg-white flex items-center justify-center border-4 border-primary p-6">
+          <div class="text-center text-gray-700">
+            <h2 class="text-lg font-semibold mb-2">Informazioni</h2>
+            <p class="text-sm">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</p>
           </div>
+        </div>
       </div>
     </div>
 
