@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { StorageKey } from '../../services/models/enums';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
-import mediumZoom from 'medium-zoom';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-footer.component';
 
@@ -34,10 +33,6 @@ export class CardDetailComponent {
 
   isFlipped: boolean = false;
 
-  //per zoom
-  zoomInstance: any;
-  lastImageUrl: string | undefined;
-
   constructor() {
 
     effect(() => {
@@ -59,28 +54,6 @@ export class CardDetailComponent {
         this.content = list.find(c => c.id === id)!;
       });
     });
-  }
-
-
-  ngAfterViewInit(): void {
-    this.initZoom()
-  }
-  
-
-  ngAfterViewChecked(): void {
-    if (this.content?.imageUrl && this.content.imageUrl !== this.lastImageUrl) {
-      this.lastImageUrl = this.content.imageUrl;
-      this.initZoom();
-    }
-  }
-
-  initZoom() {
-    if (this.zoomInstance)
-      this.zoomInstance.detach();
-    
-    setTimeout(() => {
-      this.zoomInstance = mediumZoom('[data-zoomable]');
-    }, 10);
   }
 
 

@@ -30,9 +30,14 @@ export interface User{
     nick: string,
     birthDate: string,
     age: number,
-    description: string,
+    description: UserDescription,
     gender: string,
     city: string,
     slogan: string,
     image: string,
+}
+
+export interface UserDescription{
+    it: string,
+    en: string,
 }

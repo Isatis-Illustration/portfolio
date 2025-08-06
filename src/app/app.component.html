@@ -10,7 +10,7 @@
       <app-sidebar></app-sidebar>
     </div>
   
-    <div class="w-full block sm:hidden">
+    <div *ngIf="!isHome()" class="w-full block sm:hidden">
       <app-navbar></app-navbar>
     </div>
   
