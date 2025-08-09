@@ -18,7 +18,7 @@ import { TranslationService } from '../../services/translation.service';
     TranslatePipe,
     LanguageButtonComponent
 ],
-  templateUrl: './home-refact.component.html',
+  templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent{

@@ -1,4 +1,4 @@
-import { Component, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { TranslationService } from '../../services/translation.service';
 
 @Component({
@@ -13,13 +13,14 @@ export class LanguageButtonComponent {
 
 
   basePath: string = 'assets/lang/'
-  lang: Signal<string> = this.translateService.currentLanguage;
   extens: string = '.png';
+  lang: Signal<string> = computed(() => {
+    this.translateService.currentLanguage;
+    return this.translateService.getOtherLang()
+  });
 
   
   toggleLanguage(): void {
-    this.translateService.toggleLanguage()
+    this.translateService.toggleLanguage();
   }
-
-
 }
