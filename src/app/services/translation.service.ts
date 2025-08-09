@@ -39,4 +39,8 @@ export class TranslationService {
     const newLang: Language = this.currentLanguage() === Language.IT ? Language.EN : Language.IT;
     this.loadLanguage(newLang);
   }
+
+  getOtherLang(): string {
+    return this.currentLanguage() === Language.IT ? Language.EN : Language.IT;
+  }
 }

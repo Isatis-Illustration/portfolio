@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, viewChild, ElementRef, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
@@ -6,10 +6,8 @@ import { CommonModule } from '@angular/common';
 import { StorageKey } from '../../services/models/enums';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
-import mediumZoom from 'medium-zoom';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-footer.component';
-
 
 @Component({
   selector: 'app-card-detail',
@@ -17,7 +15,7 @@ import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-foo
     CommonModule,
     CardDetailFooterComponent,
     TranslatePipe,
-],
+  ],
   templateUrl: './card-detail.component.html',
   styleUrl: './card-detail.component.css'
 })
@@ -28,20 +26,17 @@ export class CardDetailComponent {
   contentService: ContentService = inject(ContentService);
   iconService: IconService = inject(IconService);
 
+  // ViewChild signals per Angular 19
+  imageElement = viewChild<ElementRef<HTMLImageElement>>('imageElement');
+  backElement = viewChild<ElementRef<HTMLDivElement>>('backElement');
+
   content!: Content;
   showInfo: boolean = false;
   hasLoaded: boolean = false;
-
   isFlipped: boolean = false;
 
-  //per zoom
-  zoomInstance: any;
-  lastImageUrl: string | undefined;
-
   constructor() {
-
     effect(() => {
-
       const filterStorage = localStorage.getItem(StorageKey.FILTER);
 
       if (filterStorage)
@@ -61,36 +56,14 @@ export class CardDetailComponent {
     });
   }
 
-
-  ngAfterViewInit(): void {
-    this.initZoom()
-  }
-  
-
-  ngAfterViewChecked(): void {
-    if (this.content?.imageUrl && this.content.imageUrl !== this.lastImageUrl) {
-      this.lastImageUrl = this.content.imageUrl;
-      this.initZoom();
-    }
-  }
-
-  initZoom() {
-    if (this.zoomInstance)
-      this.zoomInstance.detach();
-    
-    setTimeout(() => {
-      this.zoomInstance = mediumZoom('[data-zoomable]');
-    }, 10);
-  }
-
-
   showViewer(): void{
     this.contentService.setContentToView(this.content)
   }
 
-
   loaded(): void{
     this.hasLoaded = true;
+    // Sincronizza le dimensioni del back dopo che l'immagine è caricata
+    setTimeout(() => this.syncBackDimensions(), 50);
   }
 
   toggleFlip(): void{
@@ -117,8 +90,40 @@ export class CardDetailComponent {
     return this.contentService.getFilteredContent().length - 1;
   }
 
-
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (this.hasLoaded) {
+      setTimeout(() => this.syncBackDimensions(), 50);
+    }
+  }
+
+  private syncBackDimensions() {
+    const imageEl = this.imageElement();
+    const backEl = this.backElement();
+    
+    if (imageEl && backEl) {
+      const img = imageEl.nativeElement;
+      const back = backEl.nativeElement;
+      
+      // Ottieni le dimensioni renderizzate dell'immagine
+      const imgRect = img.getBoundingClientRect();
+      const containerRect = img.parentElement!.getBoundingClientRect();
+      
+      // Calcola la posizione relativa al container
+      const leftOffset = imgRect.left - containerRect.left;
+      const topOffset = imgRect.top - containerRect.top;
+      
+      // Applica le stesse dimensioni al back
+      back.style.left = `${leftOffset}px`;
+      back.style.top = `${topOffset}px`;
+      back.style.width = `${imgRect.width}px`;
+      back.style.height = `${imgRect.height}px`;
+      back.style.right = 'auto';
+      back.style.bottom = 'auto';
+    }
   }
 }

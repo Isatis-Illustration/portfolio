@@ -43,6 +43,12 @@ export class AppComponent {
     this.isScreenSmall();
   }
 
+  @HostListener('document:contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    event.preventDefault();
+  }
+
+
   isHome(): boolean{
     this.currentUrl = this.router.url;
     return this.currentUrl === '/home';
