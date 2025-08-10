@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, effect, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, computed, effect, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -26,12 +26,19 @@ export class HomeComponent{
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
   iconService: IconService = inject(IconService);
-  
+  translateService: TranslationService = inject(TranslationService);
+
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
   buttons: CustomButton[] = [];
   first2Buttons: CustomButton[] = [];
   last2Buttons: CustomButton[] = [];
+  subTitle: Signal<string> = computed(() => {
+    this.translateService.currentLanguage();
+    const fileName = this.translateService.translate('SUBTITLE');
+    const res = `assets/home/${fileName}.gif`;
+    return res;
+  });
 
   constructor(){
     effect(() => {

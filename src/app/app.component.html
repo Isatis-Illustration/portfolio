@@ -24,13 +24,16 @@
 
   </div>
 </div>
-<div class="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none">
-  <app-viewer
-    class="ease-in transition-opacity duration-300"
-    [ngClass]="{
-      'opacity-0 pointer-events-none': !contentToView(),
-      'opacity-100 pointer-events-auto': contentToView()
-    }"
-    [content]="contentToView()">
-  </app-viewer>
+<div *ngFor="let sticker of stickers"
+  [ngClass]="{
+    'opacity-0': sticker.fade,
+    'opacity-100': !sticker.fade
+  }"
+  class="fixed pointer-events-none transition-opacity duration-500 z-10"
+  [ngStyle]="{
+    left: sticker.x + 'px',
+    top: sticker.y + 'px',
+    transform: 'translate(-50%, -50%) rotate(' + sticker.rotation + 'deg)'
+  }">
+  <img [src]="sticker.imageUrl" class="max-w-16 pointer-events-none select-none">
 </div>

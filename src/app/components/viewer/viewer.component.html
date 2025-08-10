@@ -1,24 +1,25 @@
-<div
-  class="h-full w-full bg-secondary flex justify-center items-center text-info overflow-hidden relative"
+<div #image
+  class="h-full w-full bg-secondary flex justify-center items-center text-info overflow-hidden relative select-none opacity-0"
   (wheel)="onWheel($event)"
   (dblclick)="resetZoom()"
   (touchstart)="onTouchStart($event)"
   (touchmove)="onTouchMove($event)"
 >
   <button
-    class="bg-primary fixed right-0 top-0 m-3 rounded-3xl p-1.5 z-20"
+    class="bg-primary fixed right-0 top-0 m-4 rounded-3xl p-2 z-20"
     (click)="closeViewer()"
     [innerHTML]="getIcon('xIcon')"
   ></button>
 
   <img
     #zoomImage
-    class="max-w-full max-h-full object-contain z-10 touch-none select-none"
+    class="max-w-full max-h-full object-contain z-10 touch-none select-none grabbable"
     [src]="content?.imageUrl"
     alt="Content image"
     draggable="false"
     [style.transform]="'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(' + zoom + ')'"
     [style.transition]="isPanning ? 'none' : zoomTransition"
+    (load)="animateViewer()"
     (mousedown)="startPan($event)"
     (mousemove)="onPan($event)"
     (mouseup)="endPan()"

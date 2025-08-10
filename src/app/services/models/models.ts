@@ -24,6 +24,16 @@ export interface Content{
     type: string;
 }
 
+
+export interface Sticker{
+    imageUrl: string;
+    x: number; 
+    y: number; 
+    rotation: number; 
+    fade?: boolean
+}
+
+
 export interface User{
     firstName: string,
     lastName: string,

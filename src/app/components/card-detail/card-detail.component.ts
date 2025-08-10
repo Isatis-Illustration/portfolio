@@ -1,4 +1,4 @@
-import { Component, effect, inject, viewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, effect, inject, viewChild, ElementRef, HostListener, Signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
@@ -8,6 +8,7 @@ import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-footer.component';
+import { ViewerComponent } from "../viewer/viewer.component";
 
 @Component({
   selector: 'app-card-detail',
@@ -15,7 +16,8 @@ import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-foo
     CommonModule,
     CardDetailFooterComponent,
     TranslatePipe,
-  ],
+    ViewerComponent
+],
   templateUrl: './card-detail.component.html',
   styleUrl: './card-detail.component.css'
 })
@@ -29,6 +31,8 @@ export class CardDetailComponent {
   // ViewChild signals per Angular 19
   imageElement = viewChild<ElementRef<HTMLImageElement>>('imageElement');
   backElement = viewChild<ElementRef<HTMLDivElement>>('backElement');
+
+  contentToView: Signal<Content | null> = computed(() => this.contentService.contentToView());
 
   content!: Content;
   showInfo: boolean = false;
