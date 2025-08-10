@@ -41,6 +41,20 @@ export class ViewerComponent {
   private startY = 0;
 
   @ViewChild('zoomImage') zoomImageRef!: ElementRef;
+  @ViewChild('image') imgContainer!: ElementRef<HTMLElement>;
+
+
+  animateViewer(): void{
+     const el = this.imgContainer.nativeElement;
+     // Assicura che le classi di transizione siano già presenti
+    el.classList.add('transition-opacity', 'duration-300');
+
+    // Aspetta un frame prima di cambiare l'opacità
+    requestAnimationFrame(() => {
+      el.classList.remove('opacity-0');
+      el.classList.add('opacity-100');
+    });
+  }
 
   
   closeViewer(): void{

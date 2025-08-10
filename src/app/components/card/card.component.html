@@ -1,30 +1,42 @@
-<div (mouseover)="showTitle()" (mouseout)="hideTitle()"
-  [ngClass]="{
-    'opacity-100': hasLoaded,
-    'opacity-0': !hasLoaded
-  }"
-  class="transition-opacity duration-300 ease-in relative w-full max-w-md overflow-hidden rounded-[18px] border-3 border-primary bg-primary shadow-xl hover:scale-[1.02] hover:shadow-2xl">
+<div class="w-full flex items-center justify-center">
 
-  <div class="transition-all duration-500 ease-in-out overflow-hidden bg-primary" [ngClass]="{
-    'max-h-32 py-3 opacity-100': hasTitle,
-    'max-h-0 py-0 opacity-0': !hasTitle
-  }">
-    <div class="relative z-10 px-3">
-      <h2 class="text-center text-2xl font-extrabold text-info tracking-tight">
-        {{ content.name || 'Progetto senza titolo' }}
-      </h2>
-    </div>
-  </div>
-  <div
-    class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-primary cursor-pointer"
-    (click)="onClickImageEvent.emit(content)">
-    <img *ngIf="content.imageUrl; else noImage" (load)="loaded()" [src]="content.imageUrl" alt="Artwork"
-      class="w-full h-auto object-contain select-none" />
-    <ng-template #noImage>
-      <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
-        <div class="text-4xl mb-2">🌿</div>
-        {{ "NO_IMAGE" | translate }}
+  <div (mouseover)="showTitle()" (mouseout)="hideTitle()"
+    class="relative w-full max-w-md overflow-hidden rounded-[18px] border-3 border-primary bg-primary shadow-xl hover:scale-[1.02] hover:shadow-2xl"
+    [ngClass]="{
+      'opacity-0 w-0 h-0': !hasLoaded,
+      'opacity-100': hasLoaded,
+    }">
+    <div class="transition-all duration-500 ease-in-out overflow-hidden bg-primary" [ngClass]="{
+      'max-h-32 py-3 opacity-100': hasTitle,
+      'max-h-0 py-0 opacity-0': !hasTitle
+    }">
+      <div class="relative z-10 px-3">
+        <h2 class="text-center text-2xl font-extrabold text-info tracking-tight">
+          {{ content.name || 'Progetto senza titolo' }}
+        </h2>
       </div>
-    </ng-template>
+    </div>
+    <div
+      class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-primary cursor-pointer min-h-[200px]"
+      (click)="onClickImageEvent.emit(content)">
+      
+      <!-- Spinner sempre presente, nascosto quando l'immagine è caricata -->
+      
+      
+      <!-- Immagine nascosta finché non è caricata -->
+      <img *ngIf="content.imageUrl" 
+          (load)="hasLoaded = true" 
+          [src]="content.imageUrl" 
+          [alt]="content.name"
+          class="w-full h-auto object-contain select-none transition-opacity duration-300" />
+    </div>
+
   </div>
+  
+  <ng-container *ngIf="!hasLoaded && content.imageUrl">
+    <div class="relative flex items-center justify-center w-full h-52">
+      <div class="loader z-10"></div>
+    </div>
+  </ng-container> 
+
 </div>

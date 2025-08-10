@@ -1,4 +1,4 @@
-import { Component, computed, HostListener, inject, Signal } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { CommonModule } from '@angular/common';
@@ -6,8 +6,8 @@ import { NavbarComponent } from "./components/navbar/navbar.component";
 import { ContentService } from './services/content.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from './services/icon.service';
-import { ViewerComponent } from "./components/viewer/viewer.component";
-import { Content } from './services/models/models';
+import { Sticker } from './services/models/models';
+
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,6 @@ import { Content } from './services/models/models';
     SidebarComponent,
     CommonModule,
     NavbarComponent,
-    ViewerComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -30,7 +29,7 @@ export class AppComponent {
   contentService: ContentService = inject(ContentService);
   iconService: IconService = inject(IconService);
 
-  contentToView: Signal<Content | null> = computed(() => this.contentService.contentToView());
+  stickers: Sticker[] = [];
 
   currentUrl: string = '';
   screenWidth: number = window.screen.width;
@@ -46,6 +45,25 @@ export class AppComponent {
   @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
     event.preventDefault();
+
+    // Rotazione casuale tra -20° e +20°
+    const min = -40;
+    const max = 40;
+    const rotation = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const sticker: Sticker = { 
+      imageUrl: 'assets/stickers/sticker_flower.png',
+      x: event.clientX, 
+      y: event.clientY,
+      fade: false, 
+      rotation 
+    };
+    this.stickers.push(sticker);
+
+    setTimeout(() => sticker.fade = true, 1000);
+    setTimeout(() => {
+      this.stickers = this.stickers.filter(s => s !== sticker);
+    }, 1500);
   }
 
 

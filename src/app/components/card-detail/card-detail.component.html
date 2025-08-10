@@ -67,3 +67,9 @@
   </div>
 
 </div>
+<div *ngIf="contentToView()" class="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none">
+  <app-viewer
+    class="ease-in transition-opacity duration-300 pointer-events-auto"
+    [content]="contentToView()">
+  </app-viewer>
+</div>
