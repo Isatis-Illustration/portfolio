@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, Signal, ViewChild } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import { ButtonService } from '../../services/button.service';
@@ -26,12 +26,12 @@ export class NavbarComponent {
   translateService: TranslationService = inject(TranslationService);
   router: Router = inject(Router);
 
+  @ViewChild('navMenu') navMenu!: ElementRef;
+
   instaram = environment.user.contacts.instagram;
   buttons: CustomButton[] = this.buttonService.buttons();
   logo: string = environment.icons.logo;
-
-  @ViewChild('navMenu') navMenu!: ElementRef;
-  isMenuOpen: boolean = false;
+  isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
   user: User = environment.user
 
   @HostListener('document:click', ['$event'])
@@ -40,7 +40,7 @@ export class NavbarComponent {
       return;
     }
     if (!this.navMenu.nativeElement.contains(event.target)) {
-      this.isMenuOpen = false;
+      this.buttonService.isNavbarMenuOpen.set(false);
     }
   }
 
@@ -50,7 +50,7 @@ export class NavbarComponent {
   }
 
   toggleMenu(): void{
-    this.isMenuOpen = !this.isMenuOpen
+    this.buttonService.isNavbarMenuOpen.set(!this.isMenuOpen())
   }
 
   navigateToHome(): void{
