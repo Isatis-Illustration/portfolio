@@ -1,20 +1,26 @@
-<div class="flex h-screen justify-start items-center p-10">
-    <div class="h-fit w-1/2 flex justify-center items-center">
-        <img [src]="contactDec" class="w-72 select-none">
-    </div>
-    <div class="h-fit w-1/2 flex justify-start flex-col gap-6 text-2xl bg-primary p-10 text-info mr-10">
+<div class="relative w-full h-full flex items-center justify-center">
+    <!-- Cornice -->
+    <img src="assets/contacts/contacts_frame.png"
+        class="absolute lg:p-16 inset-0 w-full h-full object-contain pointer-events-none" alt="Cornice">
+
+
+    <!-- Contenuto al centro -->
+    <div class="flex flex-col z-10 text-center text-black md:mt-36 2xl:mt-44 text-lg md:text-3xl"
+        [ngClass]="{
+            'mt-20 gap-2 pl-1': isMenuOpen(),
+            'mt-28 gap-6 sm:gap-8': !isMenuOpen()
+        }">
         <div class="flex">
-            <div class="w-10 flex items-center" [innerHTML]="getIcon('contacts')"></div>
+            <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon('contacts')"></div>
             <p>{{ contacts.email }}</p>
         </div>
         <div class="flex items-center">
-            <div class="w-10" [innerHTML]="getIcon('telegram')"></div>
+            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon('telegram')"></div>
             <p>{{ contacts.telegram }}</p>
         </div>
         <div class="flex items-center">
-            <div class="w-10" [innerHTML]="getIcon('instagram')"></div>
-            <a [href]="contacts.instagram.link" target="_blank" and rel="noopener noreferrer"
-                class="flex items-center">
+            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon('instagram')"></div>
+            <a [href]="contacts.instagram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
                 <div class=""></div>
                 {{ contacts.instagram.nick }}
             </a>

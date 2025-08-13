@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, Signal } from '@angular/core';
+import { computed, inject, Injectable, signal, Signal, WritableSignal } from '@angular/core';
 import { TranslationService } from './translation.service';
 
 @Injectable({
@@ -7,6 +7,7 @@ import { TranslationService } from './translation.service';
 export class ButtonService {
   translateService: TranslationService = inject(TranslationService);
   lang: Signal<string> = computed(() => this.translateService.currentLanguage());
+  isNavbarMenuOpen: WritableSignal<boolean> = signal(false);
 
   buttons = computed(() => [
     {

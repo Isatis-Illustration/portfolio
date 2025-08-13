@@ -11,7 +11,7 @@
         <div class="w-1/6 h-full flex items-center justify-center" (click)="toggleMenu()" [innerHTML]="getIcon('burgerMenu')">
         </div>
     </div>
-    <nav #navMenu *ngIf="isMenuOpen" class="space-y-4 bg-navbar py-6">
+    <nav #navMenu *ngIf="isMenuOpen()" class="space-y-4 bg-navbar py-6">
       
       <a *ngFor="let b of buttons;" 
         class="flex items-center text-info justify-center"

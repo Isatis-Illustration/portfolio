@@ -7,6 +7,7 @@ import { ContentService } from './services/content.service';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from './services/icon.service';
 import { Sticker } from './services/models/models';
+import { ButtonService } from './services/button.service';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class AppComponent {
   router: Router = inject(Router);
   contentService: ContentService = inject(ContentService);
   iconService: IconService = inject(IconService);
+  buttonService: ButtonService = inject(ButtonService);
 
   stickers: Sticker[] = [];
 
@@ -40,10 +42,18 @@ export class AppComponent {
     const target = event.target as Window;
     this.screenWidth = target.innerWidth;
     this.isScreenSmall();
+
+    if(!this.isScreenSm)
+      this.buttonService.isNavbarMenuOpen.set(false)
   }
 
   @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
+
+    const currentUrl = this.router.url
+    if(currentUrl === '/contacts')
+      return;
+
     event.preventDefault();
 
     // Rotazione casuale tra -20° e +20°
