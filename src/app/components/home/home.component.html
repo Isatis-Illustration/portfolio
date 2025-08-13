@@ -21,11 +21,11 @@
 
 
   <!-- Container dei bottoni con grid e altezza fissa -->
-  <div class="grid grid-cols-2 md:grid-cols-4 grid-rows-2 md:grid-rows-1 overflow-hidden transition-opacity ease-in duration-300"
+  <div class="grid grid-cols-2 md:grid-cols-4 grid-rows-2 md:grid-rows-1 overflow-hidden"
     [ngClass]="{
-        'opacity-0': !areImagesLoaded(),
-        'opacity-100': areImagesLoaded(),
-      }">
+      'opacity-0': buttonsFade,
+      'opacity-100 ease-in transition-opacity duration-300': !buttonsFade
+    }">
     <ng-container *ngFor="let btn of buttons">
       <div class="flex items-center justify-center overflow-hidden">
         <button class="cursor-pointer w-full h-full flex items-center justify-center p-5 hover:p-0">
@@ -33,11 +33,11 @@
             class="max-w-full max-h-full object-contain select-none"
             [src]="btn.imageUrl" 
             [alt]="btn.label | translate"
-            (click)="navigate(btn.path)"
-            (load)="btn.imageLoaded = true">
+            (click)="navigate(btn.path)">
         </button>
       </div>
     </ng-container>
   </div>
-  <app-language-button class="fixed bottom-0 left-0 w-10 m-8"></app-language-button>
+  <app-language-button class="fixed bottom-0 left-0 w-10 m-8"
+    (onSwitch)="onByuttonsFade()"></app-language-button>
 </div>

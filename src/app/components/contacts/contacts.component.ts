@@ -18,6 +18,7 @@ export class ContactsComponent {
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
 
+  imgLoaded: boolean = false;
 
   isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
   contactDec: string = environment.icons.contactDec;

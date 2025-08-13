@@ -1,7 +1,11 @@
-<div class="relative w-full h-full flex items-center justify-center">
+<div class="relative w-full h-full flex items-center justify-center transition-opacity ease-in duration-300"
+    [ngClass]="{
+            'opacity-0': !imgLoaded,
+            'opacity-100': imgLoaded,
+            }">
     <!-- Cornice -->
     <img src="assets/contacts/contacts_frame.png"
-        class="absolute lg:p-16 inset-0 w-full h-full object-contain pointer-events-none" alt="Cornice">
+        class="absolute lg:p-16 inset-0 w-full h-full object-contain pointer-events-none" (load)="imgLoaded = true" alt="Cornice">
 
 
     <!-- Contenuto al centro -->

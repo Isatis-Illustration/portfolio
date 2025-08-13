@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, computed, effect, inject, Signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, computed, effect, ElementRef, inject, Signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -28,17 +28,22 @@ export class HomeComponent{
   iconService: IconService = inject(IconService);
   translateService: TranslationService = inject(TranslationService);
 
+
+  buttonsFade: boolean = true;
+
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
   buttons: CustomButton[] = [];
   first2Buttons: CustomButton[] = [];
   last2Buttons: CustomButton[] = [];
+
   subTitle: Signal<string> = computed(() => {
     this.translateService.currentLanguage();
     const fileName = this.translateService.translate('SUBTITLE');
     const res = `assets/home/${fileName}.gif`;
     return res;
   });
+
 
   constructor(){
     effect(() => {
@@ -52,6 +57,8 @@ export class HomeComponent{
       [...this.first2Buttons, ...this.last2Buttons]
         .forEach(b => b.imageLoaded = false);
     })
+
+    this.onByuttonsFade()
   }
 
   navigate(path: string): void{
@@ -59,12 +66,16 @@ export class HomeComponent{
   }
 
 
+  onByuttonsFade(): void{
+    this.buttonsFade = true;
+
+    setTimeout(() => {
+      this.buttonsFade = false;
+    },20);
+  }
+
+
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
   }
-
-  areImagesLoaded(): boolean{
-    return this.buttons.slice(0, 4).every(b => b.imageLoaded);
-  }
-
 }
