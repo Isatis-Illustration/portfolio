@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Output, Signal } from '@angular/core';
 import { TranslationService } from '../../services/translation.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { TranslationService } from '../../services/translation.service';
 export class LanguageButtonComponent {
 
   translateService: TranslationService = inject(TranslationService);
-
+  
+  @Output() onSwitch: EventEmitter<void> = new EventEmitter<void>();
 
   basePath: string = 'assets/lang/'
   extens: string = '.png';
@@ -22,5 +23,6 @@ export class LanguageButtonComponent {
   
   toggleLanguage(): void {
     this.translateService.toggleLanguage();
+    this.onSwitch.emit();
   }
 }

@@ -13,9 +13,9 @@
       
       <a *ngFor="let btn of buttons; trackBy: trackById;" 
         class="flex items-center text-info"
-        [routerLink]="[`/${btn.path}`]" routerLinkActive="router-link-active" >
+        [routerLink]="[`/${btn.path}`]" routerLinkActive="underline">
         <div [innerHTML]="getIcon(btn.imageSVG!)" class="pr-4"></div>
-        {{ btn.label | translate }}
+        <p>{{ btn.label | translate }}</p>
       </a>
       <a [href]="instagram.link" target="_blank" and rel="noopener noreferrer"
         class="flex items-center text-info">

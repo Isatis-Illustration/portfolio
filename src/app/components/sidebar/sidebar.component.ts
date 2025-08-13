@@ -1,7 +1,7 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CustomButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { environment } from '../../environment/environment';
 import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
@@ -16,7 +16,8 @@ import { LanguageButtonComponent } from "../language-button/language-button.comp
     CommonModule,
     RouterLink,
     TranslatePipe,
-    LanguageButtonComponent
+    LanguageButtonComponent,
+    RouterLinkActive
 ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
