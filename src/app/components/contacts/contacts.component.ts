@@ -24,6 +24,17 @@ export class ContactsComponent {
   contactDec: string = environment.icons.contactDec;
   contacts = environment.user.contacts;
 
+
+  openEmail(): void{
+    window.location.href = `mailto:${this.contacts.email.email}`
+  }
+
+
+  encodeForMailto(text: string): string {
+    return encodeURIComponent(text);
+  }
+
+
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
   }

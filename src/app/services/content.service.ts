@@ -79,6 +79,8 @@ export class ContentService {
   }
 
 
+  //nome Gnometto.c.1
+
   private getType(url: string): string {
     const parts = url.split("/");
     const filenameWithExt = parts[parts.length - 1];  

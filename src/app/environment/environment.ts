@@ -19,8 +19,18 @@ export const environment = {
                 icon: 'instagram',
                 link: 'https://www.instagram.com/isatis.illustration/'
             },
-            email: 'laurenzi.isabella@gmail.com',
-            telegram: 'isatis.illustration'
+            email: {
+                email: 'laurenzi.isabella@gmail.com',
+                subject: `Richiesta Informazioni Portfolio`,
+                body: `Ciao, ho dato un’occhiata ai tuoi lavori.
+                
+Vorrei sapere di più su come lavori e magari parlare di un’idea che ho in mente.`,
+            },
+            telegram:{
+                nick: 'isatis.illustration',
+                icon: 'telegram',
+                link: 'https://t.me/isatis_illustration',
+            } 
         },
         
         description:{
