@@ -16,14 +16,17 @@
         }">
         <div class="flex">
             <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon('contacts')"></div>
-            <p>{{ contacts.email }}</p>
+            <button class="cursor-pointer" (click)="openEmail()">{{ contacts.email.email }}</button>
         </div>
         <div class="flex items-center">
-            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon('telegram')"></div>
-            <p>{{ contacts.telegram }}</p>
+            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(contacts.telegram.icon)"></div>
+            <a [href]="contacts.telegram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
+                <div class=""></div>
+                {{ contacts.telegram.nick }}
+            </a>
         </div>
         <div class="flex items-center">
-            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon('instagram')"></div>
+            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(contacts.instagram.icon)"></div>
             <a [href]="contacts.instagram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
                 <div class=""></div>
                 {{ contacts.instagram.nick }}
