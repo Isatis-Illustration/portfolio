@@ -5,7 +5,7 @@ import { UserService } from '../../services/user.service';
 import { ContentService } from '../../services/content.service';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../card/card.component';
-import { StorageKey } from '../../services/models/enums';
+import { StorageKey, Type } from '../../services/models/enums';
 
 @Component({
   selector: 'app-gallery',
@@ -25,10 +25,14 @@ export class GalleryComponent {
 
   // Writable signal for the current filter
   contents: Signal<Content[]> = computed(() => this.contentService.contents());
-
-  filteredContents = computed(() => {
+  filter: Signal<string> = computed(() => {
     const f = this.contentService.filter();
     localStorage.setItem(StorageKey.FILTER, f);
+    return f;
+  });
+
+  filteredContents = computed(() => {
+    const f = this.filter();
     const all = this.contents();
     if (!f) return all;
     return all.filter(c => c.type === f.charAt(0));
@@ -122,6 +126,11 @@ export class GalleryComponent {
       return this.screenWidth >= this.getBreakPoint(bp1) && this.screenWidth < this.getBreakPoint(bp2);
 
     return this.screenWidth >= this.getBreakPoint(bp1);
+  }
+
+  
+  isCharactersGallery(): boolean{
+    return this.filter().charAt(0) === Type.CHARACTER;
   }
 
 

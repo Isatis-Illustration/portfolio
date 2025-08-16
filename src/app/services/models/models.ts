@@ -22,6 +22,7 @@ export interface Content{
     description?: string;
     webContentLink?: string;
     type: string;
+    isGif: boolean;
 }
 
 

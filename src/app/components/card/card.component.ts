@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class CardComponent {
 
   @Input() content!: Content;
+  @Input() isCharacter: boolean = false;
   @Output() onClickImageEvent: EventEmitter<Content> = new EventEmitter<Content>;
 
   hasTitle: boolean = false;

@@ -61,6 +61,7 @@ export class ContentService {
           name: this.getNameByUrl(res.images[i]),
           imageUrl: res.images[i],
           type: this.getType(res.images[i]),
+          isGif: this.checkIfGif(res.images[i])
         };
         cloudContents.push(cont);
 
@@ -76,6 +77,16 @@ export class ContentService {
         this.contents.set(cloudContents);
       }
     });
+  }
+
+
+  private checkIfGif(url: string): boolean{
+    const parts: string[] = url.split('.');
+
+    if(!parts.length)
+      return false;
+
+    return parts[parts.length-1] === 'gif';
   }
 
 
