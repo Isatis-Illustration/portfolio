@@ -32,25 +32,13 @@ export class SidebarComponent {
   instagram = environment.user.contacts.instagram;
   hasLoaded = false;
 
-  // interval: number = 5*1000;
-  // logoIndex: number = 0;
-
-
-  
   user: User = environment.user;
-  year: number = new Date().getFullYear()
+  year: number = 2025;
 
   buttons: CustomButton[] = this.buttonService.buttons();
   logo: string = environment.icons.logo;
 
-
-  // ngOnInit(): void {
-    // interval(this.interval).subscribe(() => {
-    //   this.logoIndex++
-    //   this.logoIndex = this.logoIndex > 3 ? 0 : this.logoIndex
-    //   this.logo = `assets/logo/logo${this.logoIndex}.png`;
-    // })
-  // }
+  
   redirectToHome(): void{
     this.router.navigate(['home'])
   }
