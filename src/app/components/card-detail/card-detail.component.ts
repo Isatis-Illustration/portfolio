@@ -75,27 +75,13 @@ export class CardDetailComponent {
   }
 
   goToNext(): void{
-    let nextIndex: number = this.contentService.getFilteredContent().indexOf(this.content)+1;
-    nextIndex = nextIndex > this.getMaxContentsIndex() ? 0 : nextIndex;
-    let nextContent: Content = this.contentService.getFilteredContent().at(nextIndex)!;
-    nextContent = nextContent ? nextContent : this.content;
+    const nextContent: Content = this.contentService.getNextContent(this.content)
     this.router.navigate([`detail/${nextContent.id}`])
   }
 
   goToPrevious(): void{
-    let prevIndex: number = this.contentService.getFilteredContent().indexOf(this.content)-1;
-    prevIndex = prevIndex < 0 ? this.getMaxContentsIndex() : prevIndex;
-    let prevContent: Content = this.contentService.getFilteredContent().at(prevIndex)!;
-    prevContent = prevContent ? prevContent : this.content;
+    const prevContent: Content = this.contentService.getPrevContent(this.content)
     this.router.navigate([`detail/${prevContent.id}`])
-  }
-
-  getMaxContentsIndex(): number{
-    return this.contentService.getFilteredContent().length - 1;
-  }
-
-  getIcon(name: string): SafeHtml{
-    return this.iconService.getIcon(name);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -129,5 +115,10 @@ export class CardDetailComponent {
       back.style.right = 'auto';
       back.style.bottom = 'auto';
     }
+  }
+
+
+  getIcon(name: string): SafeHtml{
+    return this.iconService.getIcon(name);
   }
 }

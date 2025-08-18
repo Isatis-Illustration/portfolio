@@ -1,6 +1,7 @@
 export const environment = {
     hasRefresh: false,
     refreshTime: 30,
+    imagesUrl:`https://cloudinary-backend-iota.vercel.app/api/images`,
     user: {
         firstName: 'Isabella',
         lastName: 'Laurenzi',
