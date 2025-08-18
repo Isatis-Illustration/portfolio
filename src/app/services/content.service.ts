@@ -1,9 +1,9 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
 import { Content } from './models/models';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { environment } from '../environment/environment';
-import { Type } from './models/enums';
+import { StorageKey, Type } from './models/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +13,24 @@ export class ContentService {
   http: HttpClient = inject(HttpClient);
     
   //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive                                                                                                                
-  private cloudinaryEndpoint: string = `https://cloudinary-backend-iota.vercel.app/api/images`;
+  private cloudinaryEndpoint: string = environment.imagesUrl;
   
-  filter: WritableSignal<string> = signal('');
   contents: WritableSignal<Content[]> = signal([])
   contentToView: WritableSignal<Content | null> = signal(null);
+
+  filter: WritableSignal<string> = signal('');
+
+  setFilter(f: string): void{
+    localStorage.setItem(StorageKey.FILTER, f)
+    this.filter.set(f);
+  }
+  
+  filteredContent: Signal<Content[]> = computed(() => {
+    const f = this.filter();
+    const all = this.contents();
+    if (!f) return all;
+    return all.filter(c => c.type === f.charAt(0));
+  })
   
   private hasRefresh: boolean = environment.hasRefresh;
   private refreshTime: number = environment.refreshTime*1000 //in millisecondi

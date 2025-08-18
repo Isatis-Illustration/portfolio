@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { Content } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
-import { GifSyncService } from '../../gif-sync.service';
+import { GifSyncService } from '../../services/gif-sync.service';
 
 @Component({
   selector: 'app-card',

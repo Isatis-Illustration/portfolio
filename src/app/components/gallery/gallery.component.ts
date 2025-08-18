@@ -24,19 +24,8 @@ export class GalleryComponent {
   contentService: ContentService = inject(ContentService);
 
   // Writable signal for the current filter
-  contents: Signal<Content[]> = computed(() => this.contentService.contents());
-  filter: Signal<string> = computed(() => {
-    const f = this.contentService.filter();
-    localStorage.setItem(StorageKey.FILTER, f);
-    return f;
-  });
-
-  filteredContents = computed(() => {
-    const f = this.filter();
-    const all = this.contents();
-    if (!f) return all;
-    return all.filter(c => c.type === f.charAt(0));
-  });
+  contents: Signal<Content[]> = computed(() => this.contentService.filteredContent());
+  filter: string = '';
 
   screenWidth!: number;
   colsAmmount!: number;
@@ -49,22 +38,23 @@ export class GalleryComponent {
     // Subscribe to route changes and update the filter signal
     this.route.paramMap.subscribe(params => {
       const f = params.get('filter')?.toLowerCase()!;
+      this.filter = f;
       this.contentService.filter.set(f);
     });
 
     // Re-distribute columns whenever filteredContents or screenWidth changes
     effect(() => {
-      // Access filteredContents to register dependency
-      this.filteredContents();
       // Clear and redistribute
       this.clearColumns();
       this.distributeContent();
     });
   }
 
+
   ngOnInit() {
     this.screenWidth = window.innerWidth;
   }
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event: UIEvent) {
@@ -100,7 +90,7 @@ export class GalleryComponent {
   distribute3ColsContent() {
     this.colsAmmount = 3;
 
-    this.filteredContents().forEach((item, index) => {
+    this.contents().forEach((item, index) => {
       if (index % 3 === 0) this.column1.push(item);
       else if (index % 3 === 1) this.column2.push(item);
       else this.column3.push(item);
@@ -110,7 +100,7 @@ export class GalleryComponent {
   distribute2ColsContent() {
     this.colsAmmount = 2;
 
-    this.filteredContents().forEach((item, index) => {
+    this.contents().forEach((item, index) => {
       if (index % 2 === 0) this.column1.push(item);
       else this.column2.push(item);
     });
@@ -118,7 +108,7 @@ export class GalleryComponent {
 
   distribute1ColsContent() {
     this.colsAmmount  = 1;
-    this.column1 = this.filteredContents()
+    this.column1 = this.contents()
   }
 
   checkScreenSize(bp1: string, bp2?: string):boolean {
@@ -130,10 +120,10 @@ export class GalleryComponent {
 
   
   isCharactersGallery(): boolean{
-    return this.filter().charAt(0) === Type.CHARACTER;
+    return this.filter.charAt(0) === Type.CHARACTER;
   }
 
-
+  
   getBreakPoint(bp: string): number{
     switch(bp){
       case 'sm':
