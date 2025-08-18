@@ -1,12 +1,13 @@
 {
     "HOME": "Home",
     "ILLUSTRATIONS": "Illustrations",
-    "CHARACTER": "Character Desgin",
+    "CHARACTER": "Character Design",
     "PROFILE": "Profile",
     "CONTACTS": "Contacts",
 
     "NO_IMAGE": "No image available",
     "TRANSLATE": "Translate",
-    "SUBTITLE": "subtitle"
+    "SUBTITLE": "subtitle",
+    "CHANGE_LANGUAGE": "Cambia Lingua"
 
 }
