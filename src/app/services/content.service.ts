@@ -17,24 +17,25 @@ export class ContentService {
   
   contents: WritableSignal<Content[]> = signal([])
   contentToView: WritableSignal<Content | null> = signal(null);
-
+  
+  
   filter: WritableSignal<string> = signal('');
 
   setFilter(f: string): void{
     localStorage.setItem(StorageKey.FILTER, f)
     this.filter.set(f);
   }
-  
+
   filteredContent: Signal<Content[]> = computed(() => {
     const f = this.filter();
     const all = this.contents();
     if (!f) return all;
-    return all.filter(c => c.type === f.charAt(0));
+    return all.filter(c => c.type === f.charAt(0)).sort((a, b) => a.position - b.position);
   })
   
+
   private hasRefresh: boolean = environment.hasRefresh;
   private refreshTime: number = environment.refreshTime*1000 //in millisecondi
-
 
 
   constructor(){
@@ -57,10 +58,26 @@ export class ContentService {
     this.contentToView.set(null);
   }
 
-  
-  getFilteredContent(): Content[]{
-    return this.contents().filter(c => c.type === this.filter()[0]).sort();
+  getNextContent(actualCont: Content): Content{
+    let nextIndex = this.filteredContent().indexOf(actualCont)+1;
+    nextIndex = nextIndex > this.getMaxContentsIndex() ? 0 : nextIndex;
+
+    let nextContent: Content = this.filteredContent().at(nextIndex)!;
+    nextContent = nextContent ? nextContent : this.contentToView()!;
+
+    return nextContent;
   }
+
+  getPrevContent(actualCont: Content): Content{
+    let prevIndex: number = this.filteredContent().indexOf(actualCont)-1;
+    prevIndex = prevIndex < 0 ? this.getMaxContentsIndex() : prevIndex;
+
+    let prevContent: Content = this.filteredContent().at(prevIndex)!;
+    prevContent = prevContent ? prevContent : this.contentToView()!;
+
+    return prevContent;
+  }
+
 
 
   getCloudinaryImages(): void {
@@ -69,15 +86,18 @@ export class ContentService {
 
       for (let i = 0; i < res.images.length; i++) {
 
+        let img = res.images[i];
+
         let cont: Content = {
           id: i + "",
-          name: this.getNameByUrl(res.images[i]),
-          imageUrl: res.images[i],
-          type: this.getType(res.images[i]),
-          isGif: this.checkIfGif(res.images[i])
+          name: this.getNameByUrl(img),
+          imageUrl: img,
+          type: this.getType(img),
+          isGif: this.checkIfGif(img),
+          position: this.getPosition(img),
         };
+        
         cloudContents.push(cont);
-
       }
 
       const currentIds = this.contents().map(f => f.id).sort();
@@ -103,7 +123,14 @@ export class ContentService {
   }
 
 
-  //nome Gnometto.c.1
+  getPosition(url: string): number {
+    const parts: string[] = url.split('.');
+
+    if(!parts.length)
+      return 0;
+
+    return Number(parts[parts.length-2]) || 0;
+  }
 
   private getType(url: string): string {
     const parts = url.split("/");
@@ -119,6 +146,13 @@ export class ContentService {
     const name = filenameWithExt.split(".")[0];       
     return name;
   }
+
+
+  private getMaxContentsIndex(): number{
+    return this.filteredContent().length - 1;
+  }
+
+
 
   // getDriveImages(): void {
   //   this.http.get<any>(this.DB_URL).subscribe((googleFiles) => 

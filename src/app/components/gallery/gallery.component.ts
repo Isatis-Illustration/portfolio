@@ -39,7 +39,7 @@ export class GalleryComponent {
     this.route.paramMap.subscribe(params => {
       const f = params.get('filter')?.toLowerCase()!;
       this.filter = f;
-      this.contentService.filter.set(f);
+      this.contentService.setFilter(f);
     });
 
     // Re-distribute columns whenever filteredContents or screenWidth changes

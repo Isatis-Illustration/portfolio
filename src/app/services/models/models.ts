@@ -23,6 +23,7 @@ export interface Content{
     webContentLink?: string;
     type: string;
     isGif: boolean;
+    position: number;
 }
 
 
