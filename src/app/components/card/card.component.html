@@ -29,11 +29,12 @@
       
       <!-- Immagine nascosta finché non è caricata -->
       <img *ngIf="content.imageUrl" 
-          [ngClass]="{'max-h-[400px]': content.isGif}"
-          (load)="hasLoaded = true" 
-          [src]="content.imageUrl" 
-          [alt]="content.name"
-          class="w-full h-auto object-contain select-none transition-opacity duration-300" />
+        #imgRef
+        [ngClass]="{'max-h-[400px]': content.isGif}"
+        (load)="hasLoaded = true" 
+        [src]="content.imageUrl" 
+        [alt]="content.name"
+        class="w-full h-auto object-contain select-none transition-opacity duration-300" />
     </div>
 
   </div>
