@@ -1,3 +1,6 @@
-<button (click)="toggleLanguage()" class="cursor-pointer">
-    <img [src]="`${basePath}${lang()}${extens}`" class="pointer-events-none select-none">
-</button>
+<div (click)="toggleLanguage()" class="cursor-pointer flex justify-start items-center gap-x-1">
+    <img class="pointer-events-none object-contain select-none"
+        [src]="`${basePath}${lang()}${extens}`">
+    
+    <div *ngIf="showText" class=" whitespace-nowrap">{{ "CHANGE_LANGUAGE" | translate }}</div>
+</div>

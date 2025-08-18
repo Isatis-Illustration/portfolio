@@ -17,7 +17,11 @@
       </div>
     </div>
     <div
-      class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-primary cursor-pointer min-h-[200px]"
+      class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-white cursor-pointer"
+      [ngClass]="{
+        'min-h-[400px]': isCharacter,
+        'min-h-[200px]': !isCharacter,
+      }"
       (click)="onClickImageEvent.emit(content)">
       
       <!-- Spinner sempre presente, nascosto quando l'immagine è caricata -->
@@ -25,10 +29,12 @@
       
       <!-- Immagine nascosta finché non è caricata -->
       <img *ngIf="content.imageUrl" 
-          (load)="hasLoaded = true" 
-          [src]="content.imageUrl" 
-          [alt]="content.name"
-          class="w-full h-auto object-contain select-none transition-opacity duration-300" />
+        #imgRef
+        [ngClass]="{'max-h-[400px]': content.isGif}"
+        (load)="hasLoaded = true" 
+        [src]="content.imageUrl" 
+        [alt]="content.name"
+        class="w-full h-auto object-contain select-none transition-opacity duration-300" />
     </div>
 
   </div>

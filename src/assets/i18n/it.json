@@ -1,11 +1,13 @@
 {
     "HOME": "Home",
     "ILLUSTRATIONS": "Illustrazioni",
-    "CHARACTER": "Character Desgin",
+    "CHARACTER": "Character Design",
     "PROFILE": "Profilo",
     "CONTACTS": "Contatti",
 
     "NO_IMAGE": "Nessuna immagine",
     "TRANSLATE": "Traduci",
-    "SUBTITLE": "sottotitolo"
+    "SUBTITLE": "sottotitolo",
+    "CHANGE_LANGUAGE": "Change Language"
+
 }

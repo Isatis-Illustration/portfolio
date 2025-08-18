@@ -1,6 +1,7 @@
 <div class="h-full bg-primary w-64 p-6 shadow-xl rounded-tr-3xl rounded-br-3xl flex flex-col justify-between">
-  <div>
-    <button class="pt-6 text-3xl font-bold text-info mb-10 font-serif w-5/6 select-none transition-opacity duration-300 ease-in cursor-pointer"
+  <div class="flex flex-col justify-center items-center gap-y-10">
+    
+    <button class="pt-6 text-3xl font-bold text-info font-serif w-5/6 select-none transition-opacity duration-300 ease-in cursor-pointer"
         (click)="redirectToHome()"
         [ngClass]="{
           'opacity-100': hasLoaded,
@@ -26,11 +27,14 @@
     </nav>
     
   </div>
-  <div class="text-sm text-info mt-10">
-    <div class="w-6">
-      <app-language-button></app-language-button>
+
+  <div class="text-sm mt-5 text-info flex flex-col items-center justify-center">
+    <div class="w-40">
+      <div class="w-7 pb-3">
+        <app-language-button [showText]="true"></app-language-button>
+      </div>
     </div>
-    <p>&copy; {{`2025 ${user.firstName} ${user.lastName}`}}</p>
+    <p>&copy; {{`${year} ${user.firstName} ${user.lastName}`}}</p>
     <p *ngIf="user.slogan" class="italic">"{{user.slogan}}"</p>
   </div>
 </div>
