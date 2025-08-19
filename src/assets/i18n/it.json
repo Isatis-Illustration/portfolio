@@ -7,7 +7,8 @@
 
     "NO_IMAGE": "Nessuna immagine",
     "TRANSLATE": "Traduci",
-    "SUBTITLE": "sottotitolo",
-    "CHANGE_LANGUAGE": "Change Language"
-
+    "CHANGE_LANGUAGE": "Change Language",
+    "INFO": "Informazioni",
+    
+    "SUBTITLE": "sottotitolo"
 }
