@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { Content } from './models/models';
+import { ClaudinaryImage, Content } from './models/models';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { environment } from '../environment/environment';
@@ -81,20 +81,22 @@ export class ContentService {
 
 
   getCloudinaryImages(): void {
-    this.http.get<any>(this.cloudinaryEndpoint).subscribe((res) => {
+    this.http.get<{images: ClaudinaryImage[]}>(this.cloudinaryEndpoint).subscribe((res) => {
+      console.log(res)
       let cloudContents: Content[] = [];
 
       for (let i = 0; i < res.images.length; i++) {
 
-        let img = res.images[i];
+        let img: ClaudinaryImage = res.images[i];
 
         let cont: Content = {
           id: i + "",
-          name: this.getNameByUrl(img),
-          imageUrl: img,
-          type: this.getType(img),
-          isGif: this.checkIfGif(img),
-          position: this.getPosition(img),
+          imageUrl: img.url,
+          title: img.context.caption || this.getTitleByUrl(img.url),
+          description: img.context.alt || '',
+          type: img.context.type || this.getType(img.url),
+          position: Number(img.context.position) || this.getPosition(img.url),
+          isGif: this.checkIfGif(img.url),
         };
         
         cloudContents.push(cont);
@@ -140,7 +142,7 @@ export class ContentService {
   }
 
 
-  private getNameByUrl(url: string): string {
+  private getTitleByUrl(url: string): string {
     const parts = url.split("/");
     const filenameWithExt = parts[parts.length - 1];  
     const name = filenameWithExt.split(".")[0];       

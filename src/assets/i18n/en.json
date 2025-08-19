@@ -7,7 +7,8 @@
 
     "NO_IMAGE": "No image available",
     "TRANSLATE": "Translate",
-    "SUBTITLE": "subtitle",
-    "CHANGE_LANGUAGE": "Cambia Lingua"
-
+    "CHANGE_LANGUAGE": "Cambia Lingua",
+    "INFO": "Information",
+    
+    "SUBTITLE": "subtitle"
 }

@@ -12,7 +12,7 @@
     }">
       <div class="relative z-10 px-3">
         <h2 class="text-center text-2xl font-extrabold text-info tracking-tight">
-          {{ content.name || 'Progetto senza titolo' }}
+          {{ content.title || 'Progetto senza titolo' }}
         </h2>
       </div>
     </div>
@@ -33,7 +33,7 @@
         [ngClass]="{'max-h-[400px]': content.isGif}"
         (load)="hasLoaded = true" 
         [src]="content.imageUrl" 
-        [alt]="content.name"
+        [alt]="content.title"
         class="w-full h-auto object-contain select-none transition-opacity duration-300" />
     </div>
 
