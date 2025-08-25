@@ -23,9 +23,10 @@
   --color-navbar-bor:       #000000;  /**Bordo navbar*/
 }
 
-/* body {
-  font-family: 'Winky Rough', cursive;
-} */
+body {
+  font-family: "Delius", cursive;
+  font-weight: 500;
+}
 
 
 ::selection {

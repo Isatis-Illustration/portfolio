@@ -17,12 +17,13 @@
       </div>
     </div>
     <div
-      class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-white cursor-pointer"
+      class="relative z-10 w-full flex items-center justify-center overflow-hidden bg-white cursor-pointer min-h-[200px]" 
+      (click)="onClickImageEvent.emit(content)">
+      <!-- Setta dimesioni fisse per i character (rimuovere min-h-[200px] da classe sopra)
       [ngClass]="{
         'min-h-[400px]': isCharacter,
         'min-h-[200px]': !isCharacter,
-      }"
-      (click)="onClickImageEvent.emit(content)">
+      }" -->
       
       <!-- Spinner sempre presente, nascosto quando l'immagine è caricata -->
       

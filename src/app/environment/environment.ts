@@ -12,7 +12,7 @@ export const environment = {
         gender: 'Female',
         city: 'Rome',
         slogan: '',
-        image: 'assets/personal/artist.jpeg',
+        image: 'assets/personal/artist.jpg',
         
         contacts: {
             instagram: {
