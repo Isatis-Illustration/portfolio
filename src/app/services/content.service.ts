@@ -12,7 +12,7 @@ export class ContentService {
 
   http: HttpClient = inject(HttpClient);
     
-  //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive                                                                                                                
+                                                                                                              
   private cloudinaryEndpoint: string = environment.imagesUrl;
   
   contents: WritableSignal<Content[]> = signal([])
@@ -30,7 +30,7 @@ export class ContentService {
     const f = this.filter();
     const all = this.contents();
     if (!f) return all;
-    return all.filter(c => c.type === f.charAt(0)).sort((a, b) => a.position - b.position);
+    return all.filter(c => f.includes(c.type)).sort((a, b) => a.position - b.position);
   })
   
 
@@ -82,7 +82,6 @@ export class ContentService {
 
   getCloudinaryImages(): void {
     this.http.get<{images: ClaudinaryImage[]}>(this.cloudinaryEndpoint).subscribe((res) => {
-      console.log(res)
       let cloudContents: Content[] = [];
 
       for (let i = 0; i < res.images.length; i++) {
@@ -94,13 +93,14 @@ export class ContentService {
           imageUrl: img.url,
           title: img.context.caption || this.getTitleByUrl(img.url),
           description: img.context.alt || '',
-          type: img.context.type || this.getType(img.url),
+          type: img.context.type  === 'i' || this.getType(img.url) === 'i' ? Type.ILLUSTRATION : Type.CHARACTER,
           position: Number(img.context.position) || this.getPosition(img.url),
           isGif: this.checkIfGif(img.url),
         };
         
         cloudContents.push(cont);
       }
+
 
       const currentIds = this.contents().map(f => f.id).sort();
       const newIds = cloudContents.map(f => f.id).sort();
@@ -137,7 +137,7 @@ export class ContentService {
   private getType(url: string): string {
     const parts = url.split("/");
     const filenameWithExt = parts[parts.length - 1];  
-    const type = filenameWithExt.split(".")[1] === Type.CHARACTER ? Type.CHARACTER : Type.ILLUSTRATION;
+    const type = filenameWithExt.split(".")[1] === 'i' ? Type.ILLUSTRATION : Type.CHARACTER;
     return type;
   }
 
@@ -154,7 +154,7 @@ export class ContentService {
     return this.filteredContent().length - 1;
   }
 
-
+  //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive  
 
   // getDriveImages(): void {
   //   this.http.get<any>(this.DB_URL).subscribe((googleFiles) => 
