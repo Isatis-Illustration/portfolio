@@ -1,9 +1,12 @@
 <div class="flex flex-col h-full">
 
-  <button class="hidden sm:block fixed top-0 right-0 m-5 cursor-pointer w-fit z-10" (click)="toggleFlip()"
+  <button class="hidden sm:block fixed top-0 right-0 m-5 cursor-pointer w-fit z-10 rounded-full bg-primary text-info p-1" (click)="toggleFlip()"
     [innerHTML]="getIcon('info')">
   </button>
-
+  <button class="hidden sm:block fixed top-0 right-0 mx-5 mt-20 cursor-pointer w-fit z-10 rounded-full bg-primary text-info p-1" (click)="goBack()"
+    [innerHTML]="getIcon('back')">
+  </button>
+ 
   <!--IMAGE CONTAINER-->
   <div
     class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2 transition-opacity duration-300 ease-in"
@@ -50,7 +53,7 @@
     </div>
 
     <ng-template #noImage>
-      <div class="text-center text-green-500 font-semibold text-lg p-6 w-full">
+      <div class="text-center text-info font-semibold text-lg p-6 w-full">
         <div class="text-4xl mb-2">🌿</div>
         {{ "NO_IMAGE" | translate }}
       </div>

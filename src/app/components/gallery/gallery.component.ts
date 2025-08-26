@@ -5,7 +5,7 @@ import { UserService } from '../../services/user.service';
 import { ContentService } from '../../services/content.service';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../card/card.component';
-import { StorageKey, Type } from '../../services/models/enums';
+import { Type } from '../../services/models/enums';
 
 @Component({
   selector: 'app-gallery',
@@ -120,7 +120,7 @@ export class GalleryComponent {
 
   
   isCharactersGallery(): boolean{
-    return this.filter.charAt(0) === Type.CHARACTER;
+    return this.filter === Type.CHARACTER;
   }
 
   

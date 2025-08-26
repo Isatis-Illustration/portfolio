@@ -12,7 +12,7 @@ export const environment = {
         gender: 'Female',
         city: 'Rome',
         slogan: '',
-        image: 'assets/personal/artist.jpg',
+        image: 'assets/personal/artist.jpeg',
         
         contacts: {
             instagram: {
@@ -23,7 +23,7 @@ export const environment = {
             email: {
                 email: 'laurenzi.isabella@gmail.com',
                 subject: `Richiesta Informazioni Portfolio`,
-                body: `Ciao, ho dato un’occhiata ai tuoi lavori.
+                body: `Ciao, ho dato un’occhiata alle tue illustrazioni.
                 
 Vorrei sapere di più su come lavori e magari parlare di un’idea che ho in mente.`,
             },

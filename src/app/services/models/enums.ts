@@ -5,8 +5,8 @@ export enum StorageKey{
 }
 
 export enum Type{
-    ILLUSTRATION = 'i',
-    CHARACTER = 'c',
+    ILLUSTRATION = 'illustration',
+    CHARACTER = 'character',
 }
 
 export enum Language{

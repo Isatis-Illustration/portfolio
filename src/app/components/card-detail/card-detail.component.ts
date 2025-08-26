@@ -121,4 +121,8 @@ export class CardDetailComponent {
   getIcon(name: string): SafeHtml{
     return this.iconService.getIcon(name);
   }
+
+  goBack(): void{
+    this.router.navigate([`gallery/${this.contentService.filter()}`])
+  }
 }

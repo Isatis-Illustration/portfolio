@@ -31,7 +31,6 @@
       <!-- Immagine nascosta finché non è caricata -->
       <img *ngIf="content.imageUrl" 
         #imgRef
-        [ngClass]="{'max-h-[400px]': content.isGif}"
         (load)="hasLoaded = true" 
         [src]="content.imageUrl" 
         [alt]="content.title"
