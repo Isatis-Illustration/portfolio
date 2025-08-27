@@ -1,32 +1,38 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 import { User } from './models/models';
-import { environment } from '../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  user!: User;
+  user: WritableSignal<User | null> = signal(null);
 
-  constructor(){
-    this.user = environment.user;
-    this.calculateAge();
+  identifies = {
+    email: 'gmail',
+    telegram: 't.me',
+    instagram: 'instagram',
   }
 
-  calculateAge(): void {
+  
+  setUserByClaudinary(cUser: any): void{
 
-    const birthDate = new Date(this.user.birthDate);
-    const today = new Date();
-
-    let calculatedAge = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    const dayDiff = today.getDate() - birthDate.getDate();
-
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      calculatedAge--;
+    const user: User = {
+      nick: cUser.nick,
+      firstName: cUser.firstName,
+      lastName: cUser.lastName,
+      birthDate: cUser.birthDate,
+      image: cUser.image,
+      email: cUser.email,
+      instagram: cUser.instagram,
+      telegram: cUser.telegram,
+      description: {
+        it: cUser.descriptionIt,
+        en: cUser.descriptionEn,
+      },
     }
 
-    this.user.age = calculatedAge;
+    this.user.set(user);
   }
+
 }

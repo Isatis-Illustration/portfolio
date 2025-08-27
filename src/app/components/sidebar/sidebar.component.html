@@ -34,7 +34,6 @@
         <app-language-button [showText]="true"></app-language-button>
       </div>
     </div>
-    <p>&copy; {{`${year} ${user.firstName} ${user.lastName}`}}</p>
-    <p *ngIf="user.slogan" class="italic">"{{user.slogan}}"</p>
+    <p>&copy; {{`${year} ${user().firstName} ${user().lastName}`}}</p>
   </div>
 </div>

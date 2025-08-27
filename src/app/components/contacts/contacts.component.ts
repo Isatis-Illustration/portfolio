@@ -22,7 +22,11 @@ export class ContactsComponent {
 
   isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
   contactDec: string = environment.icons.contactDec;
-  contacts = environment.user.contacts;
+  contacts = {
+    instagram: environment.user.instagram,
+    email: environment.user.email,
+    telegram: environment.user.telegram,
+  }
 
 
   openEmail(): void{

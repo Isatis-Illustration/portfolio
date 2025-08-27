@@ -15,8 +15,10 @@
             'mt-28 gap-6 sm:gap-8': !isMenuOpen()
         }">
         <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon('contacts')"></div>
-            <button class="cursor-pointer" (click)="openEmail()">{{ contacts.email.email }}</button>
+            <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon(contacts.email.icon)"></div>
+            <button class="cursor-pointer" (click)="openEmail()">
+                {{ contacts.email.email }}
+            </button>
         </div>
         <div class="flex items-center hover:scale-105">
             <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(contacts.telegram.icon)"></div>

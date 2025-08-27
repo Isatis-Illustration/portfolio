@@ -2,36 +2,36 @@ export const environment = {
     hasRefresh: false,
     refreshTime: 30,
     imagesUrl:`https://cloudinary-backend-iota.vercel.app/api/images`,
+        icons: {
+        logo: `assets/logo/logo.png`,
+        nameGif: 'assets/home/name.gif',
+        lNameGif: 'assets/home/surname.gif',
+        contactDec: 'assets/contacts/dog.png',
+    },
     user: {
+        nick: 'Isatis',
         firstName: 'Isabella',
         lastName: 'Laurenzi',
-        nick: 'Isatis',
-        role: 'Illustrator',
         birthDate: '2001-03-19',
-        age: 0,
-        gender: 'Female',
-        city: 'Rome',
-        slogan: '',
         image: 'assets/personal/artist.jpeg',
         
-        contacts: {
-            instagram: {
-                nick: '@isatis.illustration',
-                icon: 'instagram',
-                link: 'https://www.instagram.com/isatis.illustration/'
-            },
-            email: {
-                email: 'laurenzi.isabella@gmail.com',
-                subject: `Richiesta Informazioni Portfolio`,
-                body: `Ciao, ho dato un’occhiata alle tue illustrazioni.
-                
+        instagram: {
+            nick: '@isatis.illustration',
+            icon: 'instagram',
+            link: 'https://www.instagram.com/isatis.illustration/'
+        },
+        email: {
+            email: 'laurenzi.isabella@gmail.com',
+            icon: 'contacts',
+            subject: `Richiesta Informazioni Portfolio`,
+            body: `Ciao, ho dato un’occhiata alle tue illustrazioni.
+            
 Vorrei sapere di più su come lavori e magari parlare di un’idea che ho in mente.`,
-            },
-            telegram:{
-                nick: 'isatis.illustration',
-                icon: 'telegram',
-                link: 'https://t.me/isatis_illustration',
-            } 
+        },
+        telegram:{
+            nick: 'isatis.illustration',
+            icon: 'telegram',
+            link: 'https://t.me/isatis_illustration',
         },
         
         description:{
@@ -53,10 +53,4 @@ I’m currently studying animation at the Scuola Internazionale di Comics in Rom
 My goal is to work in editorial illustration, especially children’s publishing, as I believe images play a powerful educational role and support emotional and cognitive growth. I am open to projects for various audiences and contexts, seeking opportunities to grow, collaborate, and create authentic and engaging visual worlds.`
         }
     },
-    icons: {
-        logo: `assets/logo/logo.png`,
-        nameGif: 'assets/home/name.gif',
-        lNameGif: 'assets/home/surname.gif',
-        contactDec: 'assets/contacts/dog.png',
-    }
 }

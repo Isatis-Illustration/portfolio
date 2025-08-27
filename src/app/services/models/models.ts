@@ -32,20 +32,40 @@ export interface Content{
 
 
 export interface User{
+    nick: string,
     firstName: string,
     lastName: string,
-    nick: string,
     birthDate: string,
-    age: number,
-    description: UserDescription,
-    gender: string,
-    city: string,
-    slogan: string,
+    description: Description,
     image: string,
+    email: Email,
+    instagram: Instagram,
+    telegram: Telegram,
 }
 
 
-export interface UserDescription{
+export interface Instagram{
+    nick: string,
+    link: string,
+    icon: string,
+}
+
+export interface Email{
+    email: string,
+    subject: string,
+    body: string,
+    icon: string,
+}
+
+
+export interface Telegram{
+    nick: string,
+    link: string,
+    icon: string,
+}
+
+
+export interface Description{
     it: string,
     en: string,
 }
