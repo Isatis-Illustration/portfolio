@@ -6,19 +6,19 @@ export const environment = {
         logo: `assets/logo/logo.png`,
         nameGif: 'assets/home/name.gif',
         lNameGif: 'assets/home/surname.gif',
-        contactDec: 'assets/contacts/dog.png',
+        contactFrame: 'assets/contacts/dog.png',
     },
     user: {
         nick: 'Isatis',
         firstName: 'Isabella',
         lastName: 'Laurenzi',
         birthDate: '2001-03-19',
-        image: 'assets/personal/artist.jpeg',
+        imageUrl: 'assets/personal/artist.jpeg',
         
         instagram: {
             nick: '@isatis.illustration',
             icon: 'instagram',
-            link: 'https://www.instagram.com/isatis.illustration/'
+            link: 'https://www.instagram.com/isatis.illustration'
         },
         email: {
             email: 'laurenzi.isabella@gmail.com',

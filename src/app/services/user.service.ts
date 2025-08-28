@@ -1,12 +1,13 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { User } from './models/models';
+import { Email, Instagram, Telegram, User } from './models/models';
+import { environment } from '../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  user: WritableSignal<User | null> = signal(null);
+  user: WritableSignal<User> = signal(environment.user);
 
   identifies = {
     email: 'gmail',
@@ -17,22 +18,55 @@ export class UserService {
   
   setUserByClaudinary(cUser: any): void{
 
+    const email: Email = {
+      email: cUser.context.email,
+      icon: 'contacts',
+      subject: cUser.context.emailSubject,
+      body: cUser.context.emailBody
+    };
+
+    const instagram: Instagram = {
+      nick: this.getInstagramNick(cUser.context.instagram),
+      icon: 'instagram',
+      link: cUser.context.instagram
+    };
+
+    const telegram: Telegram = {
+      nick: this.getTelegramNick(cUser.context.telegram),
+      icon: 'telegram',
+      link: cUser.context.telegram
+    };
+
     const user: User = {
-      nick: cUser.nick,
-      firstName: cUser.firstName,
-      lastName: cUser.lastName,
-      birthDate: cUser.birthDate,
-      image: cUser.image,
-      email: cUser.email,
-      instagram: cUser.instagram,
-      telegram: cUser.telegram,
+      imageUrl: cUser.url,
+      nick: cUser.context.nick,
+      firstName: cUser.context.firstName,
+      lastName: cUser.context.lastName,
+      birthDate: cUser.context.birthDate,
+      email: email,
+      instagram: instagram,
+      telegram: telegram,
       description: {
-        it: cUser.descriptionIt,
-        en: cUser.descriptionEn,
+        it: cUser.context.descriptionIt,
+        en: cUser.context.descriptionEn,
       },
-    }
+    };
 
     this.user.set(user);
   }
 
+
+  getInstagramNick(url: string): string{
+    const parts: string[] = url.split('/');
+    const nick: string = parts[parts.length-1];
+    
+    return `@${nick}`;
+  }
+
+  getTelegramNick(url: string): string{
+    const parts: string[] = url.split('/');
+    const nick: string = parts[parts.length-1].replace('_', '.');
+    
+    return `${nick}`;
+  }
 }

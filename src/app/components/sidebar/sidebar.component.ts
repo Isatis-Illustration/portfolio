@@ -31,11 +31,9 @@ export class SidebarComponent {
   translateService: TranslationService = inject(TranslationService);
   router: Router = inject(Router);
 
-  instagram = environment.user.instagram;
-  hasLoaded = false;
-
-  user: Signal<User> = computed(() => this.userService.user() || environment.user);
-
+  user: Signal<User> = computed(() => this.userService.user());
+  
+  hasLoaded: boolean = false;
   year: number = 2025;
 
   buttons: CustomButton[] = this.buttonService.buttons();

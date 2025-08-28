@@ -82,13 +82,11 @@ export class ContentService {
   }
 
 
-
   getCloudinaryImages(): void {
     
     this.http.get<{images: any}>(this.cloudinaryEndpoint).subscribe((res) => {
       
       let cloudContents: Content[] = [];
-
 
       filler: for (let i = 0; i < res.images.length; i++) {
         

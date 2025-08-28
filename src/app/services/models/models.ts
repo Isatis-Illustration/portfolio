@@ -24,12 +24,12 @@ export interface Content{
 
 
 export interface User{
+    imageUrl: string,
     nick: string,
     firstName: string,
     lastName: string,
     birthDate: string,
     description: Description,
-    image: string,
     email: Email,
     instagram: Instagram,
     telegram: Telegram,
@@ -48,7 +48,6 @@ export interface Email{
     body: string,
     icon: string,
 }
-
 
 export interface Telegram{
     nick: string,

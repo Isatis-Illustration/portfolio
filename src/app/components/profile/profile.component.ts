@@ -1,5 +1,4 @@
 import { Component, computed, inject, Signal } from '@angular/core';
-import { environment } from '../../environment/environment';
 import { User } from '../../services/models/models';
 import { TranslationService } from '../../services/translation.service';
 import { Language } from '../../services/models/enums';
@@ -21,7 +20,7 @@ export class ProfileComponent {
 
   imgLoaded: boolean = false;
 
-  user: Signal<User> = computed(() => this.userService.user() || environment.user);
+  user: Signal<User> = computed(() => this.userService.user());
 
   description: Signal<string> = computed(() => {
 

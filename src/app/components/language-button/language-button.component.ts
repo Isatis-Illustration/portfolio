@@ -22,6 +22,7 @@ export class LanguageButtonComponent {
 
   basePath: string = 'assets/lang/'
   extens: string = '.png';
+  
   lang: Signal<string> = computed(() => {
     this.translateService.currentLanguage;
     return this.translateService.getOtherLang()

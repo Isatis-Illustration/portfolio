@@ -35,7 +35,7 @@ export class NavbarComponent {
   buttons: CustomButton[] = this.buttonService.buttons();
   logo: string = environment.icons.logo;
   isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
-  user: Signal<User> = computed(() => this.userService.user() || environment.user);
+  user: Signal<User> = computed(() => this.userService.user());
 
 
   @HostListener('document:click', ['$event'])
