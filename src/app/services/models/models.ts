@@ -1,11 +1,3 @@
-// export interface Content{
-//     id: number;
-//     title?: string;
-//     imageUrl: string;
-//     description?: string;
-//     doc?: Date;
-// }
-
 export interface ClaudinaryImage{
     url: string,
     context: Context
@@ -20,7 +12,7 @@ export interface Context{
 
 
 export interface Content{
-    id: string;
+    id: number;
     title: string;
     imageUrl?: string;
     description?: string;

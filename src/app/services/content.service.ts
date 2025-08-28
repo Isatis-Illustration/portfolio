@@ -59,6 +59,7 @@ export class ContentService {
     this.contentToView.set(null);
   }
 
+
   getNextContent(actualCont: Content): Content{
     let nextIndex = this.filteredContent().indexOf(actualCont)+1;
     nextIndex = nextIndex > this.getMaxContentsIndex() ? 0 : nextIndex;
@@ -68,6 +69,7 @@ export class ContentService {
 
     return nextContent;
   }
+
 
   getPrevContent(actualCont: Content): Content{
     let prevIndex: number = this.filteredContent().indexOf(actualCont)-1;
@@ -82,31 +84,22 @@ export class ContentService {
 
 
   getCloudinaryImages(): void {
+    
     this.http.get<{images: any}>(this.cloudinaryEndpoint).subscribe((res) => {
       
       let cloudContents: Content[] = [];
 
 
-      fill: for (let i = 0; i < res.images.length; i++) {
+      filler: for (let i = 0; i < res.images.length; i++) {
         
         //get user
         if(this.isUserImage(res.images[i])){
           this.userService.setUserByClaudinary(res.images[i]);
-          continue fill;
+          continue filler;
         }
 
         let img: ClaudinaryImage = res.images[i];
-
-        let cont: Content = {
-
-          id: i + "",
-          imageUrl: img.url,
-          title: img.context.caption || this.getTitleByUrl(img.url),
-          description: img.context.alt || '',
-          type: img.context.type  === 'i' || this.getType(img.url) === 'i' ? Type.ILLUSTRATION : Type.CHARACTER,
-          position: Number(img.context.position) || this.getPosition(img.url),
-          isGif: this.checkIfGif(img.url),
-        };
+        let cont: Content = this.createContent(img, i);
         
         cloudContents.push(cont);
       }
@@ -122,6 +115,22 @@ export class ContentService {
         this.contents.set(cloudContents);
       }
     });
+  }
+
+
+  private createContent(img: any, id: number): Content{
+
+    let cont: Content = {
+      id: id,
+      imageUrl: img.url,
+      title: img.context.caption || this.getTitleByUrl(img.url),
+      description: img.context.alt || '',
+      type: img.context.type  === 'i' || this.getType(img.url) === 'i' ? Type.ILLUSTRATION : Type.CHARACTER,
+      position: Number(img.context.position) || this.getPosition(img.url),
+      isGif: this.checkIfGif(img.url),
+    };
+
+    return cont;
   }
 
 
