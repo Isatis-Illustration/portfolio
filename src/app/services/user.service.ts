@@ -42,7 +42,6 @@ export class UserService {
       nick: cUser.context.nick,
       firstName: cUser.context.firstName,
       lastName: cUser.context.lastName,
-      birthDate: cUser.context.birthDate,
       email: email,
       instagram: instagram,
       telegram: telegram,

@@ -16,7 +16,6 @@ export interface Content{
     title: string;
     imageUrl?: string;
     description?: string;
-    webContentLink?: string;
     type: string;
     isGif: boolean;
     position: number;
@@ -28,7 +27,6 @@ export interface User{
     nick: string,
     firstName: string,
     lastName: string,
-    birthDate: string,
     description: Description,
     email: Email,
     instagram: Instagram,

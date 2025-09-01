@@ -143,7 +143,7 @@ export class ContentService {
 
 
   isUserImage(img: any): boolean{
-    return img.tags && img.tags.find((t:string) => t.includes('user'));
+    return img.context.caption && img.context.caption === 'user';
   }
 
 
