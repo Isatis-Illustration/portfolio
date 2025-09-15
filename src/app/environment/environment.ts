@@ -3,7 +3,7 @@ export const environment = {
     refreshTime: 30,
     imagesUrl:`https://cloudinary-backend-iota.vercel.app/api/images`,
         icons: {
-        logo: `assets/logo/logo.png`,
+        logo: `assets/logo/logo.gif`,
         nameGif: 'assets/home/name.gif',
         lNameGif: 'assets/home/surname.gif',
         contactFrame: 'assets/contacts/dog.png',
@@ -12,7 +12,6 @@ export const environment = {
         nick: 'Isatis',
         firstName: 'Isabella',
         lastName: 'Laurenzi',
-        birthDate: '2001-03-19',
         imageUrl: 'assets/personal/artist.jpeg',
         
         instagram: {
