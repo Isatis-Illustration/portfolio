@@ -1,11 +1,3 @@
-// export interface Content{
-//     id: number;
-//     title?: string;
-//     imageUrl: string;
-//     description?: string;
-//     doc?: Date;
-// }
-
 export interface ClaudinaryImage{
     url: string,
     context: Context
@@ -20,11 +12,10 @@ export interface Context{
 
 
 export interface Content{
-    id: string;
+    id: number;
     title: string;
     imageUrl?: string;
     description?: string;
-    webContentLink?: string;
     type: string;
     isGif: boolean;
     position: number;
@@ -32,20 +23,38 @@ export interface Content{
 
 
 export interface User{
+    imageUrl: string,
+    nick: string,
     firstName: string,
     lastName: string,
-    nick: string,
-    birthDate: string,
-    age: number,
-    description: UserDescription,
-    gender: string,
-    city: string,
-    slogan: string,
-    image: string,
+    description: Description,
+    email: Email,
+    instagram: Instagram,
+    telegram: Telegram,
 }
 
 
-export interface UserDescription{
+export interface Instagram{
+    nick: string,
+    link: string,
+    icon: string,
+}
+
+export interface Email{
+    email: string,
+    subject: string,
+    body: string,
+    icon: string,
+}
+
+export interface Telegram{
+    nick: string,
+    link: string,
+    icon: string,
+}
+
+
+export interface Description{
     it: string,
     en: string,
 }

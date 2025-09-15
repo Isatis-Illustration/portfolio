@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, computed, effect, ElementRef, inject, Signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router } from '@angular/router';
@@ -33,6 +33,7 @@ export class HomeComponent{
 
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
+
   buttons: CustomButton[] = [];
   first2Buttons: CustomButton[] = [];
   last2Buttons: CustomButton[] = [];
@@ -56,9 +57,9 @@ export class HomeComponent{
       // Poi resettali TUTTI
       [...this.first2Buttons, ...this.last2Buttons]
         .forEach(b => b.imageLoaded = false);
-    })
+    });
 
-    this.onByuttonsFade()
+    this.onButtonsFade();
   }
 
   navigate(path: string): void{
@@ -66,7 +67,7 @@ export class HomeComponent{
   }
 
 
-  onByuttonsFade(): void{
+  onButtonsFade(): void{
     this.buttonsFade = true;
 
     setTimeout(() => {

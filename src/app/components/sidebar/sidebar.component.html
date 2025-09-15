@@ -18,10 +18,10 @@
         <div [innerHTML]="getIcon(btn.imageSVG!)" class="pr-4"></div>
         <p>{{ btn.label | translate }}</p>
       </a>
-      <a [href]="instagram.link" target="_blank" and rel="noopener noreferrer"
+      <a [href]="user().instagram.link" target="_blank" and rel="noopener noreferrer"
         class="flex items-center text-info">
-        <div [innerHTML]="getIcon(instagram.icon)" class="pr-4"></div>
-        {{ instagram.nick }}
+        <div [innerHTML]="getIcon(user().instagram.icon)" class="pr-4"></div>
+        {{ user().instagram.nick }}
       </a>
 
     </nav>
@@ -34,7 +34,6 @@
         <app-language-button [showText]="true"></app-language-button>
       </div>
     </div>
-    <p>&copy; {{`${year} ${user.firstName} ${user.lastName}`}}</p>
-    <p *ngIf="user.slogan" class="italic">"{{user.slogan}}"</p>
+    <p>&copy; {{`${year} ${user().firstName} ${user().lastName}`}}</p>
   </div>
 </div>

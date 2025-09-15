@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { CustomButton, User } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -9,6 +9,7 @@ import { ButtonService } from '../../services/button.service';
 import { TranslationService } from '../../services/translation.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LanguageButtonComponent } from "../language-button/language-button.component";
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,15 +25,15 @@ import { LanguageButtonComponent } from "../language-button/language-button.comp
 })
 export class SidebarComponent {
 
+  userService: UserService = inject(UserService);
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
   translateService: TranslationService = inject(TranslationService);
   router: Router = inject(Router);
 
-  instagram = environment.user.contacts.instagram;
-  hasLoaded = false;
-
-  user: User = environment.user;
+  user: Signal<User> = computed(() => this.userService.user());
+  
+  hasLoaded: boolean = false;
   year: number = 2025;
 
   buttons: CustomButton[] = this.buttonService.buttons();

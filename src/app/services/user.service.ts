@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { User } from './models/models';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Email, Instagram, Telegram, User } from './models/models';
 import { environment } from '../environment/environment';
 
 @Injectable({
@@ -7,26 +7,65 @@ import { environment } from '../environment/environment';
 })
 export class UserService {
 
-  user!: User;
+  user: WritableSignal<User> = signal(environment.user);
 
-  constructor(){
-    this.user = environment.user;
-    this.calculateAge();
+  identifies = {
+    email: 'gmail',
+    telegram: 't.me',
+    instagram: 'instagram',
   }
 
-  calculateAge(): void {
+  
+  setUserByClaudinary(cUser: any): void{
 
-    const birthDate = new Date(this.user.birthDate);
-    const today = new Date();
+    const email: Email = {
+      email: cUser.context.email,
+      icon: 'contacts',
+      subject: cUser.context.emailSubject,
+      body: cUser.context.emailBody
+    };
 
-    let calculatedAge = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    const dayDiff = today.getDate() - birthDate.getDate();
+    const instagram: Instagram = {
+      nick: this.getInstagramNick(cUser.context.instagram),
+      icon: 'instagram',
+      link: cUser.context.instagram
+    };
 
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      calculatedAge--;
-    }
+    const telegram: Telegram = {
+      nick: this.getTelegramNick(cUser.context.telegram),
+      icon: 'telegram',
+      link: cUser.context.telegram
+    };
 
-    this.user.age = calculatedAge;
+    const user: User = {
+      imageUrl: cUser.url,
+      nick: cUser.context.nick,
+      firstName: cUser.context.firstName,
+      lastName: cUser.context.lastName,
+      email: email,
+      instagram: instagram,
+      telegram: telegram,
+      description: {
+        it: cUser.context.descriptionIt,
+        en: cUser.context.descriptionEn,
+      },
+    };
+
+    this.user.set(user);
+  }
+
+
+  getInstagramNick(url: string): string{
+    const parts: string[] = url.split('/');
+    const nick: string = parts[parts.length-1];
+    
+    return `@${nick}`;
+  }
+
+  getTelegramNick(url: string): string{
+    const parts: string[] = url.split('/');
+    const nick: string = parts[parts.length-1].replace('_', '.');
+    
+    return `${nick}`;
   }
 }

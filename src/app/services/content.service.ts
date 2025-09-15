@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { environment } from '../environment/environment';
 import { StorageKey, Type } from './models/enums';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,13 @@ import { StorageKey, Type } from './models/enums';
 export class ContentService {
 
   http: HttpClient = inject(HttpClient);
+  userService: UserService = inject(UserService);
     
                                                                                                               
   private cloudinaryEndpoint: string = environment.imagesUrl;
   
   contents: WritableSignal<Content[]> = signal([])
   contentToView: WritableSignal<Content | null> = signal(null);
-  
   
   filter: WritableSignal<string> = signal('');
 
@@ -58,6 +59,7 @@ export class ContentService {
     this.contentToView.set(null);
   }
 
+
   getNextContent(actualCont: Content): Content{
     let nextIndex = this.filteredContent().indexOf(actualCont)+1;
     nextIndex = nextIndex > this.getMaxContentsIndex() ? 0 : nextIndex;
@@ -67,6 +69,7 @@ export class ContentService {
 
     return nextContent;
   }
+
 
   getPrevContent(actualCont: Content): Content{
     let prevIndex: number = this.filteredContent().indexOf(actualCont)-1;
@@ -79,24 +82,22 @@ export class ContentService {
   }
 
 
-
   getCloudinaryImages(): void {
-    this.http.get<{images: ClaudinaryImage[]}>(this.cloudinaryEndpoint).subscribe((res) => {
+    
+    this.http.get<{images: any}>(this.cloudinaryEndpoint).subscribe((res) => {
+      
       let cloudContents: Content[] = [];
 
-      for (let i = 0; i < res.images.length; i++) {
+      filler: for (let i = 0; i < res.images.length; i++) {
+        
+        //get user
+        if(this.isUserImage(res.images[i])){
+          this.userService.setUserByClaudinary(res.images[i]);
+          continue filler;
+        }
 
         let img: ClaudinaryImage = res.images[i];
-
-        let cont: Content = {
-          id: i + "",
-          imageUrl: img.url,
-          title: img.context.caption || this.getTitleByUrl(img.url),
-          description: img.context.alt || '',
-          type: img.context.type  === 'i' || this.getType(img.url) === 'i' ? Type.ILLUSTRATION : Type.CHARACTER,
-          position: Number(img.context.position) || this.getPosition(img.url),
-          isGif: this.checkIfGif(img.url),
-        };
+        let cont: Content = this.createContent(img, i);
         
         cloudContents.push(cont);
       }
@@ -115,6 +116,22 @@ export class ContentService {
   }
 
 
+  private createContent(img: any, id: number): Content{
+
+    let cont: Content = {
+      id: id,
+      imageUrl: img.url,
+      title: img.context.caption || this.getTitleByUrl(img.url),
+      description: img.context.alt || '',
+      type: img.context.type  === 'i' || this.getType(img.url) === 'i' ? Type.ILLUSTRATION : Type.CHARACTER,
+      position: Number(img.context.position) || this.getPosition(img.url),
+      isGif: this.checkIfGif(img.url),
+    };
+
+    return cont;
+  }
+
+
   private checkIfGif(url: string): boolean{
     const parts: string[] = url.split('.');
 
@@ -122,6 +139,11 @@ export class ContentService {
       return false;
 
     return parts[parts.length-1] === 'gif';
+  }
+
+
+  isUserImage(img: any): boolean{
+    return img.context.caption && img.context.caption === 'user';
   }
 
 

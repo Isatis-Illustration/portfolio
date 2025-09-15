@@ -8,6 +8,7 @@ import { environment } from '../../environment/environment';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService } from '../../services/translation.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -22,6 +23,7 @@ import { TranslationService } from '../../services/translation.service';
 })
 export class NavbarComponent {
 
+  userService: UserService = inject(UserService);
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
   translateService: TranslationService = inject(TranslationService);
@@ -29,11 +31,12 @@ export class NavbarComponent {
 
   @ViewChild('navMenu') navMenu!: ElementRef;
 
-  instaram = environment.user.contacts.instagram;
+  instaram = environment.user.instagram;
   buttons: CustomButton[] = this.buttonService.buttons();
   logo: string = environment.icons.logo;
   isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
-  user: User = environment.user
+  user: Signal<User> = computed(() => this.userService.user());
+
 
   @HostListener('document:click', ['$event'])
   clickout(event: any) {

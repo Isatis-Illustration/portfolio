@@ -49,12 +49,12 @@ export class CardDetailComponent {
       const list = this.contentService.contents();
 
       this.route.paramMap.subscribe(params => {
-        let id: string = params.get('id')!;
+        let id: number = Number(params.get('id')!);
 
         if(!id)
-          id = localStorage.getItem(StorageKey.DETAIL_ID) || '0'!
+          id = Number(localStorage.getItem(StorageKey.DETAIL_ID)) || 0!
 
-        localStorage.setItem(StorageKey.DETAIL_ID, id)
+        localStorage.setItem(StorageKey.DETAIL_ID, JSON.stringify(id))
         this.content = list.find(c => c.id === id)!;
       });
     });

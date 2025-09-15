@@ -1,9 +1,9 @@
 import { Component, computed, inject, Signal } from '@angular/core';
-import { environment } from '../../environment/environment';
 import { User } from '../../services/models/models';
 import { TranslationService } from '../../services/translation.service';
 import { Language } from '../../services/models/enums';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -15,12 +15,26 @@ import { CommonModule } from '@angular/common';
 })
 export class ProfileComponent {
 
+  userService: UserService = inject(UserService);
   translateService: TranslationService = inject(TranslationService);
+
   imgLoaded: boolean = false;
 
-  user: User = environment.user
+  user: Signal<User> = computed(() => this.userService.user());
 
   description: Signal<string> = computed(() => {
-    return this.translateService.currentLanguage() == Language.IT ? this.user.description.it : this.user.description.en;
-  })
+
+    switch(this.translateService.currentLanguage()){
+
+      case Language.IT: 
+        return this.user().description.it;
+
+      case Language.EN: 
+        return this.user().description.en;
+
+      default:
+        return this.user().description.it;
+    }
+  });
+  
 }

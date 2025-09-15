@@ -4,6 +4,8 @@ import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import { ButtonService } from '../../services/button.service';
 import { CommonModule } from '@angular/common';
+import { User } from '../../services/models/models';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-contacts',
@@ -15,18 +17,20 @@ import { CommonModule } from '@angular/common';
 })
 export class ContactsComponent {
 
+  userService: UserService = inject(UserService);
   iconService: IconService = inject(IconService);
   buttonService: ButtonService = inject(ButtonService);
 
   imgLoaded: boolean = false;
 
+  user: Signal<User> = computed(() => this.userService.user())
   isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
-  contactDec: string = environment.icons.contactDec;
-  contacts = environment.user.contacts;
+  
+  contactDec: string = environment.icons.contactFrame;
 
 
   openEmail(): void{
-    window.location.href = `mailto:${this.contacts.email.email}`
+    window.location.href = `mailto:${this.user().email.email}`
   }
 
 

@@ -15,21 +15,23 @@
             'mt-28 gap-6 sm:gap-8': !isMenuOpen()
         }">
         <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon('contacts')"></div>
-            <button class="cursor-pointer" (click)="openEmail()">{{ contacts.email.email }}</button>
+            <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon(user().email.icon)"></div>
+            <button class="cursor-pointer" (click)="openEmail()">
+                {{ user().email.email }}
+            </button>
         </div>
         <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(contacts.telegram.icon)"></div>
-            <a [href]="contacts.telegram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
+            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(user().telegram.icon)"></div>
+            <a [href]="user().telegram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
                 <div class=""></div>
-                {{ contacts.telegram.nick }}
+                {{ user().telegram.nick }}
             </a>
         </div>
         <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(contacts.instagram.icon)"></div>
-            <a [href]="contacts.instagram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
+            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(user().instagram.icon)"></div>
+            <a [href]="user().instagram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
                 <div class=""></div>
-                {{ contacts.instagram.nick }}
+                {{ user().instagram.nick }}
             </a>
         </div>
     </div>
