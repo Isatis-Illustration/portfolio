@@ -12,7 +12,7 @@ export const environment = {
         nick: 'Isatis',
         firstName: 'Isabella',
         lastName: 'Laurenzi',
-        imageUrl: 'assets/personal/artist.jpeg',
+        imageUrl: 'assets/personal/artist.gif',
         
         instagram: {
             nick: '@isatis.illustration',
