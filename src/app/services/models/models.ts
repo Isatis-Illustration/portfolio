@@ -77,3 +77,10 @@ export interface CustomButton{
     imageSVG?: string;
     imageLoaded?: boolean;
 }
+
+export interface Contact{
+    name?: string | null | undefined,
+    email?: string | null | undefined,
+    subject?: string | null | undefined,
+    message?: string | null | undefined,
+}

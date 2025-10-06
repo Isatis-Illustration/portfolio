@@ -6,12 +6,16 @@ import { ButtonService } from '../../services/button.service';
 import { CommonModule } from '@angular/common';
 import { User } from '../../services/models/models';
 import { UserService } from '../../services/user.service';
+import { ContactsFormComponent } from "../contacts-form/contacts-form.component";
+import { ContactsInfoComponent } from "../contacts-info/contacts-info.component";
 
 @Component({
   selector: 'app-contacts',
   imports: [
-    CommonModule
-  ],
+    CommonModule,
+    ContactsFormComponent,
+    ContactsInfoComponent
+],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.css'
 })
@@ -26,8 +30,6 @@ export class ContactsComponent {
   user: Signal<User> = computed(() => this.userService.user())
   isMenuOpen: Signal<boolean> = computed(() => this.buttonService.isNavbarMenuOpen());
   
-  contactDec: string = environment.icons.contactFrame;
-
 
   openEmail(): void{
     window.location.href = `mailto:${this.user().email.email}`

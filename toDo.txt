@@ -1,0 +1,4 @@
+aggiungere form,
+aggiungere info,
+aggiungere privacy policy view,
+aggiungre quick privacy con hover di icona i

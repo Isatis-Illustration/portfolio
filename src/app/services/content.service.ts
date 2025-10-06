@@ -15,7 +15,7 @@ export class ContentService {
   userService: UserService = inject(UserService);
     
                                                                                                               
-  private cloudinaryEndpoint: string = environment.imagesUrl;
+  private cloudinaryEndpoint: string = environment.baseUrl+environment.imagesUrl;
   
   contents: WritableSignal<Content[]> = signal([])
   contentToView: WritableSignal<Content | null> = signal(null);
