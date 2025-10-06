@@ -10,5 +10,80 @@
     "CHANGE_LANGUAGE": "Cambia Lingua",
     "INFO": "Information",
     
-    "SUBTITLE": "subtitle"
+    "SUBTITLE": "subtitle",
+
+    "FORM_NAME": "Name",
+    "FORM_EMAIL": "Email*",
+    "FORM_SUBJECT": "Subject",
+    "FORM_MESSAGE": "Message*",
+    "FORM_SUBMIT": "Submit",
+    "FORM_SENDING": "Sending",
+    "FORM_SUCCESS": "Sent successfully",
+    "FORM_ERROR": "Error while sending",
+
+    "CONTACT_TEXT1": "If you have any inquiries or just want to say hi, please email: ",
+    "CONTACT_TEXT2": "or send a message via this form, thanks!",
+
+    "PRIVACY_TITLE": "-Privacy Policy-",
+    "PRIVACY_UPDATE": "Last updated: October 4, 2025",
+    "PRIVACY_CONTROLLER": "The data controller is Isabella Laurenzi. For information: laurenzi.isabella@gmail.com.",
+    "PRIVACY_BODY": "We only collect the data voluntarily entered in the contact form (name, email, subject, message). The data are used solely to respond to your request and are not shared with third parties nor used for marketing purposes. Filling out the form constitutes consent to the processing of your data. For full details and to exercise your rights, please refer to the complete page.",
+
+    "PRIVACY_TITLE2": "Privacy Policy",
+    "PRIVACY_LAST_UPDATE": "Last update",
+    "PRIVACY_UPDATE_DATE": "10/05/2025",
+    
+    "PRIVACY_INTRODUCTION_TITLE": "Introduction",
+    "PRIVACY_INTRODUCTION_TEXT": "This website collects exclusively the data that the user voluntarily enters in the contact form. This privacy notice describes how personal data are processed in accordance with EU Regulation 2016/679 (GDPR).",
+    
+    "PRIVACY_DATA_COLLECTED_TITLE": "Data Collected",
+    "PRIVACY_DATA_COLLECTED_DESCRIPTION": "The following data are collected through the contact form:",
+    "PRIVACY_DATA_COLLECTED_ITEMS_NAME": "User's name",
+    "PRIVACY_DATA_COLLECTED_ITEMS_EMAIL": "Email address",
+    
+    "PRIVACY_DATA_CONTROLLER_TITLE": "Data Controller",
+    "PRIVACY_DATA_CONTROLLER_NAME": "Name",
+    "PRIVACY_DATA_CONTROLLER_CONTACT": "Contact",
+    
+    "PRIVACY_LEGAL_BASIS_TITLE": "Legal Basis and Purpose of Processing",
+    "PRIVACY_LEGAL_BASIS_DESCRIPTION": "The data are processed solely to respond to requests submitted through the contact form. The website does not use the data for marketing activities nor does it disclose them to third parties for commercial purposes.",
+    "PRIVACY_LEGAL_BASIS_REFERENCE": "Legal basis",
+    "PRIVACY_LEGAL_BASIS_ARTICLE": "Execution of the request of the data subject pursuant to art. 6 GDPR",
+    "PRIVACY_LEGAL_BASIS_LINK_TEXT": "View the article",
+    
+    "PRIVACY_RETENTION_TITLE": "Retention Period",
+    "PRIVACY_RETENTION_DESCRIPTION": "The data will be retained only for the time necessary to process the request and, unless otherwise required by law, in any case no longer than 12 months from the last contact, after which they will be deleted or anonymized.",
+    
+    "PRIVACY_THIRD_PARTIES_TITLE": "Disclosure to Third Parties",
+    "PRIVACY_THIRD_PARTIES_DESCRIPTION": "The data are not disclosed to third parties for commercial purposes, except for the possible involvement of technical service providers (for example the hosting provider) appointed as data processors.",
+    "PRIVACY_THIRD_PARTIES_NOTE": "Note",
+    "PRIVACY_THIRD_PARTIES_NOTE_TEXT": "Technical service providers are bound by a contract pursuant to art. 28 GDPR for the adoption of appropriate security measures",
+    "PRIVACY_THIRD_PARTIES_ARTICLE_28": "Art. 28 GDPR",
+    
+    "PRIVACY_SECURITY_TITLE": "Security Measures",
+    "PRIVACY_SECURITY_DESCRIPTION": "The controller adopts appropriate technical and organizational measures to protect personal data, including:",
+    "PRIVACY_SECURITY_MEASURES_HTTPS": "Encrypted HTTPS connection",
+    "PRIVACY_SECURITY_MEASURES_ACCESS": "Restricted and controlled access",
+    "PRIVACY_SECURITY_MEASURES_DEVICES": "Protected and updated devices",
+    "PRIVACY_SECURITY_MEASURES_BACKUP": "Periodic data backups",
+    
+    "PRIVACY_RIGHTS_TITLE": "Data Subject Rights",
+    "PRIVACY_RIGHTS_DESCRIPTION": "As a data subject, you have the right to exercise the following rights provided for in articles 15-22 of the GDPR:",
+    "PRIVACY_RIGHTS_LIST_ACCESS": "Right of access to personal data",
+    "PRIVACY_RIGHTS_LIST_RECTIFICATION": "Right to rectification of inaccurate data",
+    "PRIVACY_RIGHTS_LIST_DELETION": "Right to erasure of data",
+    "PRIVACY_RIGHTS_LIST_LIMITATION": "Right to restriction of processing",
+    "PRIVACY_RIGHTS_LIST_OPPOSITION": "Right to object to processing",
+    "PRIVACY_RIGHTS_LIST_PORTABILITY": "Right to data portability",
+    "PRIVACY_RIGHTS_CONTACT": "To exercise these rights, contact the controller at:",
+    
+    "PRIVACY_COMPLAINT_TITLE": "Right to Lodge a Complaint",
+    "PRIVACY_COMPLAINT_DESCRIPTION": "The data subject may lodge a complaint with the Italian Data Protection Authority (Garante per la Protezione dei Dati Personali) if deemed necessary.",
+    "PRIVACY_COMPLAINT_LINK_TEXT": "Visit the Authority's website",
+    
+    "PRIVACY_REFERENCES_TITLE": "Sources and References",
+    "PRIVACY_REFERENCES_GDPR": "General Data Protection Regulation (GDPR)",
+    "PRIVACY_REFERENCES_ART6": "Art. 6 GDPR - Lawfulness of processing",
+    "PRIVACY_REFERENCES_ART28": "Art. 28 GDPR - Processor",
+    "PRIVACY_REFERENCES_GARANTE": "Italian Data Protection Authority (Garante per la Protezione dei Dati Personali)"
 }
