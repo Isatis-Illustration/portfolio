@@ -1,7 +1,7 @@
 export const environment = {
     hasRefresh: false,
     refreshTime: 30,
-    baseUrl: 'http://localhost:3000/api',  // http://localhost:3000/api  //  https://cloudinary-backend-iota.vercel.app/api
+    baseUrl: 'https://cloudinary-backend-iota.vercel.app/api',  // http://localhost:3000/api  //  https://cloudinary-backend-iota.vercel.app/api
     formUlr: '/images/send-mail',
     imagesUrl:`/images`,
     icons: {
