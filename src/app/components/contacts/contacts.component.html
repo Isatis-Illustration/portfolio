@@ -1,38 +1,15 @@
-<div class="relative w-full h-full flex items-center justify-center transition-opacity ease-in duration-300"
-    [ngClass]="{
-            'opacity-0': !imgLoaded,
-            'opacity-100': imgLoaded,
-            }">
-    <!-- Cornice -->
-    <img src="assets/contacts/contacts_frame.png"
-        class="absolute lg:p-16 inset-0 w-full h-full object-contain pointer-events-none" (load)="imgLoaded = true" alt="Cornice">
+<div class="relative w-full h-full flex items-center justify-center transition-opacity ease-in duration-300">
 
+    <div class="relative w-full h-full flex flex-col xl:flex-row overflow-x-hidden overflow-y-auto gap-y-32 xl:gap-y-0 py-20 xl:py-0">
 
-    <!-- Contenuto al centro -->
-    <div class="flex flex-col z-10 text-center text-black md:mt-36 2xl:mt-44 text-lg md:text-3xl"
-        [ngClass]="{
-            'mt-20 gap-2 pl-1': isMenuOpen(),
-            'mt-28 gap-6 sm:gap-8': !isMenuOpen()
-        }">
-        <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10 flex items-center" [innerHTML]="getIcon(user().email.icon)"></div>
-            <button class="cursor-pointer" (click)="openEmail()">
-                {{ user().email.email }}
-            </button>
+        <div class="w-full xl:w-7/12 flex-shrink-0">
+            <app-contacts-info></app-contacts-info>
         </div>
-        <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(user().telegram.icon)"></div>
-            <a [href]="user().telegram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
-                <div class=""></div>
-                {{ user().telegram.nick }}
-            </a>
+        
+        <div class="w-full xl:w-5/12 flex-shrink-0">
+            <app-contacts-form></app-contacts-form>
         </div>
-        <div class="flex items-center hover:scale-105">
-            <div *ngIf="!isMenuOpen()" class="w-10" [innerHTML]="getIcon(user().instagram.icon)"></div>
-            <a [href]="user().instagram.link" target="_blank" and rel="noopener noreferrer" class="flex items-center">
-                <div class=""></div>
-                {{ user().instagram.nick }}
-            </a>
-        </div>
+
     </div>
+
 </div>

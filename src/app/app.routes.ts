@@ -4,6 +4,7 @@ import { CardDetailComponent } from './components/card-detail/card-detail.compon
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
     {
@@ -30,5 +31,9 @@ export const routes: Routes = [
     {
         path:"detail/:id",
         component: CardDetailComponent,
+    },
+    {
+        path:"privacy-policy",
+        component: PrivacyPolicyComponent,
     }
 ];

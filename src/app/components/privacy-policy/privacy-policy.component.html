@@ -1,0 +1,226 @@
+<div class="min-h-screen  py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-sm">
+    
+    <!-- Header -->
+    <div class="border-b border-gray-200 px-6 py-8 sm:px-10">
+        <h1 class="text-3xl font-semibold text-gray-900">
+        {{ 'PRIVACY_TITLE2' | translate }}
+        </h1>
+        <p class="mt-2 text-sm text-gray-600">
+        {{ 'PRIVACY_LAST_UPDATE' | translate }}: {{ 'PRIVACY_UPDATE_DATE' | translate }}
+        </p>
+    </div>
+
+    <!-- Content -->
+    <div class="px-6 py-8 sm:px-10 space-y-8">
+        
+        <!-- Introduzione -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_INTRODUCTION_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed">
+            {{ 'PRIVACY_INTRODUCTION_TEXT' | translate }}
+        </p>
+        </section>
+
+        <!-- Dati raccolti -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_DATA_COLLECTED_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed mb-3">
+            {{ 'PRIVACY_DATA_COLLECTED_DESCRIPTION' | translate }}
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li>{{ 'PRIVACY_DATA_COLLECTED_ITEMS_NAME' | translate }}</li>
+            <li>{{ 'PRIVACY_DATA_COLLECTED_ITEMS_EMAIL' | translate }}</li>
+        </ul>
+        </section>
+
+        <!-- Titolare del trattamento -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_DATA_CONTROLLER_TITLE' | translate }}
+        </h2>
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <p class="text-gray-700 mb-2">
+            <span class="font-medium">{{ 'PRIVACY_DATA_CONTROLLER_NAME' | translate }}:</span> {{ user().firstName+" "+user().lastName }}
+            </p>
+            <p class="text-gray-700">
+            <span class="font-medium">{{ 'PRIVACY_DATA_CONTROLLER_CONTACT' | translate }}:</span>
+            <a href="mailto:laurenzi.isabella@gmail.com" class="text-blue-600 hover:text-blue-800 underline ml-1">
+                {{ user().email.email }}
+            </a>
+            </p>
+        </div>
+        </section>
+
+        <!-- Base giuridica e finalità -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_LEGAL_BASIS_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed mb-3">
+            {{ 'PRIVACY_LEGAL_BASIS_DESCRIPTION' | translate }}
+        </p>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+            <p class="text-sm text-blue-900">
+            <span class="font-medium">{{ 'PRIVACY_LEGAL_BASIS_REFERENCE' | translate }}:</span>
+            {{ 'PRIVACY_LEGAL_BASIS_ARTICLE' | translate }}
+            <a href="https://gdpr-info.eu/art-6-gdpr/" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-900 underline ml-1">
+                {{ 'PRIVACY_LEGAL_BASIS_LINK_TEXT' | translate }}
+            </a>
+            </p>
+        </div>
+        </section>
+
+        <!-- Periodo di conservazione -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_RETENTION_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed">
+            {{ 'PRIVACY_RETENTION_DESCRIPTION' | translate }}
+        </p>
+        </section>
+
+        <!-- Comunicazione a terzi -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_THIRD_PARTIES_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed mb-3">
+            {{ 'PRIVACY_THIRD_PARTIES_DESCRIPTION' | translate }}
+        </p>
+        <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+            <p class="text-sm text-gray-700">
+            <span class="font-medium">{{ 'PRIVACY_THIRD_PARTIES_NOTE' | translate }}:</span>
+            {{ 'PRIVACY_THIRD_PARTIES_NOTE_TEXT' | translate }}
+            <a href="https://gdpr-info.eu/art-28-gdpr/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline ml-1">
+                {{ 'PRIVACY_THIRD_PARTIES_ARTICLE_28' | translate }}
+            </a>
+            </p>
+        </div>
+        </section>
+
+        <!-- Misure di sicurezza -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_SECURITY_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed mb-3">
+            {{ 'PRIVACY_SECURITY_DESCRIPTION' | translate }}
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-gray-700 ml-4">
+            <li>{{ 'PRIVACY_SECURITY_MEASURES_HTTPS' | translate }}</li>
+            <li>{{ 'PRIVACY_SECURITY_MEASURES_ACCESS' | translate }}</li>
+            <li>{{ 'PRIVACY_SECURITY_MEASURES_DEVICES' | translate }}</li>
+            <li>{{ 'PRIVACY_SECURITY_MEASURES_BACKUP' | translate }}</li>
+        </ul>
+        </section>
+
+        <!-- Diritti dell'interessato -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_RIGHTS_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+            {{ 'PRIVACY_RIGHTS_DESCRIPTION' | translate }}
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+            <div class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-700">{{ 'PRIVACY_RIGHTS_LIST_ACCESS' | translate }}</span>
+            </div>
+            <div class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-700">{{ 'PRIVACY_RIGHTS_LIST_RECTIFICATION' | translate }}</span>
+            </div>
+            <div class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-700">{{ 'PRIVACY_RIGHTS_LIST_DELETION' | translate }}</span>
+            </div>
+            <div class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-700">{{ 'PRIVACY_RIGHTS_LIST_LIMITATION' | translate }}</span>
+            </div>
+            <div class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-700">{{ 'PRIVACY_RIGHTS_LIST_OPPOSITION' | translate }}</span>
+            </div>
+            <div class="flex items-start">
+            <svg class="w-5 h-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-700">{{ 'PRIVACY_RIGHTS_LIST_PORTABILITY' | translate }}</span>
+            </div>
+        </div>
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4">
+            <p class="text-sm text-blue-900">
+            {{ 'PRIVACY_RIGHTS_CONTACT' | translate }}
+            <a href="mailto:laurenzi.isabella@gmail.com" class="text-blue-700 hover:text-blue-900 underline font-medium ml-1">
+                {{ user().email.email }}
+            </a>
+            </p>
+        </div>
+        </section>
+
+        <!-- Reclamo -->
+        <section>
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_COMPLAINT_TITLE' | translate }}
+        </h2>
+        <p class="text-gray-700 leading-relaxed mb-3">
+            {{ 'PRIVACY_COMPLAINT_DESCRIPTION' | translate }}
+        </p>
+        <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium">
+            {{ 'PRIVACY_COMPLAINT_LINK_TEXT' | translate }}
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+        </a>
+        </section>
+
+        <!-- Riferimenti -->
+        <section class="border-t border-gray-200 pt-8">
+        <h2 class="text-xl font-medium text-gray-900 mb-4">
+            {{ 'PRIVACY_REFERENCES_TITLE' | translate }}
+        </h2>
+        <ul class="space-y-2 text-sm text-gray-600">
+            <li>
+            • <a href="https://gdpr-info.eu/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                {{ 'PRIVACY_REFERENCES_GDPR' | translate }}
+            </a>
+            </li>
+            <li>
+            • <a href="https://gdpr-info.eu/art-6-gdpr/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                {{ 'PRIVACY_REFERENCES_ART6' | translate }}
+            </a>
+            </li>
+            <li>
+            • <a href="https://gdpr-info.eu/art-28-gdpr/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                {{ 'PRIVACY_REFERENCES_ART28' | translate }}
+            </a>
+            </li>
+            <li>
+            • <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                {{ 'PRIVACY_REFERENCES_GARANTE' | translate }}
+            </a>
+            </li>
+        </ul>
+        </section>
+
+    </div>
+    </div>
+</div>

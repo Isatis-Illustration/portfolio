@@ -10,5 +10,79 @@
     "CHANGE_LANGUAGE": "Change Language",
     "INFO": "Informazioni",
     
-    "SUBTITLE": "sottotitolo"
+    "SUBTITLE": "sottotitolo",
+
+    "FORM_NAME": "Nome",
+    "FORM_EMAIL": "Email*",
+    "FORM_SUBJECT": "Oggetto",
+    "FORM_MESSAGE": "Messaggio*",
+    "FORM_SUBMIT": "Invia",
+    "FORM_SENDING": "Inviato",
+    "FORM_SUCCESS": "Inviato con successo",
+    "FORM_ERROR": "Errore durante l'invio",
+
+    "CONTACT_TEXT1": "Se hai qualche domanda o vuoi solo fare un saluto, inviami un email: ",
+    "CONTACT_TEXT2": "oppure utilizza il form per i contatti, grazie!",
+
+    "PRIVACY_TITLE": "-Informativa privacy-",
+    "PRIVACY_UPDATE": "Data ultimo aggiornamento: 4 ottobre 2025",
+    "PRIVACY_CONTROLLER": "Il titolare del trattamento è Isabella Laurenzi. Per informazioni: laurenzi.isabella@gmail.com.",
+    "PRIVACY_BODY": "Raccogliamo solo i dati inseriti volontariamente nel modulo di contatto (nome, email, oggetto, messaggio). I dati sono usati esclusivamente per rispondere alla tua richiesta e non sono ceduti a terze parti né usati per scopi di marketing. La compilazione del form costituisce consenso al trattamento. Per i dettagli completi e per esercitare i tuoi diritti, consulta la pagina completa.",
+    "PRIVACY_TITLE2": "Informativa sulla Privacy",
+    "PRIVACY_LAST_UPDATE": "Ultimo aggiornamento",
+    "PRIVACY_UPDATE_DATE": "05/10/2025",
+    
+    "PRIVACY_INTRODUCTION_TITLE": "Introduzione",
+    "PRIVACY_INTRODUCTION_TEXT": "Questo sito raccoglie esclusivamente i dati che l'utente inserisce volontariamente nel modulo di contatto. La presente informativa descrive come vengono trattati i dati personali in conformità con il Regolamento UE 2016/679 (GDPR).",
+    
+    "PRIVACY_DATA_COLLECTED_TITLE": "Dati Raccolti",
+    "PRIVACY_DATA_COLLECTED_DESCRIPTION": "Attraverso il modulo di contatto vengono raccolti i seguenti dati:",
+    "PRIVACY_DATA_COLLECTED_ITEMS_NAME": "Nome dell'utente",
+    "PRIVACY_DATA_COLLECTED_ITEMS_EMAIL": "Indirizzo email",
+    
+    "PRIVACY_DATA_CONTROLLER_TITLE": "Titolare del Trattamento",
+    "PRIVACY_DATA_CONTROLLER_NAME": "Nome",
+    "PRIVACY_DATA_CONTROLLER_CONTACT": "Contatto",
+    
+    "PRIVACY_LEGAL_BASIS_TITLE": "Base Giuridica e Finalità del Trattamento",
+    "PRIVACY_LEGAL_BASIS_DESCRIPTION": "I dati vengono trattati unicamente per rispondere alle richieste inviate tramite il modulo di contatto. Il sito non utilizza i dati per attività di marketing né li comunica a terzi per finalità commerciali.",
+    "PRIVACY_LEGAL_BASIS_REFERENCE": "Base giuridica",
+    "PRIVACY_LEGAL_BASIS_ARTICLE": "Esecuzione della richiesta dell'interessato ai sensi dell'art. 6 GDPR",
+    "PRIVACY_LEGAL_BASIS_LINK_TEXT": "Consulta l'articolo",
+    
+    "PRIVACY_RETENTION_TITLE": "Periodo di Conservazione",
+    "PRIVACY_RETENTION_DESCRIPTION": "I dati saranno conservati soltanto per il tempo necessario a evadere la richiesta e, salvo diverso obbligo di legge, comunque non oltre 12 mesi dall'ultimo contatto, dopo i quali saranno cancellati o resi anonimi.",
+    
+    "PRIVACY_THIRD_PARTIES_TITLE": "Comunicazione a Terzi",
+    "PRIVACY_THIRD_PARTIES_DESCRIPTION": "I dati non vengono comunicati a terzi per finalità commerciali, fatto salvo l'eventuale coinvolgimento di fornitori tecnici (ad esempio il provider di hosting) nominati come responsabili del trattamento.",
+    "PRIVACY_THIRD_PARTIES_NOTE": "Nota",
+    "PRIVACY_THIRD_PARTIES_NOTE_TEXT": "I fornitori tecnici sono vincolati da contratto ai sensi dell'art. 28 GDPR per l'adozione di misure di sicurezza adeguate",
+    "PRIVACY_THIRD_PARTIES_ARTICLE_28": "Art. 28 GDPR",
+    
+    "PRIVACY_SECURITY_TITLE": "Misure di Sicurezza",
+    "PRIVACY_SECURITY_DESCRIPTION": "Il titolare adotta misure tecniche e organizzative adeguate per proteggere i dati personali, tra cui:",
+    "PRIVACY_SECURITY_MEASURES_HTTPS": "Connessione HTTPS crittografata",
+    "PRIVACY_SECURITY_MEASURES_ACCESS": "Accessi limitati e controllati",
+    "PRIVACY_SECURITY_MEASURES_DEVICES": "Dispositivi protetti e aggiornati",
+    "PRIVACY_SECURITY_MEASURES_BACKUP": "Backup periodici dei dati",
+    
+    "PRIVACY_RIGHTS_TITLE": "Diritti dell'Interessato",
+    "PRIVACY_RIGHTS_DESCRIPTION": "In qualità di interessato, hai il diritto di esercitare i seguenti diritti previsti dagli articoli 15-22 del GDPR:",
+    "PRIVACY_RIGHTS_LIST_ACCESS": "Diritto di accesso ai dati personali",
+    "PRIVACY_RIGHTS_LIST_RECTIFICATION": "Diritto di rettifica dei dati inesatti",
+    "PRIVACY_RIGHTS_LIST_DELETION": "Diritto alla cancellazione dei dati",
+    "PRIVACY_RIGHTS_LIST_LIMITATION": "Diritto di limitazione del trattamento",
+    "PRIVACY_RIGHTS_LIST_OPPOSITION": "Diritto di opposizione al trattamento",
+    "PRIVACY_RIGHTS_LIST_PORTABILITY": "Diritto alla portabilità dei dati",
+    "PRIVACY_RIGHTS_CONTACT": "Per esercitare questi diritti, contatta il titolare all'indirizzo:",
+    
+    "PRIVACY_COMPLAINT_TITLE": "Diritto di Reclamo",
+    "PRIVACY_COMPLAINT_DESCRIPTION": "L'interessato può proporre reclamo al Garante per la Protezione dei Dati Personali qualora lo ritenga necessario.",
+    "PRIVACY_COMPLAINT_LINK_TEXT": "Visita il sito del Garante",
+    
+    "PRIVACY_REFERENCES_TITLE": "Fonti e Riferimenti",
+    "PRIVACY_REFERENCES_GDPR": "Regolamento Generale sulla Protezione dei Dati (GDPR)",
+    "PRIVACY_REFERENCES_ART6": "Art. 6 GDPR - Liceità del trattamento",
+    "PRIVACY_REFERENCES_ART28": "Art. 28 GDPR - Responsabile del trattamento",
+    "PRIVACY_REFERENCES_GARANTE": "Garante per la Protezione dei Dati Personali"
 }

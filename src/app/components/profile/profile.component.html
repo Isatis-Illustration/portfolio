@@ -1,15 +1,16 @@
 <div *ngIf="user" class="flex flex-col xl:flex-row h-full gap-5">
 
-    <div class="flex xl:w-2/3 justify-center items-center">
+    <div class="flex xl:w-2/3 justify-center items-center pt-20">
         <div class="px-10 sm:px-20 py-10">
-            <p class="whitespace-pre-line text-center xl:text-left text-lg pt-10" [innerHTML]="description()"></p>
+            <p class="whitespace-pre-line text-center xl:text-left text-lg pt-0 xl:pt-16 2xl:pt-0" [innerHTML]="description()"></p>
         </div>
     </div>
-    <div class="flex xl:w-1/3 items-center justify-center xl:justify-start transition-opacity duration-300 ease-in"
+    <div class="flex flex-col xl:w-1/3 items-center justify-center xl:justify-start transition-opacity duration-300 ease-in"
         [ngClass]="{
             'opacity-0': !imgLoaded,
             'opacity-100': imgLoaded,
             }">
+        <div class="w-full h-1/6"></div>
         <img [src]="user().imageUrl" (load)="imgLoaded = true" class="w-1/2 xl:w-2/3 select-none rounded-2xl">
     </div>
     <div class="pt-15"></div>

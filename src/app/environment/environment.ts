@@ -1,42 +1,44 @@
 export const environment = {
     hasRefresh: false,
     refreshTime: 30,
-    imagesUrl:`https://cloudinary-backend-iota.vercel.app/api/images`,
-        icons: {
-        logo: `assets/logo/logo.gif`,
-        nameGif: 'assets/home/name.gif',
-        lNameGif: 'assets/home/surname.gif',
-        contactFrame: 'assets/contacts/dog.png',
+    baseUrl: 'http://localhost:3000/api',  // http://localhost:3000/api  //  https://cloudinary-backend-iota.vercel.app/api
+    formUlr: '/images/send-mail',
+    imagesUrl:`/images`,
+    icons: {
+      logo: `assets/logo/logo.gif`,
+      nameGif: 'assets/home/name.gif',
+      lNameGif: 'assets/home/surname.gif',
+      contactImg: 'assets/contacts/contactImg.png',
     },
     user: {
-        nick: 'Isatis',
-        firstName: 'Isabella',
-        lastName: 'Laurenzi',
-        imageUrl: 'assets/personal/artist.gif',
-        
-        instagram: {
-            nick: '@isatis.illustration',
-            icon: 'instagram',
-            link: 'https://www.instagram.com/isatis.illustration'
-        },
-        email: {
-            email: 'laurenzi.isabella@gmail.com',
-            icon: 'contacts',
-            subject: `Richiesta Informazioni Portfolio`,
-            body: `Ciao, ho dato un’occhiata alle tue illustrazioni.
+      nick: 'Isatis',
+      firstName: 'Isabella',
+      lastName: 'Laurenzi',
+      imageUrl: 'assets/personal/artist.gif',
+      
+      instagram: {
+          nick: '@isatis.illustration',
+          icon: 'instagram',
+          link: 'https://www.instagram.com/isatis.illustration'
+      },
+      email: {
+          email: 'laurenzi.isabella@gmail.com',
+          icon: 'contacts',
+          subject: `Richiesta Informazioni Portfolio`,
+          body: `Ciao, ho dato un’occhiata alle tue illustrazioni.
             
 Vorrei sapere di più su come lavori e magari parlare di un’idea che ho in mente.`,
-        },
-        telegram:{
-            nick: 'isatis.illustration',
-            icon: 'telegram',
-            link: 'https://t.me/isatis_illustration',
-        },
-        
-        description:{
-            it: `<b>Chi sono:</b>
+      },
+      telegram:{
+          nick: 'isatis.illustration',
+          icon: 'telegram',
+          link: 'https://t.me/isatis_illustration',
+      },
+      
+      description:{
+          it: `<b>Chi sono:</b>
             
-            Ciao! Sono Isabella, mio nome artistico è Isatis, un piccolo fiore da cui si estrae un colorante blu, a cui sono affezionata sin da piccola. Dopo la laurea in Scienze della Formazione, con indirizzo per l’educazione dell’infanzia, ho deciso di seguire la mia vera vocazione: raccontare storie attraverso le immagini.
+          Ciao! Sono Isabella, mio nome artistico è Isatis, un piccolo fiore da cui si estrae un colorante blu, a cui sono affezionata sin da piccola. Dopo la laurea in Scienze della Formazione, con indirizzo per l’educazione dell’infanzia, ho deciso di seguire la mia vera vocazione: raccontare storie attraverso le immagini.
 
 Attualmente studio animazione alla Scuola Internazionale di Comics a Roma, un percorso che mi sta aiutando a rendere il mio stile più dinamico e narrativo.
 Lavoro con passione su personaggi, ambienti e narrazioni visive, sperimentando tecniche e linguaggi diversi.
@@ -54,9 +56,9 @@ Il mio obiettivo è lavorare nell’ambito dell’illustrazione editoriale, con 
 </ul>
 `,
             
-            en: `<b>About Me:</b>
-            
-            Hi! I’m Isabella, and my artist name is Isatis, inspired by a small flower that produces a blue dye, which I’ve loved since childhood. After graduating in Educational Sciences with a focus on early childhood, I decided to follow my true passion: telling stories through images.
+          en: `<b>About Me:</b>
+          
+          Hi! I’m Isabella, and my artist name is Isatis, inspired by a small flower that produces a blue dye, which I’ve loved since childhood. After graduating in Educational Sciences with a focus on early childhood, I decided to follow my true passion: telling stories through images.
 
 I’m currently studying animation at the Scuola Internazionale di Comics in Rome, which is helping me make my style more dynamic and narrative. 
 I work with enthusiasm on characters, environments, and visual storytelling, experimenting with different techniques and approaches.
@@ -72,6 +74,7 @@ My goal is to work in editorial illustration, especially children’s publishing
     &emsp;&emsp;di Cinzia Montagna, Navarra Editore, in pubblication
   </li>
 </ul>`
-        }
+      }
     },
+
 }

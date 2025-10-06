@@ -1,0 +1,70 @@
+<div class="flex flex-col w-full h-full">
+    <div class="h-full flex justify-center items-center flex-col gap-8">
+        <div class="flex-shrink-0">
+            <img [src]="image" class="w-[260px] h-auto">
+        </div>
+
+        <div class="w-2/3">
+            <form [formGroup]="userForm" class="flex flex-col gap-7">
+                
+                <input 
+                    formControlName="name" 
+                    [placeholder]="'FORM_NAME' | translate" 
+                    class="border-b-[1px] p-2 border-primary focus:outline-primary" />
+
+                <input 
+                    formControlName="email" 
+                    [placeholder]="'FORM_EMAIL' | translate" 
+                    class="border-b-[1px] p-2 border-primary focus:outline-primary"
+                    [ngClass]="{
+                        'border-primary focus:outline-primary': isRequiredValid('email'),
+                        'border-red-600 focus:outline-red-600': !isRequiredValid('email')
+                    }"/>
+
+                <input 
+                    formControlName="subject" 
+                    [placeholder]="'FORM_SUBJECT' | translate" 
+                    class="border-b-[1px] p-2 border-primary focus:outline-primary"/>
+
+                <textarea 
+                    formControlName="message" 
+                    [placeholder]="'FORM_MESSAGE' | translate"
+                    class="border-1 rounded-xl p-2 bg-secondary resize-none border-primary focus:outline-primary"
+                    [rows]="5"
+                    [ngClass]="{
+                        'border-primary focus:outline-primary': isRequiredValid('message'),
+                        'border-red-600 focus:outline-red-600': !isRequiredValid('message')
+                    }">
+                </textarea>
+
+                <div class="flex flex-row justify-between items-center">
+                    
+                    <button 
+                        (click)="onSubmit()"
+                        class="border-1 rounded-xl p-1 w-28 bg-primary text-info text-xl cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed transition-all duration-150 enabled:active:scale-95 enabled:active:brightness-90 enabled:hover:brightness-110" 
+                        [disabled]="isButtonDisabled()">
+                            {{ getSendText() | translate }}
+                    </button>
+
+                    <div class="font-bold flex justify-center items-center text-center">
+                        <p>{{ formFeedback | translate}}</p>
+                    </div>
+
+                    <div class="relative group">
+                        <button class=" cursor-pointer rounded-full bg-primary text-info p-[2px]"
+                            (click)="goToPolicy()"
+                            [innerHTML]="getIcon('policy')">
+                        </button>
+                        <div
+                            class="absolute bottom-full -left-20 transform -translate-x-1/2 mb-2
+                                bg-primary text-info text-xs rounded px-2 py-1 opacity-0
+                                group-hover:opacity-100 transition-opacity pointer-events-none w-76">
+                            <app-privacy-policy-tooltip></app-privacy-policy-tooltip>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

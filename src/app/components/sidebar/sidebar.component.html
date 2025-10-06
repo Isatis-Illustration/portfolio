@@ -29,11 +29,23 @@
   </div>
 
   <div class="text-sm mt-5 text-info flex flex-col items-center justify-center">
-    <div class="w-40">
+    <div class="w-40 flex flex-col justify-start items-start">
+
       <div class="w-7 pb-3">
         <app-language-button [showText]="true"></app-language-button>
       </div>
+
+      <div class="w-7 pb-6">
+        <a 
+          class="flex items-center text-info text-nowrap pl-1"
+          [routerLink]="[`/privacy-policy`]" 
+          routerLinkActive="underline" >
+          <div [innerHTML]="getIcon('policy')"></div>
+          <p class="pl-2">Privacy Policy</p>
+        </a>
+      </div>
+
+      <p class="text-nowrap">&nbsp; &copy; {{`${year} ${user().firstName} ${user().lastName}`}}</p> 
     </div>
-    <p>&copy; {{`${year} ${user().firstName} ${user().lastName}`}}</p>
   </div>
 </div>
