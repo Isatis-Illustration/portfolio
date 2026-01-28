@@ -51,7 +51,7 @@ export class CardDetailComponent {
       this.route.paramMap.subscribe(params => {
         let id: number = Number(params.get('id')!);
 
-        if(!id)
+        if(Number.isNaN(id)) //fix detail shown if id = 0
           id = Number(localStorage.getItem(StorageKey.DETAIL_ID)) || 0!
 
         localStorage.setItem(StorageKey.DETAIL_ID, JSON.stringify(id))
@@ -84,7 +84,7 @@ export class CardDetailComponent {
     this.router.navigate([`detail/${prevContent.id}`])
   }
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize() {
     if (this.hasLoaded) {
       setTimeout(() => this.syncBackDimensions(), 50);
