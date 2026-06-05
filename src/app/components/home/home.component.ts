@@ -1,82 +1,65 @@
 import { Component, computed, effect, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { Router } from '@angular/router';
 import { ButtonService } from '../../services/button.service';
 import { CustomButton } from '../../services/models/models';
-import { IconService } from '../../services/icon.service';
-import { SafeHtml } from '@angular/platform-browser';
 import { environment } from '../../environment/environment';
 import { TranslatePipe } from '../../pipes/translate.pipe';
-import { LanguageButtonComponent } from "../language-button/language-button.component";
+import { LanguageButtonComponent } from '../language-button/language-button.component';
 import { TranslationService } from '../../services/translation.service';
+import { ContentService } from '../../services/content.service';
+import { Content } from '../../services/models/models';
+import { CardComponent } from '../card/card.component';
 
 @Component({
   selector: 'app-home',
   imports: [
     CommonModule,
     TranslatePipe,
-    LanguageButtonComponent
-],
+    CardComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent{
+export class HomeComponent {
 
   route: Router = inject(Router);
   buttonService: ButtonService = inject(ButtonService);
-  iconService: IconService = inject(IconService);
   translateService: TranslationService = inject(TranslationService);
+  contentService: ContentService = inject(ContentService);
 
-
-  buttonsFade: boolean = true;
+  /** Switch: true = GIF animate, false = testo Fredoka */
+  useGifName: boolean = true;
 
   nameGif: string = environment.icons.nameGif;
   lNameGif: string = environment.icons.lNameGif;
 
   buttons: CustomButton[] = [];
-  first2Buttons: CustomButton[] = [];
-  last2Buttons: CustomButton[] = [];
 
   subTitle: Signal<string> = computed(() => {
     this.translateService.currentLanguage();
     const fileName = this.translateService.translate('SUBTITLE');
-    const res = `assets/home/${fileName}.gif`;
-    return res;
+    return `assets/home/${fileName}.gif`;
   });
 
+  /** Preview illustrazioni per homepage */
+  previewIllustrations: Signal<Content[]> = computed(() => {
+    const all = this.contentService.contents();
+    return all.filter(c => c.type === 'illustration').slice(0, 6);
+  });
 
-  constructor(){
+  constructor() {
     effect(() => {
       this.buttons = this.buttonService.buttons().filter(b => b.id !== 0);
-      
-      // Scomponi subito l’array in due:
-      this.first2Buttons = this.buttons.slice(0, 2);
-      this.last2Buttons  = this.buttons.slice(2, 4);
-
-      // Poi resettali TUTTI
-      [...this.first2Buttons, ...this.last2Buttons]
-        .forEach(b => b.imageLoaded = false);
     });
-
-    this.onButtonsFade();
   }
 
-  navigate(path: string): void{
+  navigate(path: string): void {
     this.route.navigate([path]);
   }
 
-
-  onButtonsFade(): void{
-    this.buttonsFade = true;
-
-    setTimeout(() => {
-      this.buttonsFade = false;
-    },20);
-  }
-
-
-  getIcon(name: string): SafeHtml{
-    return this.iconService.getIcon(name);
+  openDetail(content: Content): void {
+    this.contentService.setFilter('illustrations');
+    this.route.navigate([`detail/${content.id}`]);
   }
 }

@@ -1,43 +1,28 @@
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-6 mb-32">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
 
-  <ng-container *ngIf="checkColsAmmount(3)">
-    <div *ngFor="let col of [column1, column2, column3]; let i = index">
-      <div *ngFor="let c of col; trackBy: trackById" class="mb-10">
+  <!-- Gallery title con immagine -->
+  <div class="flex items-center gap-4 mb-8 md:mb-12">
+    <!-- <img [src]="titleImage()"
+         [alt]="getTitle()"
+         class="h-10 md:h-14 w-auto object-contain select-none"> -->
+    <h1 class="font-fredoka text-3xl md:text-4xl font-semibold text-title">
+      {{ getTitle() }}
+    </h1>
+  </div>
 
-        <app-card class="flex justify-center items-center"
-          [content]="c"
-          [isCharacter]="isCharactersGallery()"
-          (onClickImageEvent)="openImageViewer($event)">
-        </app-card>
-
-      </div>
+  <!-- Masonry grid via CSS columns -->
+  <div class="gallery-masonry">
+    <div *ngFor="let c of contents(); trackBy: trackById; let i = index"
+         class="break-inside-avoid mb-6
+                animate-fade-in-up"
+         [style.animation-delay]="(i * 60) + 'ms'"
+         [style.opacity]="0">
+      <app-card
+        [content]="c"
+        [isCharacter]="isCharactersGallery()"
+        (onClickImageEvent)="openImageViewer($event)">
+      </app-card>
     </div>
-  </ng-container>
+  </div>
 
-  <ng-container *ngIf="checkColsAmmount(2)">
-    <div *ngFor="let col of [column1, column2]; let i = index">
-      <div *ngFor="let c of col; trackBy: trackById" class="mb-10">
-
-        <app-card class="flex justify-center items-center"
-          [content]="c"
-          [isCharacter]="isCharactersGallery()"
-          (onClickImageEvent)="openImageViewer($event)">
-        </app-card>
-
-      </div>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="checkColsAmmount(1)">
-      <div *ngFor="let c of column1; trackBy: trackById" class="mb-10">
-
-        <app-card class="flex justify-center items-center"
-          [content]="c"
-          [isCharacter]="isCharactersGallery()"
-          (onClickImageEvent)="openImageViewer($event)">
-        </app-card>
-
-      </div>
-  </ng-container>
-
-</div>
+</section>

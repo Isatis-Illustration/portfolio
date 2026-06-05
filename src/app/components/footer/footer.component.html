@@ -1,0 +1,32 @@
+<footer class="bg-crema-scuro border-t border-crema-scuro mt-auto relative z-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+
+      <!-- Copyright -->
+      <p class="text-sm font-quicksand text-title/60">
+        &copy; {{ year }} {{ user().firstName }} {{ user().lastName }} — Isatis Illustration
+      </p>
+
+      <!-- Social + Privacy -->
+      <div class="flex items-center gap-6">
+        <a [href]="instagram.link" target="_blank" rel="noopener noreferrer"
+           class="text-title/50 hover:text-verde-scuro transition-colors duration-200"
+           aria-label="Instagram">
+          <div [innerHTML]="getIcon(instagram.icon)" class="w-5 h-5"></div>
+        </a>
+
+        <a [href]="user().telegram.link" target="_blank" rel="noopener noreferrer"
+           class="text-title/50 hover:text-verde-scuro transition-colors duration-200"
+           aria-label="Telegram">
+          <div [innerHTML]="getIcon(user().telegram.icon)" class="w-5 h-5"></div>
+        </a>
+
+        <a routerLink="/privacy-policy"
+           class="text-sm font-quicksand text-title/50 hover:text-verde-scuro transition-colors duration-200">
+          Privacy Policy
+        </a>
+      </div>
+
+    </div>
+  </div>
+</footer>

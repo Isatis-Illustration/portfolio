@@ -1,15 +1,21 @@
 <div #image
-  class="h-full w-full bg-secondary flex justify-center items-center text-info overflow-hidden relative select-none opacity-0"
+  class="h-full w-full bg-black/90 backdrop-blur-sm flex justify-center items-center
+         overflow-hidden relative select-none opacity-0"
   (wheel)="onWheel($event)"
   (dblclick)="resetZoom()"
   (touchstart)="onTouchStart($event)"
   (touchmove)="onTouchMove($event)"
 >
   <button
-    class="bg-primary fixed right-0 top-0 m-4 rounded-3xl p-2 z-20 cursor-pointer"
+    class="fixed right-0 top-0 m-4 z-20 p-2.5 rounded-full
+           bg-white/20 backdrop-blur-sm text-white
+           hover:bg-white/30 transition-colors duration-200 cursor-pointer"
     (click)="closeViewer()"
-    [innerHTML]="getIcon('xIcon')"
-  ></button>
+    aria-label="Chiudi">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
 
   <img
     #zoomImage

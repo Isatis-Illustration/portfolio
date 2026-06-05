@@ -1,35 +1,12 @@
-<div class="relative flex w-screen h-screen bg-secondary">
-  
-   <!-- Sfondo pattern sotto -->
-  <div class="fixed top-0 left-0 w-full h-full z-0" [innerHTML]="getIcon('background')"></div>
+<router-outlet></router-outlet>
 
-  <!-- Container principale s-->
-  <div class="flex flex-col sm:flex-row h-full w-full z-10">
-  
-    <div *ngIf="!isHome()" class="hidden sm:block">
-      <app-sidebar></app-sidebar>
-    </div>
-  
-    <div *ngIf="!isHome()" class="w-full block sm:hidden">
-      <app-navbar></app-navbar>
-    </div>
-  
-    <div class="flex-1 overflow-auto"
-        [ngClass]="{ 
-              'scrollbar-hide': isScreenSm,
-              'custom-scrollbar': !isScreenSm,
-            }">
-      <router-outlet></router-outlet>
-    </div>
-
-  </div>
-</div>
+<!-- Sticker on right-click -->
 <div *ngFor="let sticker of stickers"
   [ngClass]="{
     'opacity-0': sticker.fade,
     'opacity-100': !sticker.fade
   }"
-  class="fixed pointer-events-none transition-opacity duration-500 z-10"
+  class="fixed pointer-events-none transition-opacity duration-500 z-[9999]"
   [ngStyle]="{
     left: sticker.x + 'px',
     top: sticker.y + 'px',

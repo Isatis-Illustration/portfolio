@@ -4,20 +4,16 @@ import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
 import { CommonModule } from '@angular/common';
 import { StorageKey } from '../../services/models/enums';
-import { SafeHtml } from '@angular/platform-browser';
-import { IconService } from '../../services/icon.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
-import { CardDetailFooterComponent } from '../card-detail-footer/card-detail-footer.component';
 import { ViewerComponent } from "../viewer/viewer.component";
 
 @Component({
   selector: 'app-card-detail',
   imports: [
     CommonModule,
-    CardDetailFooterComponent,
     TranslatePipe,
     ViewerComponent
-],
+  ],
   templateUrl: './card-detail.component.html',
   styleUrl: './card-detail.component.css'
 })
@@ -26,18 +22,14 @@ export class CardDetailComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   contentService: ContentService = inject(ContentService);
-  iconService: IconService = inject(IconService);
 
-  // ViewChild signals per Angular 19
   imageElement = viewChild<ElementRef<HTMLImageElement>>('imageElement');
-  backElement = viewChild<ElementRef<HTMLDivElement>>('backElement');
 
   contentToView: Signal<Content | null> = computed(() => this.contentService.contentToView());
 
   content!: Content;
   showInfo: boolean = false;
   hasLoaded: boolean = false;
-  isFlipped: boolean = false;
 
   constructor() {
     effect(() => {
@@ -51,7 +43,7 @@ export class CardDetailComponent {
       this.route.paramMap.subscribe(params => {
         let id: number = Number(params.get('id')!);
 
-        if(Number.isNaN(id)) //fix detail shown if id = 0
+        if(Number.isNaN(id))
           id = Number(localStorage.getItem(StorageKey.DETAIL_ID)) || 0!
 
         localStorage.setItem(StorageKey.DETAIL_ID, JSON.stringify(id))
@@ -60,69 +52,33 @@ export class CardDetailComponent {
     });
   }
 
-  showViewer(): void{
-    this.contentService.setContentToView(this.content)
+  showViewer(): void {
+    this.contentService.setContentToView(this.content);
   }
 
-  loaded(): void{
+  loaded(): void {
     this.hasLoaded = true;
-    // Sincronizza le dimensioni del back dopo che l'immagine è caricata
-    setTimeout(() => this.syncBackDimensions(), 50);
   }
 
-  toggleFlip(): void{
-    this.isFlipped = !this.isFlipped;
+  toggleInfo(): void {
+    this.showInfo = !this.showInfo;
   }
 
-  goToNext(): void{
-    const nextContent: Content = this.contentService.getNextContent(this.content)
-    this.router.navigate([`detail/${nextContent.id}`])
+  goToNext(): void {
+    const nextContent: Content = this.contentService.getNextContent(this.content);
+    this.hasLoaded = false;
+    this.showInfo = false;
+    this.router.navigate([`detail/${nextContent.id}`]);
   }
 
-  goToPrevious(): void{
-    const prevContent: Content = this.contentService.getPrevContent(this.content)
-    this.router.navigate([`detail/${prevContent.id}`])
+  goToPrevious(): void {
+    const prevContent: Content = this.contentService.getPrevContent(this.content);
+    this.hasLoaded = false;
+    this.showInfo = false;
+    this.router.navigate([`detail/${prevContent.id}`]);
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    if (this.hasLoaded) {
-      setTimeout(() => this.syncBackDimensions(), 50);
-    }
-  }
-
-  private syncBackDimensions() {
-    const imageEl = this.imageElement();
-    const backEl = this.backElement();
-    
-    if (imageEl && backEl) {
-      const img = imageEl.nativeElement;
-      const back = backEl.nativeElement;
-      
-      // Ottieni le dimensioni renderizzate dell'immagine
-      const imgRect = img.getBoundingClientRect();
-      const containerRect = img.parentElement!.getBoundingClientRect();
-      
-      // Calcola la posizione relativa al container
-      const leftOffset = imgRect.left - containerRect.left;
-      const topOffset = imgRect.top - containerRect.top;
-      
-      // Applica le stesse dimensioni al back
-      back.style.left = `${leftOffset}px`;
-      back.style.top = `${topOffset}px`;
-      back.style.width = `${imgRect.width}px`;
-      back.style.height = `${imgRect.height}px`;
-      back.style.right = 'auto';
-      back.style.bottom = 'auto';
-    }
-  }
-
-
-  getIcon(name: string): SafeHtml{
-    return this.iconService.getIcon(name);
-  }
-
-  goBack(): void{
-    this.router.navigate([`gallery/${this.contentService.filter()}`])
+  goBack(): void {
+    this.router.navigate([`gallery/${this.contentService.filter()}`]);
   }
 }

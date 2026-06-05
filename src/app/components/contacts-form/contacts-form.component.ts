@@ -9,7 +9,6 @@ import { SafeHtml } from '@angular/platform-browser';
 import { IconService } from '../../services/icon.service';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
-import { PrivacyPolicyTooltipComponent } from "../privacy-policy-tooltip/privacy-policy-tooltip.component";
 
 @Component({
   selector: 'app-contacts-form',
@@ -17,7 +16,6 @@ import { PrivacyPolicyTooltipComponent } from "../privacy-policy-tooltip/privacy
     CommonModule,
     ReactiveFormsModule,
     TranslatePipe,
-    PrivacyPolicyTooltipComponent
 ],
   templateUrl: './contacts-form.component.html',
   styleUrl: './contacts-form.component.css'

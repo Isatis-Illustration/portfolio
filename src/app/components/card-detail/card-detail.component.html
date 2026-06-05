@@ -1,78 +1,128 @@
-<div class="flex flex-col h-full">
+<section class="relative flex flex-col h-[calc(100vh-5rem)] sm:h-[calc(100vh-6rem)] bg-crema">
 
-  <button class="hidden sm:block fixed top-0 right-0 m-5 cursor-pointer w-fit z-10 rounded-full bg-primary text-info p-1" (click)="toggleFlip()"
-    [innerHTML]="getIcon('info')">
-  </button>
-  <button class="hidden sm:block fixed top-0 right-0 mx-5 mt-20 cursor-pointer w-fit z-10 rounded-full bg-primary text-info p-1" (click)="goBack()"
-    [innerHTML]="getIcon('back')">
-  </button>
- 
-  <!--IMAGE CONTAINER-->
-  <div
-    class="flex-1 relative flex items-center justify-center w-full overflow-hidden p-1 sm:p-2 transition-opacity duration-300 ease-in"
-    [ngClass]="{
-        'opacity-100': hasLoaded,
-        'opacity-0': !hasLoaded
-    }">
-    <!-- Pulsante SINISTRO (precedente) -->
-    <button
-      class="hidden sm:block absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors cursor-pointer"
-      (click)="goToPrevious()" aria-label="Precedente" [innerHTML]="getIcon('prev')">
+  <!-- Top bar -->
+  <div class="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 py-3 pointer-events-none">
+    <button class="p-2 rounded-full bg-crema-scuro shadow-sm text-title
+                   hover:bg-crema-scuro/80 transition-colors duration-200 cursor-pointer pointer-events-auto"
+            (click)="goBack()"
+            aria-label="Torna alla galleria">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
     </button>
 
-    <!-- Pulsante DESTRO (successiva) -->
-    <button
-      class="hidden sm:block absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-primary text-info rounded-full p-3 shadow-md transition-colors cursor-pointer"
-      (click)="goToNext()" aria-label="Successiva" [innerHTML]="getIcon('next')">
+    <button class="p-2 rounded-full bg-crema-scuro shadow-sm text-title
+                   hover:bg-crema-scuro/80 transition-colors duration-200 cursor-pointer pointer-events-auto"
+            (click)="toggleInfo()"
+            aria-label="Mostra info">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Image container (Flex layout per evitare sovrapposizione dell'immagine con i tasti desktop) -->
+  <div class="flex-1 flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-24 py-6 sm:py-8 overflow-hidden"
+       [ngClass]="{ 'opacity-100': hasLoaded, 'opacity-0': !hasLoaded }">
+
+    <!-- Prev button (desktop) -->
+    <button class="hidden sm:flex flex-shrink-0 w-12 h-12 items-center justify-center rounded-full
+                   bg-crema-scuro shadow-md text-title
+                   hover:bg-crema-scuro/80 hover:shadow-lg transition-all duration-200 cursor-pointer"
+            (click)="goToPrevious()" aria-label="Precedente">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
     </button>
 
-    <!-- Contenuto centrale -->
-    <!-- CARD 3D WRAPPER -->
-    <div class="relative w-full h-full max-w-full max-h-full perspective">
-      <div class="w-full h-full transition-transform duration-700 preserve-3d" [class.rotate-y-180]="isFlipped">
-        <!-- FRONT: Immagine -->
-        <div class="absolute inset-0 backface-hidden flex items-center justify-center">
-          <img #imageElement
-               *ngIf="content; else noImage" 
-               [src]="content.imageUrl" 
-               (load)="loaded()" 
-               (click)="showViewer()"
-            alt="Immagine"
-            class="max-w-full max-h-full object-contain select-none cursor-zoom-in border-4 border-primary bg-bg-image" />
-        </div>
+    <!-- Center image frame (limita la larghezza massima dell'immagine allo spazio tra i tasti) -->
+    <div class="flex-1 h-full flex items-center justify-center overflow-hidden px-4">
+      <!-- Image -->
+      <img *ngIf="content; else noImage"
+           #imageElement
+           [src]="content.imageUrl"
+           [alt]="content.title"
+           (load)="loaded()"
+           (click)="showViewer()"
+           class="max-w-full max-h-full object-contain select-none cursor-zoom-in
+                  rounded-xl shadow-[var(--shadow-card)]
+                  transition-opacity duration-300" />
 
-        <!-- BACK: Info -->
-        <div #backElement
-             class="absolute backface-hidden rotate-y-180 bg-white flex items-center justify-center border-4 border-primary p-6">
-          <div class="text-center text-gray-700">
-            <h1 class="text-2xl font-semibold mb-4">{{ content.title }}</h1>
-            <p class="text-lg sm:text-lg px-5 sm:px-11">{{ content.description }}</p>
-          </div>
+      <ng-template #noImage>
+        <div class="text-center font-quicksand text-title/60 text-lg p-6">
+          <div class="text-4xl mb-2">🌿</div>
+          {{ "NO_IMAGE" | translate }}
         </div>
-      </div>
+      </ng-template>
     </div>
 
-    <ng-template #noImage>
-      <div class="text-center text-info font-semibold text-lg p-6 w-full">
-        <div class="text-4xl mb-2">🌿</div>
-        {{ "NO_IMAGE" | translate }}
+    <!-- Next button (desktop) -->
+    <button class="hidden sm:flex flex-shrink-0 w-12 h-12 items-center justify-center rounded-full
+                   bg-crema-scuro shadow-md text-title
+                   hover:bg-crema-scuro/80 hover:shadow-lg transition-all duration-200 cursor-pointer"
+            (click)="goToNext()" aria-label="Successiva">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Mobile nav buttons -->
+  <div class="absolute bottom-0 inset-x-0 z-20 flex sm:hidden items-center justify-center gap-4 py-4 pointer-events-none">
+    <button class="p-3 rounded-full bg-crema-scuro shadow-sm text-title
+                   active:scale-95 transition-transform duration-150 cursor-pointer pointer-events-auto"
+            (click)="goToPrevious()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+    </button>
+    <button class="p-3 rounded-full bg-crema-scuro shadow-sm text-title
+                   active:scale-95 transition-transform duration-150 cursor-pointer pointer-events-auto"
+            (click)="toggleInfo()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+    </button>
+    <button class="p-3 rounded-full bg-crema-scuro shadow-sm text-title
+                   active:scale-95 transition-transform duration-150 cursor-pointer pointer-events-auto"
+            (click)="goToNext()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Slide-up info panel -->
+  <div class="fixed inset-x-0 bottom-0 z-30 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+       [ngClass]="{
+         'translate-y-0': showInfo,
+         'translate-y-full': !showInfo
+       }">
+    <div class="bg-white rounded-t-2xl shadow-[0_-4px_32px_rgba(0,0,0,0.1)] max-h-[50vh] overflow-y-auto p-6">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="font-fredoka text-2xl font-semibold text-title">{{ content.title }}</h2>
+        <button class="p-1.5 rounded-full hover:bg-crema-scuro/50 transition-colors cursor-pointer"
+                (click)="toggleInfo()">
+          <svg class="w-5 h-5 text-title/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
       </div>
-    </ng-template>
+      <p *ngIf="content?.description" class="font-quicksand text-title/70 text-lg leading-relaxed">
+        {{ content.description }}
+      </p>
+      <p *ngIf="!content?.description" class="font-quicksand text-title/40 italic">
+        {{ 'NO_DESCRIPTION' | translate }}
+      </p>
+    </div>
   </div>
 
-  <!--MOBILE BUTTONS CONTAINER-->
-  <div class="border block sm:hidden w-full">
-    <app-card-detail-footer 
-      (goNextEvent)="goToNext()" 
-      (goPreviousEvent)="goToPrevious()"
-      (showInfoEvent)="toggleFlip()">
-    </app-card-detail-footer>
-  </div>
+</section>
 
-</div>
-<div *ngIf="contentToView()" class="fixed top-0 left-0 w-screen h-screen z-10 pointer-events-none">
-  <app-viewer
-    class="ease-in transition-opacity duration-300 pointer-events-auto"
-    [content]="contentToView()">
-  </app-viewer>
+<!-- Viewer overlay (pan/zoom intatto) -->
+<div *ngIf="contentToView()" class="fixed inset-0 z-[100]">
+  <app-viewer [content]="contentToView()"></app-viewer>
 </div>
