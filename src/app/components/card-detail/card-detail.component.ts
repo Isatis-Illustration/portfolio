@@ -31,6 +31,30 @@ export class CardDetailComponent {
   showInfo: boolean = false;
   hasLoaded: boolean = false;
 
+  // SWIPE
+  private touchStartX: number = 0;
+  private touchStartY: number = 0;
+  private readonly SWIPE_THRESHOLD = 50;
+
+  onTouchStart(event: TouchEvent): void {
+    this.touchStartX = event.changedTouches[0].clientX;
+    this.touchStartY = event.changedTouches[0].clientY;
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    const dx = event.changedTouches[0].clientX - this.touchStartX;
+    const dy = event.changedTouches[0].clientY - this.touchStartY;
+
+    // Ignora se il gesto è principalmente verticale
+    if (Math.abs(dy) > Math.abs(dx)) return;
+
+    if (dx > this.SWIPE_THRESHOLD) {
+      this.goToPrevious();
+    } else if (dx < -this.SWIPE_THRESHOLD) {
+      this.goToNext();
+    }
+  }
+
   constructor() {
     effect(() => {
       const filterStorage = localStorage.getItem(StorageKey.FILTER);
