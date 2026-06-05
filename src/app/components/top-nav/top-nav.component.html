@@ -1,0 +1,107 @@
+<!-- ═══ DESKTOP + MOBILE TOP BAR ═══ -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-crema shadow-[0_2px_16px_rgba(0,0,0,0.06)]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20 md:h-24">
+
+      <!-- Logo -->
+      <button class="flex-shrink-0 cursor-pointer" (click)="navigateToHome()">
+        <img [src]="logo" alt="Isatis Logo" class="h-14 md:h-16 w-auto select-none">
+      </button>
+
+      <!-- Desktop Links -->
+      <div class="hidden md:flex items-center gap-1.5">
+        <a *ngFor="let btn of buttons; trackBy: trackById"
+           [routerLink]="['/' + btn.path]"
+           routerLinkActive="text-verde-scuro font-semibold"
+           [routerLinkActiveOptions]="{ exact: btn.path === 'home' }"
+           class="relative px-5 py-2.5 text-base font-quicksand font-medium text-title
+                  hover:text-verde-scuro transition-colors duration-200
+                  after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2
+                  after:w-0 after:h-[2px] after:bg-verde-scuro after:rounded-full
+                  after:transition-all after:duration-300
+                  hover:after:w-3/4">
+          {{ btn.label | translate }}
+        </a>
+
+        <!-- Instagram -->
+        <a [href]="instagram.link" target="_blank" rel="noopener noreferrer"
+           class="px-4 py-2.5 text-base font-medium text-title hover:text-verde-scuro transition-colors duration-200">
+          <div [innerHTML]="getIcon(instagram.icon)" class="w-6 h-6"></div>
+        </a>
+
+        <!-- Language -->
+        <div class="ml-2">
+          <app-language-button></app-language-button>
+        </div>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="md:hidden p-2.5 cursor-pointer text-title" (click)="toggleMobileMenu()"
+              aria-label="Menu">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path *ngIf="!isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"/>
+          <path *ngIf="isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+</nav>
+
+<!-- Spacer per compensare navbar fixed -->
+<div class="h-20 md:h-24"></div>
+
+<!-- ═══ MOBILE DRAWER (da destra) ═══ -->
+<!-- Overlay -->
+<div *ngIf="isMobileMenuOpen()"
+     class="fixed inset-0 bg-black/40 z-40 md:hidden transition-opacity duration-300"
+     (click)="closeMobileMenu()">
+</div>
+
+<!-- Drawer -->
+<div class="fixed top-0 right-0 h-full w-72 bg-crema z-50 md:hidden
+            shadow-[-8px_0_32px_rgba(0,0,0,0.1)]
+            transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+     [ngClass]="{
+       'translate-x-0': isMobileMenuOpen(),
+       'translate-x-full': !isMobileMenuOpen()
+     }">
+
+  <!-- Close button -->
+  <div class="flex justify-end p-4">
+    <button class="p-2 cursor-pointer text-title" (click)="closeMobileMenu()" aria-label="Chiudi menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Links -->
+  <nav class="flex flex-col px-6 gap-2">
+    <a *ngFor="let btn of buttons; trackBy: trackById"
+       [routerLink]="['/' + btn.path]"
+       routerLinkActive="text-verde-scuro font-semibold bg-verde-pastello/30"
+       [routerLinkActiveOptions]="{ exact: btn.path === 'home' }"
+       (click)="closeMobileMenu()"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-title font-quicksand font-medium
+              hover:bg-verde-pastello/20 transition-colors duration-200">
+      <div [innerHTML]="getIcon(btn.imageSVG!)" class="w-5 h-5 flex-shrink-0"></div>
+      {{ btn.label | translate }}
+    </a>
+
+    <!-- Instagram -->
+    <a [href]="instagram.link" target="_blank" rel="noopener noreferrer"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-title font-quicksand font-medium
+              hover:bg-verde-pastello/20 transition-colors duration-200">
+      <div [innerHTML]="getIcon(instagram.icon)" class="w-5 h-5 flex-shrink-0"></div>
+      {{ instagram.nick }}
+    </a>
+
+    <!-- Language -->
+    <div class="flex items-center gap-3 px-4 py-3">
+      <app-language-button [showText]="true"></app-language-button>
+    </div>
+  </nav>
+</div>

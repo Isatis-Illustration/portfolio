@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withEnabledBlockingInitialNavigation, withHashLocation } from '@angular/router';
+import { provideRouter, withEnabledBlockingInitialNavigation, withHashLocation, withInMemoryScrolling } from '@angular/router';
 // src/app/app.config.ts
 import { TranslationService } from './services/translation.service';
 
@@ -23,7 +23,7 @@ export function initTranslations(ts: TranslationService): () => Promise<void> {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes, withEnabledBlockingInitialNavigation(), withHashLocation()),
+    provideRouter(routes, withEnabledBlockingInitialNavigation(), withHashLocation(), withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
     provideHttpClient(),
     {
       provide: APP_INITIALIZER,

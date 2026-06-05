@@ -1,19 +1,16 @@
-/* HTML: <div class="loader"></div> */
 .loader {
-  width: 50px;
+  width: 40px;
   aspect-ratio: 1;
-  display:grid;
-  -webkit-mask: conic-gradient(from 15deg,#0000,#000);
+  display: grid;
+  -webkit-mask: conic-gradient(from 15deg, #0000, #000);
   animation: l26 1s infinite steps(12);
 }
 .loader,
 .loader:before,
-.loader:after{
+.loader:after {
   background:
-    radial-gradient(closest-side at 50% 12.5%,
-     #6E8787 96%,#0000) 50% 0/20% 80% repeat-y,
-    radial-gradient(closest-side at 12.5% 50%,
-     #6E8787 96%,#0000) 0 50%/80% 20% repeat-x;
+    radial-gradient(closest-side at 50% 12.5%, var(--color-verde-scuro) 96%, #0000) 50% 0/20% 80% repeat-y,
+    radial-gradient(closest-side at 12.5% 50%, var(--color-verde-scuro) 96%, #0000) 0 50%/80% 20% repeat-x;
 }
 .loader:before,
 .loader:after {
@@ -24,7 +21,6 @@
 .loader:after {
   transform: rotate(60deg);
 }
-
 @keyframes l26 {
-  100% {transform:rotate(1turn)}
+  100% { transform: rotate(1turn); }
 }

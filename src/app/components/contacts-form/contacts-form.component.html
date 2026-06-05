@@ -1,70 +1,71 @@
-<div class="flex flex-col w-full h-full">
-    <div class="h-full flex justify-center items-center flex-col gap-8">
-        <div class="flex-shrink-0">
-            <img [src]="image" class="w-[260px] h-auto">
-        </div>
+<div class="flex flex-col w-full">
+  <div class="flex flex-col gap-8">
 
-        <div class="w-2/3">
-            <form [formGroup]="userForm" class="flex flex-col gap-7">
-                
-                <input 
-                    formControlName="name" 
-                    [placeholder]="'FORM_NAME' | translate" 
-                    class="border-b-[1px] p-2 border-primary focus:outline-primary" />
+    <form [formGroup]="userForm" class="flex flex-col gap-6">
 
-                <input 
-                    formControlName="email" 
-                    [placeholder]="'FORM_EMAIL' | translate" 
-                    class="border-b-[1px] p-2 border-primary focus:outline-primary"
-                    [ngClass]="{
-                        'border-primary focus:outline-primary': isRequiredValid('email'),
-                        'border-red-600 focus:outline-red-600': !isRequiredValid('email')
-                    }"/>
+      <input
+        formControlName="name"
+        [placeholder]="'FORM_NAME' | translate"
+        class="w-full px-0 py-3 bg-transparent border-b-2 border-crema-scuro
+               font-quicksand text-title placeholder:text-title/40
+               focus:outline-none focus:border-verde-scuro
+               transition-colors duration-200" />
 
-                <input 
-                    formControlName="subject" 
-                    [placeholder]="'FORM_SUBJECT' | translate" 
-                    class="border-b-[1px] p-2 border-primary focus:outline-primary"/>
+      <input
+        formControlName="email"
+        [placeholder]="'FORM_EMAIL' | translate"
+        class="w-full px-0 py-3 bg-transparent border-b-2
+               font-quicksand text-title placeholder:text-title/40
+               focus:outline-none transition-colors duration-200"
+        [ngClass]="{
+          'border-crema-scuro focus:border-verde-scuro': isRequiredValid('email'),
+          'border-red-400 focus:border-red-500': !isRequiredValid('email')
+        }" />
 
-                <textarea 
-                    formControlName="message" 
-                    [placeholder]="'FORM_MESSAGE' | translate"
-                    class="border-1 rounded-xl p-2 bg-secondary resize-none border-primary focus:outline-primary"
-                    [rows]="5"
-                    [ngClass]="{
-                        'border-primary focus:outline-primary': isRequiredValid('message'),
-                        'border-red-600 focus:outline-red-600': !isRequiredValid('message')
-                    }">
-                </textarea>
+      <input
+        formControlName="subject"
+        [placeholder]="'FORM_SUBJECT' | translate"
+        class="w-full px-0 py-3 bg-transparent border-b-2 border-crema-scuro
+               font-quicksand text-title placeholder:text-title/40
+               focus:outline-none focus:border-verde-scuro
+               transition-colors duration-200" />
 
-                <div class="flex flex-row justify-between items-center">
-                    
-                    <button 
-                        (click)="onSubmit()"
-                        class="border-1 rounded-xl p-1 w-28 bg-primary text-info text-xl cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed transition-all duration-150 enabled:active:scale-95 enabled:active:brightness-90 enabled:hover:brightness-110" 
-                        [disabled]="isButtonDisabled()">
-                            {{ getSendText() | translate }}
-                    </button>
+      <textarea
+        formControlName="message"
+        [placeholder]="'FORM_MESSAGE' | translate"
+        [rows]="5"
+        class="w-full px-4 py-3 bg-white rounded-xl border-2
+               font-quicksand text-title placeholder:text-title/40
+               resize-none focus:outline-none transition-colors duration-200"
+        [ngClass]="{
+          'border-crema-scuro focus:border-verde-scuro': isRequiredValid('message'),
+          'border-red-400 focus:border-red-500': !isRequiredValid('message')
+        }">
+      </textarea>
 
-                    <div class="font-bold flex justify-center items-center text-center">
-                        <p>{{ formFeedback | translate}}</p>
-                    </div>
+      <div class="flex items-center justify-between gap-4">
+        <button
+          (click)="onSubmit()"
+          [disabled]="isButtonDisabled()"
+          class="px-8 py-3 rounded-full bg-verde-scuro text-white font-fredoka font-medium text-lg
+                 shadow-[0_4px_16px_rgba(129,199,132,0.3)]
+                 hover:shadow-[0_6px_24px_rgba(129,199,132,0.4)] hover:-translate-y-0.5
+                 active:scale-95 transition-all duration-300 cursor-pointer
+                 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none">
+          {{ getSendText() | translate }}
+        </button>
 
-                    <div class="relative group">
-                        <button class=" cursor-pointer rounded-full bg-primary text-info p-[2px]"
-                            (click)="goToPolicy()"
-                            [innerHTML]="getIcon('policy')">
-                        </button>
-                        <div
-                            class="absolute bottom-full -left-20 transform -translate-x-1/2 mb-2
-                                bg-primary text-info text-xs rounded px-2 py-1 opacity-0
-                                group-hover:opacity-100 transition-opacity pointer-events-none w-76">
-                            <app-privacy-policy-tooltip></app-privacy-policy-tooltip>
-                        </div>
-                    </div>
+        <p *ngIf="formFeedback" class="font-quicksand font-semibold text-title/70">
+          {{ formFeedback | translate }}
+        </p>
 
-                </div>
-            </form>
-        </div>
-    </div>
+        <button class="p-2 rounded-full bg-verde-pastello/30 text-title/60
+                       hover:bg-verde-pastello/50 transition-colors duration-200 cursor-pointer"
+                (click)="goToPolicy()"
+                [innerHTML]="getIcon('policy')">
+        </button>
+      </div>
+    </form>
+
+  </div>
 </div>

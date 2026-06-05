@@ -85,5 +85,12 @@
     "PRIVACY_REFERENCES_GDPR": "General Data Protection Regulation (GDPR)",
     "PRIVACY_REFERENCES_ART6": "Art. 6 GDPR - Lawfulness of processing",
     "PRIVACY_REFERENCES_ART28": "Art. 28 GDPR - Processor",
-    "PRIVACY_REFERENCES_GARANTE": "Italian Data Protection Authority (Garante per la Protezione dei Dati Personali)"
+    "PRIVACY_REFERENCES_GARANTE": "Italian Data Protection Authority (Garante per la Protezione dei Dati Personali)",
+
+    "HOME_PREVIEW_TITLE": "My latest works",
+    "HOME_PREVIEW_SUBTITLE": "A selection of my most recent illustrations",
+    "HOME_SEE_ALL": "See all illustrations",
+    "HOME_BIO_TITLE": "Hi, I'm Isabella!",
+    "HOME_BIO_SHORT": "Illustrator specializing in children's illustration and character design. I tell stories through images.",
+    "NO_DESCRIPTION": "No description available"
 }

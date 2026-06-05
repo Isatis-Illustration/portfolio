@@ -1,0 +1,16 @@
+<div class="flex flex-col min-h-screen bg-crema">
+  <!-- Top Navigation -->
+  <app-top-nav></app-top-nav>
+
+  <!-- Main Content (con background SVG) -->
+  <main class="flex-1 relative overflow-hidden">
+    <!-- Background SVG pattern — solo nel tronco -->
+    <div class="absolute inset-0 -z-10 pointer-events-none" [innerHTML]="getBackground()"></div>
+    <div class="relative">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <app-footer *ngIf="!isDetailRoute()"></app-footer>
+</div>

@@ -1,6 +1,13 @@
-<div (click)="toggleLanguage()" class="cursor-pointer flex justify-start items-center gap-x-1">
-    <img class="pointer-events-none object-contain select-none"
-        [src]="`${basePath}${lang()}${extens}`">
-    
-    <div *ngIf="showText" class=" whitespace-nowrap">{{ "CHANGE_LANGUAGE" | translate }}</div>
+<div (click)="toggleLanguage()"
+     class="cursor-pointer flex items-center gap-x-2 select-none py-2 px-4 rounded-full
+            bg-crema-scuro/40 hover:bg-crema-scuro/70 transition-all duration-200 border border-crema-scuro/30">
+  <svg class="w-5 h-5 text-title/60" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A11.952 11.952 0 0112 16.5c-2.998 0-5.74-1.1-7.843-2.918M3.284 12a8.959 8.959 0 01.284-2.253m0 0A11.952 11.952 0 0112 10.5c2.998 0 5.74 1.1 7.843 2.918M12 10.5a11.953 11.953 0 01-7.843-2.918"/>
+  </svg>
+  
+  <div class="flex items-center gap-x-1.5 text-sm font-quicksand font-semibold text-title">
+    <span [ngClass]="{'text-verde-scuro font-bold': currentLang() === 'it', 'text-title/40': currentLang() !== 'it'}">IT</span>
+    <span class="text-title/20 font-light">|</span>
+    <span [ngClass]="{'text-verde-scuro font-bold': currentLang() === 'en', 'text-title/40': currentLang() !== 'en'}">EN</span>
+  </div>
 </div>
