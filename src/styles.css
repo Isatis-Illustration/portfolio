@@ -170,3 +170,27 @@ html body .medium-zoom-image--opened {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════
+   BACKGROUND PATTERN — main content area
+   ═══════════════════════════════════════════ */
+.main-content {
+  position: relative;
+}
+
+.main-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--color-giallo); /* ← colore del pattern */
+  -webkit-mask-image: url('/assets/background/pattern.svg');
+  mask-image: url('/assets/background/pattern.svg');
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+  -webkit-mask-size: 320px 320px;
+  mask-size: 320px 320px;
+  opacity: 0.25;
+}

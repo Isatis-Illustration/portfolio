@@ -43,6 +43,7 @@
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.10));
 }
 
+
 .profile-photo {
   width: 100%;
   max-width: 280px;
@@ -145,6 +146,9 @@
   .photo-wrapper {
     width: 220px;
   }
+  .profile-section {
+    padding-top: 6rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -163,7 +167,7 @@
   .artist-char-img {
     width: 85px;
     top: -45px;
-    right: -25px;
+    right: 20px;
   }
 
   .profile-section-title {
