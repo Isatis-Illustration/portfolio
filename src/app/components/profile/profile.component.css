@@ -1,0 +1,176 @@
+/* ═══════════════════════════════════════════
+   PROFILE — Layout 3 colonne
+   ═══════════════════════════════════════════ */
+
+:host {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.profile-section {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 5vh 1.5rem 3vh;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ── Colonna foto ── */
+.profile-photo-col {
+  position: relative;
+}
+
+.photo-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.artist-char-img {
+  position: absolute;
+  top: -65px;
+  right: 20px;
+  width: 110px;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.10));
+}
+
+
+.profile-photo {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  transform: scaleX(-1);
+  transition: box-shadow 0.4s ease, opacity 0.5s ease;
+  display: block;
+}
+
+.profile-photo:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+/* ── Titoli sezione ── */
+.profile-section-title {
+  font-family: var(--font-fredoka);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--color-arancione);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+/* ── Testo corpo ── */
+.profile-body-text {
+  font-family: var(--font-quicksand);
+  font-size: 1rem;
+  color: var(--color-title);
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── Highlight (testo evidenziato in arancione) ── */
+.highlight {
+  color: var(--color-arancione);
+  font-weight: 700;
+}
+
+.highlight--link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.highlight--link:hover {
+  opacity: 0.75;
+}
+
+/* ── Blocco info (formazione/esperienze) ── */
+.profile-info-block {
+  margin-bottom: 2rem;
+}
+
+.profile-info-block:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Lista esperienze ── */
+.profile-exp-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-exp-list li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  font-family: var(--font-quicksand);
+  font-size: 0.95rem;
+  color: var(--color-title);
+  line-height: 1.55;
+}
+
+.exp-star {
+  color: var(--color-giallo);
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .profile-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .profile-photo-col {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .photo-wrapper {
+    width: 220px;
+  }
+  .profile-section {
+    padding-top: 6rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-photo-col {
+    grid-column: 1;
+  }
+
+  .photo-wrapper {
+    width: 200px;
+  }
+
+  .artist-char-img {
+    width: 85px;
+    top: -45px;
+    right: 20px;
+  }
+
+  .profile-section-title {
+    font-size: 1.35rem;
+  }
+}
