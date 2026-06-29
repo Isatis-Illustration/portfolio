@@ -1,35 +1,65 @@
-<section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+<section class="profile-section">
 
-  <div *ngIf="user()" class="flex flex-col-reverse md:flex-row gap-12 md:gap-16 items-start">
+  <div *ngIf="user()" class="profile-grid">
 
-    <!-- Bio content -->
-    <div class="flex-1">
-      <h1 class="font-fredoka text-3xl md:text-4xl font-semibold text-title mb-2">
-        {{ user().firstName }} {{ user().lastName }}
-      </h1>
-      <p class="font-fredoka text-lg text-verde-scuro mb-8">Isatis — Illustratrice</p>
+    <!-- ── COLONNA SINISTRA: Foto + disegno ── -->
+    <div class="profile-photo-col">
+      <div class="photo-wrapper">
+        <!-- Disegno sopra a destra della foto -->
+        <img src="assets/personal/artist-char.png"
+             alt="Artist character"
+             class="artist-char-img">
 
-      <div class="prose prose-lg font-quicksand text-title/80 leading-relaxed
-                  [&_b]:font-fredoka [&_b]:text-title [&_b]:text-xl [&_b]:block [&_b]:mt-8 [&_b]:mb-3
-                  [&_ul]:mt-4 [&_ul]:space-y-2 [&_li]:text-base"
-           [innerHTML]="description()">
-      </div>
-    </div>
-
-    <!-- Photo -->
-    <div class="w-full md:w-1/3 md:sticky md:top-28 flex justify-center">
-      <div class="relative">
+        <!-- Foto specchiata -->
         <img [src]="user().imageUrl"
              (load)="imgLoaded = true"
              alt="Isabella Laurenzi"
-             class="w-48 md:w-full max-w-xs rounded-2xl shadow-[var(--shadow-card)]
-                    transition-all duration-500 ease-out
-                    hover:shadow-[var(--shadow-glow)]"
+             class="profile-photo"
              [ngClass]="{ 'opacity-0': !imgLoaded, 'opacity-100': imgLoaded }">
-        <!-- Decorative dot -->
-        <div class="absolute -bottom-3 -right-3 w-16 h-16 rounded-full bg-arancione/20 -z-10"></div>
-        <div class="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-logo/40 -z-10"></div>
       </div>
+    </div>
+
+    <!-- ── COLONNA CENTRO: Bio ── -->
+    <div class="profile-bio-col">
+      <h2 class="profile-section-title">Ciao! Sono isabella:</h2>
+
+      <p class="profile-body-text">
+        Racconto storie attraverso immagini e personaggi, il mio obiettivo è lavorare
+        nell'ambito dell'illustrazione editoriale, con particolare interesse per
+        <span class="highlight">l'editoria per l'infanzia</span>, poiché credo che
+        le immagini abbiano un ruolo educativo potente e possano contribuire alla
+        crescita emotiva e cognitiva dei più piccoli.
+      </p>
+    </div>
+
+    <!-- ── COLONNA DESTRA: Formazione + Esperienze ── -->
+    <div class="profile-info-col">
+
+      <div class="profile-info-block">
+        <h2 class="profile-section-title">Formazione:</h2>
+        <p class="profile-body-text">
+          Ho preso una <span class="highlight">laurea</span> in Scienze della Formazione e attualmente studio
+          illustrazione alla
+          <span class="highlight">Scuola Internazionale di Comics</span>
+          di Roma.
+        </p>
+      </div>
+
+      <div class="profile-info-block">
+        <h2 class="profile-section-title">Pubblicazioni:</h2>
+        <p class="profile-body-text">Copertina illustrata per</p>
+        <ul class="profile-exp-list">
+          <li>
+            <span class="exp-star">★</span>
+            <span>Benvenuti a Trentacapre - di Cinzia Montagna, Navarra editore, 2023</span>
+          </li>
+          <li>
+            <span class="exp-star">★</span>
+            <span>Bentornati a Trentacapre - di Cinzia Montagna, Navarra editore, 2025</span>
+          </li>
+        </ul>
+      </div>
+
     </div>
 
   </div>
