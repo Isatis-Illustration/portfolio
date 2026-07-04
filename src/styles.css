@@ -186,11 +186,31 @@ html body .medium-zoom-image--opened {
   z-index: 0;
   pointer-events: none;
   background-color: var(--color-giallo); /* ← colore del pattern */
-  -webkit-mask-image: url('/assets/background/pattern.svg');
-  mask-image: url('/assets/background/pattern.svg');
+  -webkit-mask-image: url('assets/background/pattern.svg');
+  mask-image: url('assets/background/pattern.svg');
   -webkit-mask-repeat: repeat;
   mask-repeat: repeat;
   -webkit-mask-size: 320px 320px;
   mask-size: 320px 320px;
   opacity: 0.25;
+}
+
+/* ═══════════════════════════════════════════
+   MASONRY GRID
+   ═══════════════════════════════════════════ */
+.gallery-masonry {
+  columns: 1;
+  column-gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-masonry {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  .gallery-masonry {
+    columns: 3;
+  }
 }

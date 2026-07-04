@@ -1,16 +1,1 @@
-.gallery-masonry {
-  columns: 1;
-  column-gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .gallery-masonry {
-    columns: 2;
-  }
-}
-
-@media (min-width: 1280px) {
-  .gallery-masonry {
-    columns: 3;
-  }
-}
+/* Spostato in styles.css globale */
