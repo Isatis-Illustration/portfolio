@@ -71,9 +71,9 @@
   </div>
 
   <!-- Grid preview -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="gallery-masonry">
     <div *ngFor="let content of previewIllustrations(); let i = index"
-         class="animate-fade-in-up"
+         class="break-inside-avoid mb-6 animate-fade-in-up"
          [style.animation-delay]="(i * 80) + 'ms'"
          [style.opacity]="0">
       <app-card [content]="content"
