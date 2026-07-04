@@ -186,8 +186,8 @@ html body .medium-zoom-image--opened {
   z-index: 0;
   pointer-events: none;
   background-color: var(--color-giallo); /* ← colore del pattern */
-  -webkit-mask-image: url('/assets/background/pattern.svg');
-  mask-image: url('/assets/background/pattern.svg');
+  -webkit-mask-image: url('assets/background/pattern.svg');
+  mask-image: url('assets/background/pattern.svg');
   -webkit-mask-repeat: repeat;
   mask-repeat: repeat;
   -webkit-mask-size: 320px 320px;
