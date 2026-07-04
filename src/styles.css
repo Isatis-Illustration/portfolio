@@ -41,11 +41,14 @@
 /* ═══════════════════════════════════════════
    BASE STYLES
    ═══════════════════════════════════════════ */
+html, body {
+  background-color: var(--color-crema);
+}
+
 body {
   font-family: var(--font-quicksand);
   font-weight: 400;
   color: var(--color-title);
-  background-color: var(--color-crema);
 }
 
 h1, h2, h3, h4, h5, h6 {

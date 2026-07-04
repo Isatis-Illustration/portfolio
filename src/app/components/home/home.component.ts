@@ -39,8 +39,7 @@ export class HomeComponent {
 
   columnsCount: Signal<number> = computed(() => {
     const width = this.windowWidth();
-    if (width >= 1280) return 3;
-    if (width >= 768) return 2;
+    if (width >= 768) return 3;
     return 1;
   });
 

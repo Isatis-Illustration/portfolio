@@ -62,11 +62,11 @@
 
 <!-- Drawer -->
 <div class="fixed top-0 right-0 h-full w-72 bg-crema z-50 md:hidden
-            shadow-[-8px_0_32px_rgba(0,0,0,0.1)]
-            transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+            shadow-[-8px_0_32px_rgba(0,0,0,0.1)]"
      [ngClass]="{
        'translate-x-0': isMobileMenuOpen(),
-       'translate-x-full': !isMobileMenuOpen()
+       'translate-x-full': !isMobileMenuOpen(),
+       'transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]': hasBeenOpened
      }">
 
   <!-- Close button -->

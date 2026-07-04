@@ -11,7 +11,7 @@
   </div>
 
   <!-- Masonry grid with row-to-column order -->
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <div *ngFor="let col of columns(); let colIdx = index" class="flex flex-col gap-6">
       <div *ngFor="let c of col; trackBy: trackById; let i = index"
            class="animate-fade-in-up"

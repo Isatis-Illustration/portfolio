@@ -39,6 +39,7 @@ export class TopNavComponent {
 
   isScrolled: WritableSignal<boolean> = signal(false);
   isMobileMenuOpen: WritableSignal<boolean> = signal(false);
+  hasBeenOpened: boolean = false;
 
   @HostListener('window:scroll')
   onScroll(): void {
@@ -46,6 +47,7 @@ export class TopNavComponent {
   }
 
   toggleMobileMenu(): void {
+    this.hasBeenOpened = true;
     this.isMobileMenuOpen.update(v => !v);
   }
 
