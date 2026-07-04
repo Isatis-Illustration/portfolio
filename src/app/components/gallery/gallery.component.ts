@@ -1,4 +1,4 @@
-import { Component, computed, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal, signal, HostListener } from '@angular/core';
 import { Content } from '../../services/models/models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
@@ -25,6 +25,31 @@ export class GalleryComponent {
 
   contents: Signal<Content[]> = computed(() => this.contentService.filteredContent());
   filter: string = '';
+
+  windowWidth = signal(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  @HostListener('window:resize', [])
+  onResize() {
+    if (typeof window !== 'undefined') {
+      this.windowWidth.set(window.innerWidth);
+    }
+  }
+
+  columnsCount: Signal<number> = computed(() => {
+    const width = this.windowWidth();
+    if (width >= 768) return 3;
+    return 1;
+  });
+
+  columns: Signal<Content[][]> = computed(() => {
+    const count = this.columnsCount();
+    const list = this.contents();
+    const result: Content[][] = Array.from({ length: count }, () => []);
+    list.forEach((item, index) => {
+      result[index % count].push(item);
+    });
+    return result;
+  });
 
   /** Immagine titolo che cambia con la lingua */
   titleImage: Signal<string> = computed(() => {
