@@ -70,16 +70,18 @@
     </p>
   </div>
 
-  <!-- Grid preview -->
-  <div class="gallery-masonry">
-    <div *ngFor="let content of previewIllustrations(); let i = index"
-         class="break-inside-avoid mb-6 animate-fade-in-up"
-         [style.animation-delay]="(i * 80) + 'ms'"
-         [style.opacity]="0">
-      <app-card [content]="content"
-                [isCharacter]="false"
-                (onClickImageEvent)="openDetail($event)">
-      </app-card>
+  <!-- Grid preview in masonry layout with row-to-column order -->
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div *ngFor="let col of columns(); let colIdx = index" class="flex flex-col gap-6">
+      <div *ngFor="let content of col; trackBy: trackById; let i = index"
+           class="animate-fade-in-up"
+           [style.animation-delay]="((colIdx + i * columnsCount()) * 80) + 'ms'"
+           [style.opacity]="0">
+        <app-card [content]="content"
+                  [isCharacter]="false"
+                  (onClickImageEvent)="openDetail($event)">
+        </app-card>
+      </div>
     </div>
   </div>
 
