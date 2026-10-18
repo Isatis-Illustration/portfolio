@@ -87,9 +87,16 @@
     "PRIVACY_REFERENCES_ART28": "Art. 28 GDPR - Processor",
     "PRIVACY_REFERENCES_GARANTE": "Italian Data Protection Authority (Garante per la Protezione dei Dati Personali)",
 
-    "HOME_PREVIEW_TITLE": "My latest works",
-    "HOME_PREVIEW_SUBTITLE": "A selection of my most recent illustrations",
+    "HOME_PREVIEW_TITLE": "Completed Projects",
+    "HOME_PREVIEW_SUBTITLE": "Explore the folders dedicated to main editorial projects and illustrations",
     "HOME_SEE_ALL": "See all illustrations",
+    "FOLDER_SLAP_IT_BADGE": "Collaboration",
+    "FOLDER_SLAP_IT_DESC": "Illustrations & character design",
+    "FOLDER_NAVARRA_BADGE": "Editorial Project",
+    "FOLDER_NAVARRA_DESC": "Children's illustrated book covers",
+    "FOLDER_ITEMS_COUNT": "artworks",
+    "FOLDER_EXPLORE": "Explore folder",
+    "FOLDER_COMING_SOON": "Section coming soon",
     "HOME_BIO_TITLE": "Hi, I'm Isabella!",
     "HOME_BIO_SHORT": "Illustrator specializing in children's illustration and character design. I tell stories through images.",
     "NO_DESCRIPTION": "No description available"

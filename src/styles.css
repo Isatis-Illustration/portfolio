@@ -12,14 +12,15 @@
   --color-arancione:      #F2B0A3;
   --color-giallo:         #FFD54F;
   --color-logo:           #CCD7F3;
+  --color-marrone:        #362B2B;
 
   /* Vecchi alias per compatibilità temporanea */
   --color-primary:        #81C784;
   --color-secondary:      #FFF8E1;
-  --color-info:           #3E3E3E;
+  --color-info:           #362B2B;
   --color-border:         #FFECB3;
   --color-bg-image:       #ffffff;
-  --color-title:          #3E3E3E;
+  --color-title:          #362B2B;
   --color-navbar-menu:    #81C784;
   --color-navbar-bor:     #C8E6C9;
 
@@ -57,7 +58,7 @@ h1, h2, h3, h4, h5, h6 {
 
 ::selection {
   background-color: var(--color-giallo);
-  color: #3E3E3E;
+  color: var(--color-marrone);
 }
 
 
