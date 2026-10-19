@@ -1,9 +1,10 @@
-<div class="relative w-full h-[calc(100dvh-5rem)] overflow-hidden bg-crema flex flex-col">
+<div class="relative w-full h-full overflow-hidden bg-crema flex flex-col">
 
-  <!-- Top bar editoriale / controlli -->
-  <header class="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-crema/85 backdrop-blur-md border-b border-black/5 pointer-events-auto">
+  <!-- Top bar editoriale fissa in alto -->
+  <header class="flex-shrink-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-crema/90 backdrop-blur-md border-b border-black/5 pointer-events-auto">
     <!-- Back to home -->
     <button (click)="goBack()"
+            type="button"
             class="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-white text-title shadow-sm border border-black/5 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
             aria-label="Torna alla home">
       <svg class="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,26 +38,26 @@
   <!-- Viewport a scorrimento verticale con Scroll-Snap -->
   <main #viewport
         (scroll)="onViewportScroll()"
-        class="project-reader-viewport flex-1 w-full overflow-y-auto pt-14 pb-4">
+        class="project-reader-viewport flex-1 w-full overflow-y-auto">
 
     <div *ngFor="let page of pages(); let i = index"
          #slideItem
          [attr.data-index]="i"
-         class="project-page-slide w-full h-full flex flex-col items-center justify-center p-3 sm:p-6 md:p-8 relative">
+         class="project-page-slide flex-shrink-0 w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 relative box-border">
 
       <!-- Foglio PDF / Presentazione a tutto schermo -->
-      <article class="project-sheet group relative flex flex-col items-center justify-center w-full max-w-5xl max-h-[82vh] bg-white rounded-2xl sm:rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.08)] border border-black/5 overflow-hidden p-2 sm:p-4 md:p-6 transition-all duration-300">
+      <article class="project-sheet group relative flex flex-col items-center justify-between w-full max-w-5xl h-full max-h-full bg-white rounded-2xl sm:rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.08)] border border-black/5 overflow-hidden p-2.5 sm:p-4 md:p-5 transition-all duration-300 box-border">
         
-        <!-- Canvas Immagine centrata e grande -->
-        <div class="relative w-full h-full flex-1 flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-crema/40">
+        <!-- Canvas Immagine centrata e grande: min-h-0 permette il resize fluido su iPad e schermi piccoli -->
+        <div class="relative w-full flex-1 min-h-0 flex items-center justify-center rounded-xl sm:rounded-2xl bg-crema/40 overflow-hidden">
           <img [src]="page.imageUrl"
                [alt]="page.title"
                loading="eager"
-               class="max-w-full max-h-[70vh] sm:max-h-[72vh] md:max-h-[74vh] w-auto h-auto object-contain select-none transition-transform duration-500 ease-out group-hover:scale-[1.01]" />
+               class="w-full h-full max-w-full max-h-full object-contain select-none transition-transform duration-500 ease-out group-hover:scale-[1.01]" />
         </div>
 
         <!-- Barra inferiore del foglio editoriale -->
-        <footer class="w-full flex items-center justify-between pt-2.5 px-2 text-title/70 font-quicksand text-xs sm:text-sm">
+        <footer class="flex-shrink-0 w-full flex items-center justify-between pt-2 px-1 text-title/70 font-quicksand text-xs sm:text-sm">
           <span class="font-semibold text-title truncate max-w-[70%]">
             {{ page.title }}
           </span>
@@ -82,7 +83,8 @@
   </main>
 
   <!-- Scrollbar personalizzata galleggiante sul lato destro -->
-  <aside class="custom-scrollbar fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center select-none pointer-events-auto">
+  <aside (wheel)="onAsideWheel($event)"
+         class="custom-scrollbar fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center select-none pointer-events-auto">
     
     <!-- Tasto pagina precedente -->
     <button (click)="prevPage()"
@@ -94,34 +96,41 @@
       </svg>
     </button>
 
-    <!-- Traccia verticale con cursore e punti pagina -->
-    <div class="relative py-2 px-1 flex flex-col items-center justify-between h-44 sm:h-56">
+    <!-- Traccia verticale con punti pagina e goccia scorrevole -->
+    <div class="relative flex flex-col items-center justify-between h-44 sm:h-56 my-1">
       
-      <!-- Linea traccia di fondo -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-2 bottom-2 w-1.5 bg-black/10 rounded-full"></div>
+      <!-- Linea traccia di fondo: inizia al centro del primo pallino e termina al centro dell'ultimo -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-2.5 bottom-2.5 w-1 bg-black/15 rounded-full pointer-events-none"></div>
 
-      <!-- Cursore mobile con numero di pagina corrente -->
-      <div class="scrollbar-thumb absolute left-1/2 -translate-x-1/2 w-3.5 h-7 rounded-full bg-verde-scuro shadow-md flex items-center justify-center transition-all duration-200 ease-out cursor-grab"
-           [style.top.%]="totalPages() > 1 ? (currentPage() / (totalPages() - 1)) * 82 + 5 : 5">
-        <span class="text-[9px] font-fredoka font-bold text-white select-none">
+      <!-- Goccia verde che sguscia fluida tra le tappe con animazione elastica in-out -->
+      <div class="droplet-indicator"
+           [ngClass]="{
+             'moving-down': isMoving() && moveDirection() === 'down',
+             'moving-up': isMoving() && moveDirection() === 'up'
+           }"
+           [style.top]="dropletTop()">
+        <span class="droplet-number">
           {{ currentPage() + 1 }}
         </span>
       </div>
 
-      <!-- Tasti / Punti per ogni singola pagina -->
-      <div *ngFor="let p of pages(); let idx = index"
-           (click)="scrollToPage(idx)"
-           class="group relative z-10 p-1 cursor-pointer flex items-center justify-center"
-           [attr.aria-label]="'Vai a pagina ' + (idx + 1)">
-        <div class="w-2.5 h-2.5 rounded-full transition-all duration-300"
-             [ngClass]="currentPage() === idx ? 'scale-125 bg-verde-scuro ring-2 ring-white shadow-sm' : 'bg-title/30 hover:bg-title/60'">
+      <!-- Tasti / Punti per ogni singola tappa -->
+      <button *ngFor="let p of pages(); let idx = index"
+              (click)="scrollToPage(idx)"
+              type="button"
+              class="group relative z-20 w-5 h-5 cursor-pointer flex items-center justify-center p-0 bg-transparent border-0 outline-none"
+              [attr.aria-label]="'Vai a pagina ' + (idx + 1)">
+        
+        <!-- Pallino tappa sulla traccia: si attenua morbidamente quando coperto dalla goccia -->
+        <div class="w-2 h-2 rounded-full transition-all duration-300"
+             [ngClass]="currentPage() === idx ? 'opacity-0 scale-50' : 'bg-title/30 group-hover:bg-title/60'">
         </div>
 
-        <!-- Tooltip volante con anteprima numero al passaggio del mouse -->
+        <!-- Tooltip con numero pagina al passaggio del mouse -->
         <span class="absolute right-7 px-2 py-0.5 rounded-md bg-title text-white font-fredoka text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-md">
           {{ idx + 1 }} / {{ totalPages() }}
         </span>
-      </div>
+      </button>
 
     </div>
 

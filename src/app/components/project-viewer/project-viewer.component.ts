@@ -102,20 +102,68 @@ export class ProjectViewerComponent implements OnInit {
 
   totalPages = computed<number>(() => this.pages().length);
 
+  dropletTop = computed<string>(() => {
+    const total = this.totalPages();
+    if (total <= 1) return '10px';
+    const ratio = this.currentPage() / (total - 1);
+    return `calc(10px + ${ratio} * (100% - 20px))`;
+  });
+
+  moveDirection = signal<'down' | 'up' | null>(null);
+  isMoving = signal<boolean>(false);
+  private moveTimer: any = null;
+
+  changePage(newIndex: number): void {
+    const current = this.currentPage();
+    if (newIndex === current) return;
+
+    this.moveDirection.set(newIndex > current ? 'down' : 'up');
+    this.isMoving.set(true);
+    this.currentPage.set(newIndex);
+
+    if (this.moveTimer) {
+      clearTimeout(this.moveTimer);
+    }
+    this.moveTimer = setTimeout(() => {
+      this.isMoving.set(false);
+      this.moveDirection.set(null);
+    }, 450);
+  }
+
   private observer?: IntersectionObserver;
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+    }
+    if (typeof document !== 'undefined') {
+      document.documentElement.classList.add('overflow-hidden', 'h-full');
+      document.body.classList.add('overflow-hidden', 'h-full');
+    }
     this.route.paramMap.subscribe((params) => {
       const key = params.get('key')?.toLowerCase() || 'slap-it';
       this.projectKey.set(key);
       this.currentPage.set(0);
+      this.moveDirection.set(null);
+      this.isMoving.set(false);
       this.scrollProgress.set(0);
       this.hasUserScrolled.set(false);
-      setTimeout(() => this.setupObserver(), 100);
+      setTimeout(() => {
+        const vp = this.viewportRef()?.nativeElement;
+        if (vp) vp.scrollTop = 0;
+        this.setupObserver();
+      }, 100);
     });
 
     this.destroyRef.onDestroy(() => {
+      if (typeof document !== 'undefined') {
+        document.documentElement.classList.remove('overflow-hidden', 'h-full');
+        document.body.classList.remove('overflow-hidden', 'h-full');
+      }
       this.observer?.disconnect();
+      if (this.moveTimer) {
+        clearTimeout(this.moveTimer);
+      }
     });
   }
 
@@ -127,22 +175,31 @@ export class ProjectViewerComponent implements OnInit {
 
     this.observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
+        let bestEntry: IntersectionObserverEntry | null = null;
+        for (const entry of entries) {
           if (entry.isIntersecting) {
-            const indexStr = entry.target.getAttribute('data-index');
-            if (indexStr !== null) {
-              const idx = parseInt(indexStr, 10);
-              this.currentPage.set(idx);
-              if (idx > 0) {
-                this.hasUserScrolled.set(true);
-              }
+            if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
+              bestEntry = entry;
             }
           }
-        });
+        }
+
+        if (bestEntry) {
+          const indexStr = (bestEntry as IntersectionObserverEntry).target.getAttribute('data-index');
+          if (indexStr !== null) {
+            const idx = parseInt(indexStr, 10);
+            if (idx !== this.currentPage()) {
+              this.changePage(idx);
+            }
+            if (idx > 0) {
+              this.hasUserScrolled.set(true);
+            }
+          }
+        }
       },
       {
         root: vp,
-        threshold: 0.55,
+        threshold: [0.3, 0.5, 0.7],
       }
     );
 
@@ -156,35 +213,69 @@ export class ProjectViewerComponent implements OnInit {
     const vp = this.viewportRef()?.nativeElement;
     if (!vp) return;
 
+    if (vp.scrollTop > 30) {
+      this.hasUserScrolled.set(true);
+    }
+
     const maxScroll = vp.scrollHeight - vp.clientHeight;
     if (maxScroll > 0) {
       const prog = Math.min(1, Math.max(0, vp.scrollTop / maxScroll));
       this.scrollProgress.set(prog);
-      if (vp.scrollTop > 30) {
-        this.hasUserScrolled.set(true);
+    }
+
+    const slides = this.slideRefs();
+    if (!slides || slides.length === 0) return;
+
+    // Individua la slide visibile più vicina al centro del viewport
+    const vpCenter = vp.scrollTop + vp.clientHeight / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    for (let i = 0; i < slides.length; i++) {
+      const el = slides[i].nativeElement;
+      const slideCenter = el.offsetTop + el.offsetHeight / 2;
+      const dist = Math.abs(vpCenter - slideCenter);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestIndex = i;
       }
+    }
+
+    if (closestIndex !== this.currentPage()) {
+      this.changePage(closestIndex);
+    }
+  }
+
+  onAsideWheel(event: WheelEvent): void {
+    const vp = this.viewportRef()?.nativeElement;
+    if (vp) {
+      vp.scrollTop += event.deltaY;
     }
   }
 
   scrollToPage(index: number): void {
+    const vp = this.viewportRef()?.nativeElement;
     const slides = this.slideRefs();
-    if (slides[index]) {
-      slides[index].nativeElement.scrollIntoView({
+    if (vp && slides && slides[index]) {
+      const target = slides[index].nativeElement;
+      vp.scrollTo({
+        top: target.offsetTop,
         behavior: 'smooth',
-        block: 'center',
       });
-      this.currentPage.set(index);
+      this.changePage(index);
     }
   }
 
   nextPage(): void {
-    const next = Math.min(this.currentPage() + 1, this.totalPages() - 1);
-    this.scrollToPage(next);
+    if (this.currentPage() < this.totalPages() - 1) {
+      this.scrollToPage(this.currentPage() + 1);
+    }
   }
 
   prevPage(): void {
-    const prev = Math.max(this.currentPage() - 1, 0);
-    this.scrollToPage(prev);
+    if (this.currentPage() > 0) {
+      this.scrollToPage(this.currentPage() - 1);
+    }
   }
 
   goBack(): void {

@@ -58,30 +58,36 @@ export class HomeComponent {
 
   /** Fallback per Slap-It durante caricamento API */
   private fallbackSlapIt: Content[] = [
-    { id: 101, title: 'Slap-It Preview 1', imageUrl: 'assets/home/illustration_it.png', type: Type.SLAP_IT, isGif: false, position: 1 },
-    { id: 102, title: 'Slap-It Preview 2', imageUrl: 'assets/home/character.png', type: Type.SLAP_IT, isGif: false, position: 2 },
-    { id: 103, title: 'Slap-It Preview 3', imageUrl: 'assets/home/profile_it.png', type: Type.SLAP_IT, isGif: false, position: 3 },
-    { id: 104, title: 'Slap-It Preview 4', imageUrl: 'assets/home/contacts_it.png', type: Type.SLAP_IT, isGif: false, position: 4 },
+    { id: 101, title: 'Slap-It Preview 1', imageUrl: 'assets/home/illustration_it.png', type: Type.SLAP_IT, isGif: false, position: 1, prev: 1, hasBg: true },
+    { id: 102, title: 'Slap-It Preview 2', imageUrl: 'assets/home/character.png', type: Type.SLAP_IT, isGif: false, position: 2, prev: 2, hasBg: false },
+    { id: 103, title: 'Slap-It Preview 3', imageUrl: 'assets/home/profile_it.png', type: Type.SLAP_IT, isGif: false, position: 3, prev: 3, hasBg: true },
+    { id: 104, title: 'Slap-It Preview 4', imageUrl: 'assets/home/contacts_it.png', type: Type.SLAP_IT, isGif: false, position: 4, prev: 4, hasBg: false },
   ];
 
   /** Fallback per Navarra Editore durante caricamento API */
   private fallbackNavarra: Content[] = [
-    { id: 201, title: 'Navarra Preview 1', imageUrl: 'assets/home/illustration_en.png', type: Type.NAVARRA, isGif: false, position: 1 },
-    { id: 202, title: 'Navarra Preview 2', imageUrl: 'assets/home/contacts_en.png', type: Type.NAVARRA, isGif: false, position: 2 },
-    { id: 203, title: 'Navarra Preview 3', imageUrl: 'assets/home/profile_en.png', type: Type.NAVARRA, isGif: false, position: 3 },
-    { id: 204, title: 'Navarra Preview 4', imageUrl: 'assets/home/character.png', type: Type.NAVARRA, isGif: false, position: 4 },
+    { id: 201, title: 'Navarra Preview 1', imageUrl: 'assets/home/illustration_en.png', type: Type.NAVARRA, isGif: false, position: 1, prev: 1, hasBg: true },
+    { id: 202, title: 'Navarra Preview 2', imageUrl: 'assets/home/contacts_en.png', type: Type.NAVARRA, isGif: false, position: 2, prev: 2, hasBg: false },
+    { id: 203, title: 'Navarra Preview 3', imageUrl: 'assets/home/profile_en.png', type: Type.NAVARRA, isGif: false, position: 3, prev: 3, hasBg: true },
+    { id: 204, title: 'Navarra Preview 4', imageUrl: 'assets/home/character.png', type: Type.NAVARRA, isGif: false, position: 4, prev: 4, hasBg: true },
   ];
 
-  /** Immagini per Slap-It dal BE (fallback se non ancora caricate) */
+  /** Immagini per Slap-It dal BE (filtrate per prev e ordinate) */
   slapItImages: Signal<Content[]> = computed(() => {
-    const items = this.contentService.getContentsByType(Type.SLAP_IT);
-    return items.length > 0 ? items.slice(0, 4) : this.fallbackSlapIt;
+    const previewItems = this.contentService.getPouchPreviewsByType(Type.SLAP_IT);
+    if (previewItems.length > 0) {
+      return previewItems.slice(0, 4);
+    }
+    return this.fallbackSlapIt;
   });
 
-  /** Immagini per Navarra Editore dal BE (fallback se non ancora caricate) */
+  /** Immagini per Navarra Editore dal BE (filtrate per prev e ordinate) */
   navarraImages: Signal<Content[]> = computed(() => {
-    const items = this.contentService.getContentsByType(Type.NAVARRA);
-    return items.length > 0 ? items.slice(0, 4) : this.fallbackNavarra;
+    const previewItems = this.contentService.getPouchPreviewsByType(Type.NAVARRA);
+    if (previewItems.length > 0) {
+      return previewItems.slice(0, 4);
+    }
+    return this.fallbackNavarra;
   });
 
   /** Progetti per layout blob */

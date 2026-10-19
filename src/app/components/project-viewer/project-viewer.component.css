@@ -2,6 +2,7 @@
   display: block;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 /* ═══════════════════════════════════════════
@@ -11,7 +12,9 @@
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  touch-action: pan-y;
 
   /* Nascondi scrollbar nativa per dare risalto a quella personalizzata */
   scrollbar-width: none;
@@ -28,7 +31,8 @@
 .project-page-slide {
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  min-height: 100%;
+  height: 100%;
+  max-height: 100%;
 }
 
 .project-sheet {
@@ -50,9 +54,58 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
-.scrollbar-thumb {
+.droplet-indicator {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 22px;
+  border-radius: 9999px !important;
+  background-color: var(--color-verde-scuro);
+  border: 1.5px solid #ffffff;
+  box-shadow:
+    0 3px 8px rgba(54, 43, 43, 0.16),
+    0 0 8px rgba(129, 199, 132, 0.35);
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center center;
+  transition:
+    top 0.44s cubic-bezier(0.34, 1.35, 0.64, 1),
+    transform 0.44s cubic-bezier(0.34, 1.35, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+  z-index: 15;
+  will-change: top, transform;
 }
+
+.droplet-number {
+  font-family: var(--font-fredoka, 'Fredoka', sans-serif);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  user-select: none;
+  transition: transform 0.25s ease;
+}
+
+/* Sgusciata fluida verso il basso: allungamento morbido con estremi sempre perfettamente arrotondati */
+.droplet-indicator.moving-down {
+  transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
+}
+
+.droplet-indicator.moving-down .droplet-number {
+  transform: scaleY(0.88) scaleX(1.05);
+}
+
+/* Sgusciata fluida verso l'alto: allungamento morbido con estremi sempre perfettamente arrotondati */
+.droplet-indicator.moving-up {
+  transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
+}
+
+.droplet-indicator.moving-up .droplet-number {
+  transform: scaleY(0.88) scaleX(1.05);
+}
+
 
 /* ═══════════════════════════════════════════
    ANIMAZIONE SCROLL HINT

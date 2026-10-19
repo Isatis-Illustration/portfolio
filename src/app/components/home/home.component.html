@@ -68,61 +68,73 @@
     </p>
   </div>
 
-  <!-- Progetti a Blob Pastello -->
-  <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-16 lg:gap-24">
+  <!-- Definizione filtri SVG texture feltro e clipPath -->
+  <svg width="0" height="0" class="absolute pointer-events-none" aria-hidden="true">
+    <filter id="feltro" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" />
+      <feColorMatrix values="0 0 0 0 .45  0 0 0 0 .35  0 0 0 0 .4  0 0 0 .55 -.08" />
+    </filter>
+    <clipPath id="cf">
+      <path d="M0,40C60,10 110,30 150,34C190,30 240,10 300,40L300,112Q300,150 258,150L42,150Q0,150 0,112Z" />
+    </clipPath>
+  </svg>
+
+  <!-- Progetti a Sacchetto di Feltro -->
+  <div class="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 lg:gap-24 pt-16 pb-6">
 
     <div *ngFor="let p of projects(); let pi = index"
-      class="blob-card {{ p.theme }} group relative w-[320px] h-[360px] cursor-pointer select-none"
-      [class.is-toggled]="toggledFolder() === p.key" [style.--float-delay]="(pi * -2.5) + 's'"
-      (click)="handleBlobClick(p.key)" tabindex="0" role="button" [attr.aria-label]="p.title">
+      class="pouch-wrapper {{ p.theme }} select-none flex flex-col items-center"
+      [class.is-toggled]="toggledFolder() === p.key" (click)="handleBlobClick(p.key)" tabindex="0" role="button"
+      [attr.aria-label]="p.title">
 
-      <!-- Ancora al centro del blob: foto che escono a ventaglio -->
-      <div class="blob-stage absolute left-1/2 bottom-[130px] w-0 h-0 z-10 pointer-events-none">
+      <div class="pouch">
+        <!-- Ombra inferiore morbida -->
+        <div class="shadow"></div>
+
+        <!-- Pannello posteriore in feltro -->
+        <div class="back"></div>
+
+        <!-- Foto polaroid o immagini raw che sbucano dalla tasca e vanno a ventaglio -->
         <div *ngFor="let img of p.images; let i = index; trackBy: trackById"
-          class="photo-card card-{{ i }} w-28 h-36 bg-white p-1.5 pb-2.5 rounded-xl border border-black/5 flex flex-col justify-between">
-          <div class="w-full h-[84%] rounded-lg overflow-hidden bg-crema">
-            <img [src]="img.imageUrl" [alt]="img.title" loading="lazy"
-              class="w-full h-full object-cover select-none pointer-events-none" />
-          </div>
-          <span class="font-quicksand font-semibold text-[9px] text-title/70 truncate text-center px-0.5">
-            {{ img.title }}
-          </span>
+             class="card card-{{ i }}"
+             [class.no-card]="img.hasBg === false"
+             [style.--i]="i">
+          <ng-container *ngIf="img.hasBg !== false; else rawImage">
+            <div class="photo">
+              <img [src]="img.imageUrl" [alt]="img.title" loading="lazy" />
+            </div>
+            <b>{{ img.title }}</b>
+          </ng-container>
+          <ng-template #rawImage>
+            <div class="photo-raw">
+              <img [src]="img.imageUrl" [alt]="img.title" loading="lazy" />
+            </div>
+          </ng-template>
+        </div>
+
+        <!-- Tasca frontale in feltro con cuciture e bordo scavato -->
+        <svg class="front" viewBox="0 0 300 150" aria-hidden="true">
+          <path d="M0,40C60,10 110,30 150,34C190,30 240,10 300,40L300,112Q300,150 258,150L42,150Q0,150 0,112Z"
+            fill="var(--front)" />
+          <rect width="300" height="150" filter="url(#feltro)" clip-path="url(#cf)" opacity=".5" />
+          <path d="M14,50C62,28 112,46 150,50C188,46 238,28 286,50L286,112Q286,137 258,137L42,137Q14,137 14,112Z"
+            fill="none" stroke="var(--stitch)" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 7"
+            opacity=".9" />
+        </svg>
+
+        <!-- Informazioni sul sacchetto frontale (Titolo e Descrizione perfettamente centrati) -->
+        <div class="pouch-content z-10 pointer-events-auto">
+          <h3 class="font-fredoka text-xl sm:text-2xl font-bold text-title leading-tight">
+            {{ p.title }}
+          </h3>
+          <p class="font-quicksand text-xs sm:text-sm text-title/75 mt-1 max-w-[220px] truncate">
+            {{ p.descKey | translate }}
+          </p>
         </div>
       </div>
 
-      <!-- Blob -->
-      <div class="absolute bottom-0 inset-x-0 flex justify-center z-20">
-        <div class="blob-float relative w-[260px] h-[260px]">
-
-          <!-- Anello tratteggiato rotante -->
-          <div class="blob-ring absolute -inset-3"></div>
-
-          <!-- Corpo -->
-          <div class="blob-body absolute inset-0 flex flex-col items-center justify-center text-center px-8">
-            <span
-              class="blob-badge font-fredoka text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-2">
-              {{ p.badgeKey | translate }}
-            </span>
-            <h3 class="font-fredoka text-2xl sm:text-3xl font-bold text-title leading-tight">
-              {{ p.title }}
-            </h3>
-            <p class="font-quicksand text-xs sm:text-sm text-title/70 mt-1.5 leading-snug max-w-[200px]">
-              {{ p.descKey | translate }}
-            </p>
-            <button (click)="onFolderClick(p.key, $event)" class="blob-btn mt-3.5 inline-flex items-center gap-1.5 px-4 py-1 rounded-full bg-white
-                           font-fredoka text-xs font-semibold text-title cursor-pointer
-                           transition-transform duration-200 hover:scale-105 active:scale-95 shadow-sm">
-              {{ p.images.length }} {{ 'FOLDER_ITEMS_COUNT' | translate }} · {{ 'FOLDER_EXPLORE' | translate }}
-            </button>
-          </div>
-
-          <!-- Sparkles -->
-          <span class="sparkle s-1">✦</span>
-          <span class="sparkle s-2">✧</span>
-          <span class="sparkle s-3">✦</span>
-        </div>
-      </div>
     </div>
+
   </div>
 
   <!-- CTA Link generale "Vedi tutte le illustrazioni" -->

@@ -46,6 +46,7 @@
 html,
 body {
   background-color: var(--color-crema);
+  height: 100%;
 }
 
 body {

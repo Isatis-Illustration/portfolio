@@ -46,6 +46,17 @@ export class ContentService {
       .filter(c => c.type === targetType)
       .sort((a, b) => a.position - b.position);
   }
+
+  /**
+   * Recupera contenuti preview per il sacchetto:
+   * devono avere context.prev definito, ordinati per prev crescente.
+   */
+  getPouchPreviewsByType(type: Type | string): Content[] {
+    const targetType = normalizeContentType(type);
+    return this.contents()
+      .filter(c => c.type === targetType && c.prev !== undefined && c.prev !== null)
+      .sort((a, b) => (a.prev ?? 0) - (b.prev ?? 0));
+  }
   
 
   private hasRefresh: boolean = environment.hasRefresh;
@@ -132,6 +143,23 @@ export class ContentService {
   private createContent(img: any, id: number): Content{
     const resolvedType = this.resolveType(img.context?.type, img.url);
 
+    // Parsing context.prev (ordine all'interno del sacchetto)
+    let prevNumber: number | undefined = undefined;
+    if (img.context?.prev !== undefined && img.context?.prev !== null && img.context?.prev !== '') {
+      const parsed = Number(img.context.prev);
+      if (!isNaN(parsed)) {
+        prevNumber = parsed;
+      }
+    }
+
+    // Parsing context.bg (1 = con card, 0 = no card / solo img)
+    // Default a true (con card) se non specificato
+    let hasBg = true;
+    if (img.context?.bg !== undefined && img.context?.bg !== null && img.context?.bg !== '') {
+      const rawBg = String(img.context.bg).trim().toLowerCase();
+      hasBg = rawBg === '1' || rawBg === 'true';
+    }
+
     let cont: Content = {
       id: id,
       imageUrl: img.url,
@@ -140,6 +168,8 @@ export class ContentService {
       type: resolvedType,
       position: Number(img.context?.position) || this.getPosition(img.url),
       isGif: this.checkIfGif(img.url),
+      prev: prevNumber,
+      hasBg: hasBg,
     };
 
     return cont;

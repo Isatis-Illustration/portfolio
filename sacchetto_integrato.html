@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sacchetto di feltro — Card integrate</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Quicksand:wght@500;600&display=swap">
+<style>
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --bg: #e8e5ee;
+  --ink: #6b5f73;
+  --shadow: rgba(120, 100, 140, .28);
+  --back: #b7c8da;
+  --front: #f2c7d0;
+  --flap: #eebcc8;
+  --stitch: #fff9f4;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Quicksand', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #26222d;
+    --ink: #cfc3d8;
+    --shadow: rgba(0, 0, 0, .5);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #26222d;
+  --ink: #cfc3d8;
+  --shadow: rgba(0, 0, 0, .5);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  display: grid;
+  place-items: center;
+  overflow-x: hidden;
+}
+
+.stage {
+  padding: 160px 20px 40px;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════
+   SACCHETTO (POUCH)
+   ═══════════════════════════════════════════ */
+.pouch {
+  position: relative;
+  width: 300px;
+  height: 220px;
+  margin: 0 auto;
+  perspective: 900px;
+  outline: none;
+  cursor: pointer;
+}
+
+.shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -18px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--shadow);
+  filter: blur(14px);
+  transition: transform .7s, opacity .7s;
+}
+
+.back {
+  position: absolute;
+  inset: 0;
+  background: var(--back);
+  border-radius: 44px 40px 46px 38px / 40px 46px 42px 48px;
+  z-index: 0;
+}
+
+.front {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 150px;
+  display: block;
+  z-index: 5;
+  pointer-events: none;
+  transition: transform .6s cubic-bezier(.34, 1.56, 0.64, 1);
+}
+
+/* ═══════════════════════════════════════════
+   PHOTO CARD (Struttura foto polaroid utente)
+   ═══════════════════════════════════════════ */
+.card {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  width: 124px;
+  margin-left: -62px;
+  padding: 7px 7px 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  z-index: var(--z, 2);
+  box-shadow: 0 8px 18px rgba(62, 62, 62, 0.08), 0 2px 5px rgba(0, 0, 0, 0.03);
+  transform-origin: 50% 115%;
+  transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r0, 0deg));
+  transition: transform .65s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .45s ease;
+  will-change: transform, box-shadow;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.photo {
+  width: 100%;
+  height: 105px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  background: #fff8e1;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.card b {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 10px;
+  margin-top: 6px;
+  color: #554444;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 2px;
+}
+
+/* ═══════════════════════════════════════════
+   POSIZIONAMENTO CALCOLATO VIA VARIABILI CSS
+   Formula uniforme per qualsiasi N di card
+   ═══════════════════════════════════════════ */
+.c1 {
+  --x: -68px;
+  --y: -14px;
+  --r0: -8deg;
+  --hx: -94px;
+  --hy: -90px;
+  --hr: -16deg;
+  --z: 2;
+  --delay: .05s;
+}
+
+.c2 {
+  --x: 0px;
+  --y: -24px;
+  --r0: 0.5deg;
+  --hx: 0px;
+  --hy: -115px;
+  --hr: 1deg;
+  --z: 3;
+  --delay: .1s;
+}
+
+.c3 {
+  --x: 68px;
+  --y: -14px;
+  --r0: 8deg;
+  --hx: 94px;
+  --hy: -90px;
+  --hr: 16deg;
+  --z: 2;
+  --delay: .15s;
+}
+
+/* ═══════════════════════════════════════════
+   STATI HOVER & FOCUS-VISIBLE
+   ═══════════════════════════════════════════ */
+.pouch:hover .front,
+.pouch:focus-visible .front {
+  transform: translateY(6px) scaleY(.97);
+}
+
+.pouch:hover .shadow,
+.pouch:focus-visible .shadow {
+  transform: scaleX(1.1);
+  opacity: .85;
+}
+
+.pouch:hover .card,
+.pouch:focus-visible .card {
+  transform: translate3d(var(--hx, 0px), var(--hy, -100px), 0) rotate(var(--hr, 0deg)) scale(1.04);
+  box-shadow: 0 16px 28px rgba(62, 62, 62, 0.16);
+  transition-delay: var(--delay, 0s);
+}
+
+.hint {
+  margin-top: 44px;
+  font-size: 15px;
+  opacity: .8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: .01s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .pouch {
+    transform: scale(.88);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Texture feltro e maschera di taglio tasca -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="feltro" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/>
+    <feColorMatrix values="0 0 0 0 .45  0 0 0 0 .35  0 0 0 0 .4  0 0 0 .55 -.08"/>
+  </filter>
+  <clipPath id="cf">
+    <path d="M0,40C60,10 110,30 150,34C190,30 240,10 300,40L300,112Q300,150 258,150L42,150Q0,150 0,112Z"/>
+  </clipPath>
+</svg>
+
+<main class="stage">
+  <div class="pouch" tabindex="0" aria-label="Sacchetto in feltro con cartelle di illustrazioni">
+    <!-- Ombra morbida inferiore -->
+    <div class="shadow"></div>
+
+    <!-- Pannello posteriore in feltro -->
+    <div class="back"></div>
+
+    <!-- Foto polaroid integrate: passano dietro la tasca frontale -->
+    <div class="card c1" style="--i:0;">
+      <div class="photo">
+        <img src="src/assets/home/illustration_it.png" onerror="this.src='assets/home/illustration_it.png'" alt="Maggio" />
+      </div>
+      <b>Maggio</b>
+    </div>
+
+    <div class="card c2" style="--i:1;">
+      <div class="photo">
+        <img src="src/assets/home/character.png" onerror="this.src='assets/home/character.png'" alt="Estate" />
+      </div>
+      <b>Estate</b>
+    </div>
+
+    <div class="card c3" style="--i:2;">
+      <div class="photo">
+        <img src="src/assets/home/profile_it.png" onerror="this.src='assets/home/profile_it.png'" alt="Sera" />
+      </div>
+      <b>Sera</b>
+    </div>
+
+    <!-- Tasca frontale in feltro con cuciture e bordo scavato -->
+    <svg class="front" viewBox="0 0 300 150" aria-hidden="true">
+      <path d="M0,40C60,10 110,30 150,34C190,30 240,10 300,40L300,112Q300,150 258,150L42,150Q0,150 0,112Z" fill="var(--front)"/>
+      <rect width="300" height="150" filter="url(#feltro)" clip-path="url(#cf)" opacity=".5"/>
+      <path d="M14,50C62,28 112,46 150,50C188,46 238,28 286,50L286,112Q286,137 258,137L42,137Q14,137 14,112Z"
+            fill="none" stroke="var(--stitch)" stroke-width="2" stroke-linecap="round" stroke-dasharray="1 7" opacity=".9"/>
+    </svg>
+  </div>
+
+  <p class="hint">Passa il mouse sul sacchetto</p>
+</main>
+
+</body>
+</html>

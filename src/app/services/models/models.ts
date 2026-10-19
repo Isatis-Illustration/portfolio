@@ -8,6 +8,8 @@ export interface Context{
     alt?: string,       //descrizione
     position?: string,
     type?: string,
+    prev?: string | number,
+    bg?: string | boolean | number,
 }
 
 
@@ -19,6 +21,8 @@ export interface Content{
     type: string;
     isGif: boolean;
     position: number;
+    prev?: number;
+    hasBg?: boolean;
 }
 
 
