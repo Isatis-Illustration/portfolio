@@ -1,0 +1,140 @@
+<div class="relative w-full h-[calc(100dvh-5rem)] overflow-hidden bg-crema flex flex-col">
+
+  <!-- Top bar editoriale / controlli -->
+  <header class="absolute top-0 inset-x-0 z-30 flex items-center justify-between px-4 sm:px-8 py-3 bg-crema/85 backdrop-blur-md border-b border-black/5 pointer-events-auto">
+    <!-- Back to home -->
+    <button (click)="goBack()"
+            class="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-white text-title shadow-sm border border-black/5 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+            aria-label="Torna alla home">
+      <svg class="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span class="font-fredoka text-xs sm:text-sm font-medium">Home</span>
+    </button>
+
+    <!-- Project Title & Badge -->
+    <div class="flex items-center gap-2 sm:gap-3 text-center">
+      <span class="hidden sm:inline-block font-fredoka text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-verde-scuro/20 text-title">
+        {{ currentMeta().badgeKey | translate }}
+      </span>
+      <h1 class="font-barriecito text-xl sm:text-2xl md:text-3xl font-bold text-title tracking-wide">
+        {{ currentMeta().title }}
+      </h1>
+    </div>
+
+    <!-- Page Counter Pill -->
+    <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-black/5 shadow-sm">
+      <span class="font-fredoka text-xs sm:text-sm font-bold text-verde-scuro">
+        {{ (currentPage() + 1) < 10 ? '0' + (currentPage() + 1) : (currentPage() + 1) }}
+      </span>
+      <span class="text-title/30 text-xs">/</span>
+      <span class="font-fredoka text-xs sm:text-sm text-title/60 font-medium">
+        {{ totalPages() < 10 ? '0' + totalPages() : totalPages() }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Viewport a scorrimento verticale con Scroll-Snap -->
+  <main #viewport
+        (scroll)="onViewportScroll()"
+        class="project-reader-viewport flex-1 w-full overflow-y-auto pt-14 pb-4">
+
+    <div *ngFor="let page of pages(); let i = index"
+         #slideItem
+         [attr.data-index]="i"
+         class="project-page-slide w-full h-full flex flex-col items-center justify-center p-3 sm:p-6 md:p-8 relative">
+
+      <!-- Foglio PDF / Presentazione a tutto schermo -->
+      <article class="project-sheet group relative flex flex-col items-center justify-center w-full max-w-5xl max-h-[82vh] bg-white rounded-2xl sm:rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.08)] border border-black/5 overflow-hidden p-2 sm:p-4 md:p-6 transition-all duration-300">
+        
+        <!-- Canvas Immagine centrata e grande -->
+        <div class="relative w-full h-full flex-1 flex items-center justify-center overflow-hidden rounded-xl sm:rounded-2xl bg-crema/40">
+          <img [src]="page.imageUrl"
+               [alt]="page.title"
+               loading="eager"
+               class="max-w-full max-h-[70vh] sm:max-h-[72vh] md:max-h-[74vh] w-auto h-auto object-contain select-none transition-transform duration-500 ease-out group-hover:scale-[1.01]" />
+        </div>
+
+        <!-- Barra inferiore del foglio editoriale -->
+        <footer class="w-full flex items-center justify-between pt-2.5 px-2 text-title/70 font-quicksand text-xs sm:text-sm">
+          <span class="font-semibold text-title truncate max-w-[70%]">
+            {{ page.title }}
+          </span>
+          <span class="font-fredoka text-[11px] font-bold text-verde-scuro uppercase tracking-wider">
+            Tavola {{ i + 1 }}
+          </span>
+        </footer>
+      </article>
+
+      <!-- Indicatore visivo di scroll intuitivo sulla prima pagina (scompare dopo lo scroll) -->
+      <div *ngIf="i === 0 && !hasUserScrolled()"
+           class="scroll-hint absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-1.5 text-title/60 transition-opacity duration-500">
+        <div class="mouse-icon w-5 h-8 rounded-full border-2 border-title/40 flex justify-center pt-1.5 shadow-sm">
+          <div class="wheel w-1 h-2 bg-verde-scuro rounded-full animate-bounce"></div>
+        </div>
+        <svg class="w-4 h-4 text-title/50 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Scrollbar personalizzata galleggiante sul lato destro -->
+  <aside class="custom-scrollbar fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center select-none pointer-events-auto">
+    
+    <!-- Tasto pagina precedente -->
+    <button (click)="prevPage()"
+            [disabled]="currentPage() === 0"
+            class="p-1.5 rounded-full text-title/60 hover:text-title hover:bg-white/80 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer"
+            aria-label="Pagina precedente">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/>
+      </svg>
+    </button>
+
+    <!-- Traccia verticale con cursore e punti pagina -->
+    <div class="relative py-2 px-1 flex flex-col items-center justify-between h-44 sm:h-56">
+      
+      <!-- Linea traccia di fondo -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-2 bottom-2 w-1.5 bg-black/10 rounded-full"></div>
+
+      <!-- Cursore mobile con numero di pagina corrente -->
+      <div class="scrollbar-thumb absolute left-1/2 -translate-x-1/2 w-3.5 h-7 rounded-full bg-verde-scuro shadow-md flex items-center justify-center transition-all duration-200 ease-out cursor-grab"
+           [style.top.%]="totalPages() > 1 ? (currentPage() / (totalPages() - 1)) * 82 + 5 : 5">
+        <span class="text-[9px] font-fredoka font-bold text-white select-none">
+          {{ currentPage() + 1 }}
+        </span>
+      </div>
+
+      <!-- Tasti / Punti per ogni singola pagina -->
+      <div *ngFor="let p of pages(); let idx = index"
+           (click)="scrollToPage(idx)"
+           class="group relative z-10 p-1 cursor-pointer flex items-center justify-center"
+           [attr.aria-label]="'Vai a pagina ' + (idx + 1)">
+        <div class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+             [ngClass]="currentPage() === idx ? 'scale-125 bg-verde-scuro ring-2 ring-white shadow-sm' : 'bg-title/30 hover:bg-title/60'">
+        </div>
+
+        <!-- Tooltip volante con anteprima numero al passaggio del mouse -->
+        <span class="absolute right-7 px-2 py-0.5 rounded-md bg-title text-white font-fredoka text-[10px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap shadow-md">
+          {{ idx + 1 }} / {{ totalPages() }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Tasto pagina successiva -->
+    <button (click)="nextPage()"
+            [disabled]="currentPage() === totalPages() - 1"
+            class="p-1.5 rounded-full text-title/60 hover:text-title hover:bg-white/80 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer"
+            aria-label="Pagina successiva">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </button>
+
+  </aside>
+
+</div>

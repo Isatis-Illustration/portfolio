@@ -74,7 +74,7 @@
     <div *ngFor="let p of projects(); let pi = index"
       class="blob-card {{ p.theme }} group relative w-[320px] h-[360px] cursor-pointer select-none"
       [class.is-toggled]="toggledFolder() === p.key" [style.--float-delay]="(pi * -2.5) + 's'"
-      (click)="toggleFolder(p.key)" tabindex="0" role="button" [attr.aria-label]="p.title">
+      (click)="handleBlobClick(p.key)" tabindex="0" role="button" [attr.aria-label]="p.title">
 
       <!-- Ancora al centro del blob: foto che escono a ventaglio -->
       <div class="blob-stage absolute left-1/2 bottom-[130px] w-0 h-0 z-10 pointer-events-none">

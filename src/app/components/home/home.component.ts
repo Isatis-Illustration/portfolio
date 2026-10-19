@@ -8,6 +8,17 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService } from '../../services/translation.service';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
+import { Type } from '../../services/models/enums';
+
+export interface ProjectFolder {
+  key: string;
+  type: Type | string;
+  title: string;
+  theme: string;
+  badgeKey: string;
+  descKey: string;
+  images: Content[];
+}
 
 @Component({
   selector: 'app-home',
@@ -47,44 +58,37 @@ export class HomeComponent {
 
   /** Fallback per Slap-It durante caricamento API */
   private fallbackSlapIt: Content[] = [
-    { id: 101, title: 'Slap-It Preview 1', imageUrl: 'assets/home/illustration_it.png', type: 'illustration', isGif: false, position: 1 },
-    { id: 102, title: 'Slap-It Preview 2', imageUrl: 'assets/home/character.png', type: 'character', isGif: false, position: 2 },
-    { id: 103, title: 'Slap-It Preview 3', imageUrl: 'assets/home/profile_it.png', type: 'illustration', isGif: false, position: 3 },
-    { id: 104, title: 'Slap-It Preview 4', imageUrl: 'assets/home/contacts_it.png', type: 'illustration', isGif: false, position: 4 },
+    { id: 101, title: 'Slap-It Preview 1', imageUrl: 'assets/home/illustration_it.png', type: Type.SLAP_IT, isGif: false, position: 1 },
+    { id: 102, title: 'Slap-It Preview 2', imageUrl: 'assets/home/character.png', type: Type.SLAP_IT, isGif: false, position: 2 },
+    { id: 103, title: 'Slap-It Preview 3', imageUrl: 'assets/home/profile_it.png', type: Type.SLAP_IT, isGif: false, position: 3 },
+    { id: 104, title: 'Slap-It Preview 4', imageUrl: 'assets/home/contacts_it.png', type: Type.SLAP_IT, isGif: false, position: 4 },
   ];
 
   /** Fallback per Navarra Editore durante caricamento API */
   private fallbackNavarra: Content[] = [
-    { id: 201, title: 'Navarra Preview 1', imageUrl: 'assets/home/illustration_en.png', type: 'illustration', isGif: false, position: 1 },
-    { id: 202, title: 'Navarra Preview 2', imageUrl: 'assets/home/contacts_en.png', type: 'illustration', isGif: false, position: 2 },
-    { id: 203, title: 'Navarra Preview 3', imageUrl: 'assets/home/profile_en.png', type: 'illustration', isGif: false, position: 3 },
-    { id: 204, title: 'Navarra Preview 4', imageUrl: 'assets/home/character.png', type: 'character', isGif: false, position: 4 },
+    { id: 201, title: 'Navarra Preview 1', imageUrl: 'assets/home/illustration_en.png', type: Type.NAVARRA, isGif: false, position: 1 },
+    { id: 202, title: 'Navarra Preview 2', imageUrl: 'assets/home/contacts_en.png', type: Type.NAVARRA, isGif: false, position: 2 },
+    { id: 203, title: 'Navarra Preview 3', imageUrl: 'assets/home/profile_en.png', type: Type.NAVARRA, isGif: false, position: 3 },
+    { id: 204, title: 'Navarra Preview 4', imageUrl: 'assets/home/character.png', type: Type.NAVARRA, isGif: false, position: 4 },
   ];
 
-  /** Immagini per Slap-It (prime 4 immagini dall'API) */
+  /** Immagini per Slap-It dal BE (fallback se non ancora caricate) */
   slapItImages: Signal<Content[]> = computed(() => {
-    const all = this.contentService.contents();
-    if (all && all.length > 0) {
-      return all.slice(0, 4);
-    }
-    return this.fallbackSlapIt;
+    const items = this.contentService.getContentsByType(Type.SLAP_IT);
+    return items.length > 0 ? items.slice(0, 4) : this.fallbackSlapIt;
   });
 
-  /** Immagini per Navarra Editore (successive 4 immagini dall'API) */
+  /** Immagini per Navarra Editore dal BE (fallback se non ancora caricate) */
   navarraImages: Signal<Content[]> = computed(() => {
-    const all = this.contentService.contents();
-    if (all && all.length > 4) {
-      return all.slice(4, 8);
-    } else if (all && all.length > 0) {
-      return all.slice(0, 4);
-    }
-    return this.fallbackNavarra;
+    const items = this.contentService.getContentsByType(Type.NAVARRA);
+    return items.length > 0 ? items.slice(0, 4) : this.fallbackNavarra;
   });
 
   /** Progetti per layout blob */
-  projects = computed(() => [
+  projects: Signal<ProjectFolder[]> = computed(() => [
     {
       key: 'slap-it',
+      type: Type.SLAP_IT,
       title: 'Slap-It',
       theme: 'theme-lavender',
       badgeKey: 'FOLDER_SLAP_IT_BADGE',
@@ -93,6 +97,7 @@ export class HomeComponent {
     },
     {
       key: 'navarra',
+      type: Type.NAVARRA,
       title: 'Navarra Editore',
       theme: 'theme-mint',
       badgeKey: 'FOLDER_NAVARRA_BADGE',
@@ -119,17 +124,20 @@ export class HomeComponent {
     }
   }
 
-  onFolderClick(folderName: string, event?: Event): void {
+  handleBlobClick(folderKey: string): void {
+    const isDesktopHover = typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches;
+    if (isDesktopHover || this.toggledFolder() === folderKey) {
+      this.navigate(`project/${folderKey}`);
+    } else {
+      this.toggleFolder(folderKey);
+    }
+  }
+
+  onFolderClick(folderKey: string, event?: Event): void {
     if (event) {
       event.stopPropagation();
     }
-    const title = folderName === 'slap-it' ? 'Slap-It' : 'Navarra Editore';
-    this.toastMessage.set(title);
-    setTimeout(() => {
-      if (this.toastMessage() === title) {
-        this.toastMessage.set(null);
-      }
-    }, 2800);
+    this.navigate(`project/${folderKey}`);
   }
 
   trackById(_index: number, item: any) {

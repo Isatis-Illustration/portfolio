@@ -1,0 +1,77 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL-SNAP VIEWPORT (Stile Instagram / PDF)
+   ═══════════════════════════════════════════ */
+.project-reader-viewport {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+
+  /* Nascondi scrollbar nativa per dare risalto a quella personalizzata */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.project-reader-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE & SHEET
+   ═══════════════════════════════════════════ */
+.project-page-slide {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  min-height: 100%;
+}
+
+.project-sheet {
+  aspect-ratio: auto;
+  box-shadow:
+    0 10px 30px -5px rgba(54, 43, 43, 0.08),
+    0 20px 45px -10px rgba(54, 43, 43, 0.06);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR PERSONALIZZATA GALLEGGIANTE
+   ═══════════════════════════════════════════ */
+.custom-scrollbar {
+  background: rgba(255, 248, 225, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 6px 4px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.scrollbar-thumb {
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMAZIONE SCROLL HINT
+   ═══════════════════════════════════════════ */
+@keyframes wheelScroll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(6px);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.scroll-hint .wheel {
+  animation: wheelScroll 1.6s ease-in-out infinite;
+}

@@ -34,6 +34,10 @@ export const routes: Routes = [
             {
                 path: 'privacy-policy',
                 loadComponent: () => import('./components/privacy-policy/privacy-policy.component').then(m => m.PrivacyPolicyComponent),
+            },
+            {
+                path: 'project/:key',
+                loadComponent: () => import('./components/project-viewer/project-viewer.component').then(m => m.ProjectViewerComponent),
             }
         ]
     }

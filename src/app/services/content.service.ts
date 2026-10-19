@@ -3,7 +3,7 @@ import { ClaudinaryImage, Content } from './models/models';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { environment } from '../environment/environment';
-import { StorageKey, Type } from './models/enums';
+import { StorageKey, Type, normalizeContentType } from './models/enums';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -28,11 +28,24 @@ export class ContentService {
   }
 
   filteredContent: Signal<Content[]> = computed(() => {
-    const f = this.filter();
+    const f = this.filter()?.toLowerCase().trim();
     const all = this.contents();
-    if (!f) return all;
-    return all.filter(c => f.includes(c.type)).sort((a, b) => a.position - b.position);
-  })
+    if (!f || f === 'all') return all;
+    const targetType = normalizeContentType(f);
+    return all
+      .filter(c => c.type === targetType || f.includes(c.type))
+      .sort((a, b) => a.position - b.position);
+  });
+
+  /**
+   * Recupera contenuti filtrati per tipologia specifica, ordinati per posizione.
+   */
+  getContentsByType(type: Type | string): Content[] {
+    const targetType = normalizeContentType(type);
+    return this.contents()
+      .filter(c => c.type === targetType)
+      .sort((a, b) => a.position - b.position);
+  }
   
 
   private hasRefresh: boolean = environment.hasRefresh;
@@ -117,50 +130,58 @@ export class ContentService {
 
 
   private createContent(img: any, id: number): Content{
+    const resolvedType = this.resolveType(img.context?.type, img.url);
 
     let cont: Content = {
       id: id,
       imageUrl: img.url,
-      title: img.context.caption || this.getTitleByUrl(img.url),
-      description: img.context.alt || '',
-      type: img.context.type  === 'i' || this.getType(img.url) === 'i' ? Type.ILLUSTRATION : Type.CHARACTER,
-      position: Number(img.context.position) || this.getPosition(img.url),
+      title: img.context?.caption || this.getTitleByUrl(img.url),
+      description: img.context?.alt || '',
+      type: resolvedType,
+      position: Number(img.context?.position) || this.getPosition(img.url),
       isGif: this.checkIfGif(img.url),
     };
 
     return cont;
   }
 
+  private resolveType(contextType?: string, url?: string): string {
+    if (contextType) {
+      return normalizeContentType(contextType);
+    }
+    if (url) {
+      const typeFromUrl = this.getTypeFromUrl(url);
+      if (typeFromUrl) {
+        return normalizeContentType(typeFromUrl);
+      }
+    }
+    return Type.ILLUSTRATION;
+  }
 
-  private checkIfGif(url: string): boolean{
+  private getTypeFromUrl(url: string): string {
+    const parts = url.split("/");
+    const filenameWithExt = parts[parts.length - 1];  
+    const segments = filenameWithExt.split(".");
+    if (segments.length > 2) {
+      return segments[1];
+    }
+    return '';
+  }
+
+  private checkIfGif(url: string): boolean {
     const parts: string[] = url.split('.');
-
-    if(!parts.length)
-      return false;
-
-    return parts[parts.length-1] === 'gif';
+    if (!parts.length) return false;
+    return parts[parts.length - 1] === 'gif';
   }
 
-
-  isUserImage(img: any): boolean{
-    return img.context.caption && img.context.caption === 'user';
+  isUserImage(img: any): boolean {
+    return img.context?.caption && img.context.caption === 'user';
   }
-
 
   getPosition(url: string): number {
     const parts: string[] = url.split('.');
-
-    if(!parts.length)
-      return 0;
-
-    return Number(parts[parts.length-2]) || 0;
-  }
-
-  private getType(url: string): string {
-    const parts = url.split("/");
-    const filenameWithExt = parts[parts.length - 1];  
-    const type = filenameWithExt.split(".")[1] === 'i' ? Type.ILLUSTRATION : Type.CHARACTER;
-    return type;
+    if (!parts.length) return 0;
+    return Number(parts[parts.length - 2]) || 0;
   }
 
 
