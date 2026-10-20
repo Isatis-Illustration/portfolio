@@ -22,6 +22,6 @@ export class ShellComponent {
   }
 
   isDetailRoute(): boolean {
-    return this.router.url.includes('/detail/');
+    return this.router.url.includes('/detail/') || this.router.url.includes('/project/');
   }
 }

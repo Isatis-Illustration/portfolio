@@ -3,7 +3,7 @@ export const environment = {
     refreshTime: 30,
     baseUrl: 'https://cloudinary-backend-iota.vercel.app/api',  // http://localhost:3000/api  //  https://cloudinary-backend-iota.vercel.app/api
     formUlr: '/images/send-mail',
-    imagesUrl:`/images`,
+    portfolioUrl:`/portfolio`,
     icons: {
       logo: `assets/logo/logo.gif`,
       nameGif: 'assets/home/name.gif',

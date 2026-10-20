@@ -1,0 +1,203 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════
+   BUSTINA DI FELTRO (Demo "Bustina di feltro.html")
+   ═══════════════════════════════════════════ */
+.sleeve {
+  position: relative;
+  width: 260px;
+  height: 300px;
+  margin: 0 auto;
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.sleeve:hover,
+.sleeve:focus-visible {
+  transform: translateY(-2px);
+}
+
+.sleeve:focus-visible {
+  outline: 2px solid var(--color-verde-scuro, #81c784);
+  outline-offset: 6px;
+  border-radius: 36px;
+}
+
+/* Ombra inferiore */
+.shadow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -16px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(120, 100, 140, 0.24);
+  filter: blur(14px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.sleeve:hover .shadow,
+.sleeve:focus-visible .shadow {
+  transform: scale(1.05);
+  opacity: 0.85;
+}
+
+/* Pannello posteriore sagomato in feltro */
+.back {
+  position: absolute;
+  inset: 0;
+  background: var(--back, #c3d3bd);
+  border-radius: 40px 36px 42px 34px / 36px 42px 38px 44px;
+  z-index: 0;
+}
+
+/* Card interne estetiche */
+.card {
+  position: absolute;
+  top: var(--t);
+  left: 50%;
+  width: 214px;
+  height: 210px;
+  margin-left: -107px;
+  border-radius: 12px 14px 11px 13px;
+  z-index: 1;
+  box-shadow: 0 3px 8px rgba(120, 100, 140, 0.2);
+  transform: rotate(var(--r));
+  transition: transform 0.6s cubic-bezier(0.33, 1.2, 0.5, 1);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  border-radius: 8px;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  top: 22px;
+  right: 24px;
+}
+
+.c1 {
+  --t: 12px;
+  --r: -1.6deg;
+  background: var(--c1, #f3d6dd);
+}
+
+.c2 {
+  --t: 24px;
+  --r: 1.2deg;
+  background: var(--c2, #dce8f1);
+}
+
+.c3 {
+  --t: 36px;
+  --r: -0.5deg;
+  background: var(--c3, #fbedd2);
+}
+
+/* Animazione card interna: morbida e contenuta (molto meno pronunciata di quella in home) */
+.sleeve:hover .c1,
+.sleeve:focus-visible .c1 {
+  transform: translateY(-9px) rotate(-2.2deg);
+}
+
+.sleeve:hover .c2,
+.sleeve:focus-visible .c2 {
+  transform: translateY(-6px) rotate(1.6deg);
+  transition-delay: 0.05s;
+}
+
+.sleeve:hover .c3,
+.sleeve:focus-visible .c3 {
+  transform: translateY(-3px) rotate(-0.8deg);
+  transition-delay: 0.1s;
+}
+
+/* Tasca frontale in feltro */
+.front {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 262px;
+  z-index: 5;
+}
+
+.front svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Cartolina di presentazione al centro */
+.cover {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 58px;
+  bottom: 24px;
+  padding: 6px;
+  background: #fffaf5;
+  border-radius: 12px 14px 11px 15px;
+  box-shadow: 0 3px 8px rgba(110, 90, 120, 0.22);
+  transform: rotate(-0.8deg);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  overflow: hidden;
+}
+
+.sleeve:hover .cover,
+.sleeve:focus-visible .cover {
+  transform: rotate(-0.2deg) scale(1.015);
+  box-shadow: 0 6px 14px rgba(110, 90, 120, 0.28);
+}
+
+.cover-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sleeve,
+  .card,
+  .cover {
+    transition-duration: 0.01s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* Cartolina senza cartoncino (coverHasBg: false): immagine libera, es. PNG trasparente */
+.cover.no-card {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sleeve:hover .cover.no-card,
+.sleeve:focus-visible .cover.no-card {
+  box-shadow: none;
+}
+
+.cover.no-card .cover-img {
+  object-fit: contain;
+  border-radius: 0;
+  filter: drop-shadow(0 4px 8px rgba(110, 90, 120, 0.22));
+}

@@ -1,0 +1,145 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   SCROLL-SNAP VIEWPORT (Stile Instagram / PDF)
+   ═══════════════════════════════════════════ */
+.project-reader-viewport {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  touch-action: pan-y;
+
+  /* Nascondi scrollbar nativa per dare risalto a quella personalizzata */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.project-reader-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE & SHEET
+   ═══════════════════════════════════════════ */
+.project-page-slide {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  height: 100%;
+  max-height: 100%;
+}
+
+.project-sheet {
+  aspect-ratio: auto;
+  box-shadow:
+    0 10px 30px -5px rgba(54, 43, 43, 0.08),
+    0 20px 45px -10px rgba(54, 43, 43, 0.06);
+}
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR PERSONALIZZATA GALLEGGIANTE
+   ═══════════════════════════════════════════ */
+.custom-scrollbar {
+  background: rgba(255, 248, 225, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 6px 4px;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.droplet-indicator {
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 22px;
+  border-radius: 9999px !important;
+  background-color: var(--color-verde-scuro);
+  border: 1.5px solid #ffffff;
+  box-shadow:
+    0 3px 8px rgba(54, 43, 43, 0.16),
+    0 0 8px rgba(129, 199, 132, 0.35);
+  transform: translate(-50%, -50%) scale(1);
+  transform-origin: center center;
+  transition:
+    top 0.44s cubic-bezier(0.34, 1.35, 0.64, 1),
+    transform 0.44s cubic-bezier(0.34, 1.35, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 15;
+  will-change: top, transform;
+}
+
+.droplet-number {
+  font-family: var(--font-fredoka, 'Fredoka', sans-serif);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  user-select: none;
+  transition: transform 0.25s ease;
+}
+
+/* Sgusciata fluida verso il basso: allungamento morbido con estremi sempre perfettamente arrotondati */
+.droplet-indicator.moving-down {
+  transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
+}
+
+.droplet-indicator.moving-down .droplet-number {
+  transform: scaleY(0.88) scaleX(1.05);
+}
+
+/* Sgusciata fluida verso l'alto: allungamento morbido con estremi sempre perfettamente arrotondati */
+.droplet-indicator.moving-up {
+  transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
+}
+
+.droplet-indicator.moving-up .droplet-number {
+  transform: scaleY(0.88) scaleX(1.05);
+}
+
+
+/* ═══════════════════════════════════════════
+   ANIMAZIONE SCROLL HINT
+   ═══════════════════════════════════════════ */
+@keyframes wheelScroll {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(6px);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.scroll-hint .wheel {
+  animation: wheelScroll 1.6s ease-in-out infinite;
+}
+
+/* Tavola senza foglio (hasBg: false): immagine libera sullo sfondo, es. PNG trasparente */
+.project-sheet.no-card {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.project-sheet.no-card .sheet-canvas {
+  background: transparent !important;
+}
+
+.project-sheet.no-card .sheet-canvas img {
+  filter: drop-shadow(0 10px 24px rgba(62, 62, 62, 0.16));
+}

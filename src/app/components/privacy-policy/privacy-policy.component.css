@@ -1,0 +1,5 @@
+/* I titoli usano lo stesso font del testo (i titoli globali sono in Barriecito) */
+h1,
+h2 {
+  font-family: var(--font-quicksand);
+}
