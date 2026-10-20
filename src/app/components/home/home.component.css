@@ -1,3 +1,10 @@
+/* La Home occupa tutta l'altezza disponibile, così la mini bio può stare in fondo (mt-auto) */
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
 /* ═════════════════════════════════════════════════════════
    CONTENITORE SACCHETTO (POUCH)
    ═════════════════════════════════════════════════════════ */
