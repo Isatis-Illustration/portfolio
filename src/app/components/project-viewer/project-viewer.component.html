@@ -14,12 +14,8 @@
       <span class="font-fredoka text-xs sm:text-sm font-medium">Home</span>
     </button>
 
-    <!-- Project Title & Badge -->
+    <!-- Titolo del progetto oppure logo -->
     <div class="flex items-center gap-2 sm:gap-3 text-center">
-      <span *ngIf="currentMeta().badge || currentMeta().badgeKey"
-        class="hidden sm:inline-block font-fredoka text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-verde-scuro/20 text-title">
-        {{ currentMeta().badge || (currentMeta().badgeKey ? (currentMeta().badgeKey! | translate) : '') }}
-      </span>
 
       <div class="flex flex-col items-center">
         <!-- Titolo o Foto nel Viewer (se c'è immagine/logo mostra l'immagine, altrimenti il titolo) -->
@@ -34,11 +30,6 @@
           </h1>
         </ng-template>
 
-        <!-- Descrizione breve opzionale (solo desktop) -->
-        <p *ngIf="currentMeta().description || currentMeta().descKey"
-          class="hidden md:block font-quicksand text-xs text-title/60 max-w-md truncate">
-          {{ currentMeta().description || (currentMeta().descKey ? (currentMeta().descKey! | translate) : '') }}
-        </p>
       </div>
     </div>
 
@@ -60,11 +51,12 @@
 
       <!-- Foglio PDF / Presentazione a tutto schermo -->
       <article
+        [class.no-card]="page.hasBg === false"
         class="project-sheet group relative flex flex-col items-center justify-between w-full max-w-5xl h-full max-h-full bg-white rounded-2xl sm:rounded-3xl shadow-[0_16px_40px_rgba(0,0,0,0.08)] border border-black/5 overflow-hidden p-2.5 sm:p-4 md:p-5 transition-all duration-300 box-border">
 
         <!-- Canvas Immagine centrata e grande: min-h-0 permette il resize fluido su iPad e schermi piccoli -->
         <div
-          class="relative w-full flex-1 min-h-0 flex items-center justify-center rounded-xl sm:rounded-2xl bg-crema/40 overflow-hidden">
+          class="sheet-canvas relative w-full flex-1 min-h-0 flex items-center justify-center rounded-xl sm:rounded-2xl bg-crema/40 overflow-hidden">
           <img [src]="page.imageUrl" [alt]="page.title" loading="eager"
             class="w-full h-full max-w-full max-h-full object-contain select-none transition-transform duration-500 ease-out group-hover:scale-[1.01]" />
         </div>

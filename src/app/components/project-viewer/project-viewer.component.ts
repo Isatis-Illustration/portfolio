@@ -14,23 +14,17 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
-import { Type } from '../../services/models/enums';
-import { TranslatePipe } from '../../pipes/translate.pipe';
 
 interface ProjectMeta {
   key: string;
   title: string;
-  badge?: string;
-  badgeKey?: string;
-  descKey?: string;
-  description?: string;
   headerImageUrl?: string | null;
 }
 
 @Component({
   selector: 'app-project-viewer',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule],
   templateUrl: './project-viewer.component.html',
   styleUrl: './project-viewer.component.css',
 })
@@ -43,104 +37,42 @@ export class ProjectViewerComponent implements OnInit {
   viewportRef = viewChild<ElementRef<HTMLDivElement>>('viewport');
   slideRefs = viewChildren<ElementRef<HTMLDivElement>>('slideItem');
 
-  projectKey = signal<string>('slap-it');
+  projectKey = signal<string>('');
   currentPage = signal<number>(0);
   scrollProgress = signal<number>(0);
   hasUserScrolled = signal<boolean>(false);
 
-  private metaMap: Record<string, ProjectMeta> = {
-    'slap-it': {
-      key: 'slap-it',
-      title: 'Slap-It',
-      badgeKey: 'FOLDER_SLAP_IT_BADGE',
-      descKey: 'FOLDER_SLAP_IT_DESC',
-    },
-    'navarra': {
-      key: 'navarra',
-      title: 'Navarra Editore',
-      badgeKey: 'FOLDER_NAVARRA_BADGE',
-      descKey: 'FOLDER_NAVARRA_DESC',
-    },
-    'piccolo-bosco': {
-      key: 'piccolo-bosco',
-      title: 'Il Piccolo Bosco',
-      badgeKey: 'PERSONAL_PROJECTS',
-      descKey: 'PERSONAL_PROJECTS_SUBTITLE',
-    },
-    'storie-buonanotte': {
-      key: 'storie-buonanotte',
-      title: 'Storie della Buonanotte',
-      badgeKey: 'PERSONAL_PROJECTS',
-      descKey: 'PERSONAL_PROJECTS_SUBTITLE',
-    },
-    'viaggio-lunare': {
-      key: 'viaggio-lunare',
-      title: 'Viaggio Lunare',
-      badgeKey: 'PERSONAL_PROJECTS',
-      descKey: 'PERSONAL_PROJECTS_SUBTITLE',
-    },
-  };
-
-  /** Fallback Slap-It */
-  private fallbackSlapIt: Content[] = [
-    { id: 101, title: 'Slap-It — Tavola 1', imageUrl: 'assets/home/illustration_it.png', type: Type.SLAP_IT, isGif: false, position: 1 },
-    { id: 102, title: 'Slap-It — Character Design', imageUrl: 'assets/home/character.png', type: Type.SLAP_IT, isGif: false, position: 2 },
-    { id: 103, title: 'Slap-It — Tavola 2', imageUrl: 'assets/home/profile_it.png', type: Type.SLAP_IT, isGif: false, position: 3 },
-    { id: 104, title: 'Slap-It — Dettagli & Colori', imageUrl: 'assets/home/contacts_it.png', type: Type.SLAP_IT, isGif: false, position: 4 },
-  ];
-
-  /** Fallback Navarra Editore */
-  private fallbackNavarra: Content[] = [
-    { id: 201, title: 'Navarra — Copertina', imageUrl: 'assets/home/illustration_en.png', type: Type.NAVARRA, isGif: false, position: 1 },
-    { id: 202, title: 'Navarra — Personaggi', imageUrl: 'assets/home/contacts_en.png', type: Type.NAVARRA, isGif: false, position: 2 },
-    { id: 203, title: 'Navarra — Tavola interna 1', imageUrl: 'assets/home/profile_en.png', type: Type.NAVARRA, isGif: false, position: 3 },
-    { id: 204, title: 'Navarra — Tavola interna 2', imageUrl: 'assets/home/character.png', type: Type.NAVARRA, isGif: false, position: 4 },
-  ];
-
-  /** Fallback Progetti Personali */
-  private fallbackPersonal: Record<string, Content[]> = {
-    'piccolo-bosco': [
-      { id: 301, title: 'Il Piccolo Bosco — Atmosfera', imageUrl: 'assets/home/illustration_it.png', type: Type.ILLUSTRATION, isGif: false, position: 1 },
-      { id: 302, title: 'Il Piccolo Bosco — Dettagli', imageUrl: 'assets/home/illustration_en.png', type: Type.ILLUSTRATION, isGif: false, position: 2 },
-      { id: 303, title: 'Il Piccolo Bosco — Personaggi', imageUrl: 'assets/home/character.png', type: Type.CHARACTER, isGif: false, position: 3 },
-    ],
-    'storie-buonanotte': [
-      { id: 401, title: 'Storie della Buonanotte — Protagonista', imageUrl: 'assets/home/character.png', type: Type.CHARACTER, isGif: false, position: 1 },
-      { id: 402, title: 'Storie della Buonanotte — Notte Stellata', imageUrl: 'assets/home/profile_it.png', type: Type.ILLUSTRATION, isGif: false, position: 2 },
-      { id: 403, title: 'Storie della Buonanotte — Chiusura', imageUrl: 'assets/home/contacts_it.png', type: Type.ILLUSTRATION, isGif: false, position: 3 },
-    ],
-    'viaggio-lunare': [
-      { id: 501, title: 'Viaggio Lunare — Esploratore', imageUrl: 'assets/home/profile_it.png', type: Type.CHARACTER, isGif: false, position: 1 },
-      { id: 502, title: 'Viaggio Lunare — Paesaggio', imageUrl: 'assets/home/illustration_it.png', type: Type.ILLUSTRATION, isGif: false, position: 2 },
-      { id: 503, title: 'Viaggio Lunare — Ritorno', imageUrl: 'assets/home/character.png', type: Type.ILLUSTRATION, isGif: false, position: 3 },
-    ],
-  };
+  /** Progetto dal BE (collaborazione o personale): projectGuard garantisce che esista e abbia tavole */
+  private apiProject = computed(() => this.contentService.getProject(this.projectKey()));
 
   currentMeta = computed<ProjectMeta>(() => {
     const key = this.projectKey();
-    return (
-      this.metaMap[key] || {
-        key,
-        title: key.charAt(0).toUpperCase() + key.slice(1),
-        badgeKey: 'PERSONAL_PROJECTS',
-        descKey: 'PERSONAL_PROJECTS_SUBTITLE',
-      }
-    );
+    const project = this.apiProject();
+    if (!project) {
+      return { key, title: '' };
+    }
+    const header = project.viewer.header;
+    return {
+      key,
+      title: this.contentService.resolveText(header.title) || this.contentService.resolveText(project.title),
+      headerImageUrl: header.headerImageUrl ?? null,
+    };
   });
 
   pages = computed<Content[]>(() => {
     const key = this.projectKey();
-    const fromApi = this.contentService.getContentsByType(key);
-    if (fromApi && fromApi.length > 0) {
-      return fromApi;
-    }
-    if (this.fallbackPersonal[key]) {
-      return this.fallbackPersonal[key];
-    }
-    if (key === 'navarra') {
-      return this.fallbackNavarra;
-    }
-    return this.fallbackSlapIt;
+    const slides = this.apiProject()?.viewer.slides ?? [];
+    return [...slides]
+      .sort((a, b) => a.order - b.order)
+      .map((slide, i): Content => ({
+        id: i,
+        title: this.contentService.resolveText(slide.title),
+        imageUrl: slide.imageUrl,
+        type: key,
+        isGif: /\.gif$/i.test(slide.imageUrl),
+        position: slide.order,
+        hasBg: slide.hasBg !== false,
+      }));
   });
 
   totalPages = computed<number>(() => this.pages().length);
@@ -184,7 +116,7 @@ export class ProjectViewerComponent implements OnInit {
       document.body.classList.add('overflow-hidden', 'h-full');
     }
     this.route.paramMap.subscribe((params) => {
-      const key = params.get('key')?.toLowerCase() || 'slap-it';
+      const key = params.get('key')?.toLowerCase() || '';
       this.projectKey.set(key);
       this.currentPage.set(0);
       this.moveDirection.set(null);

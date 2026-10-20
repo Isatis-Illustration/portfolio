@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { ContentService } from '../../services/content.service';
 
 export interface PersonalProject {
   key: string;
@@ -9,6 +10,7 @@ export interface PersonalProject {
   badge: string;
   description: string;
   coverUrl: string;
+  coverHasBg: boolean;
   backColor: string;
   frontColor: string;
   stitchColor: string;
@@ -26,51 +28,35 @@ export interface PersonalProject {
 })
 export class PersonalProjectsComponent {
   private router = inject(Router);
+  private contentService = inject(ContentService);
 
-  projects: PersonalProject[] = [
-    {
-      key: 'piccolo-bosco',
-      title: 'Il Piccolo Bosco',
-      badge: 'Serie Illustrata',
-      description: 'Cartoline e studi di atmosfera dedicati ai piccoli abitanti di una foresta incantata.',
-      coverUrl: 'assets/home/illustration_it.png',
-      backColor: '#c3d3bd',
-      frontColor: '#f4dfae',
-      stitchColor: '#fffaf2',
-      c1Color: '#f3d6dd',
-      c2Color: '#dce8f1',
-      c3Color: '#fbedd2'
-    },
-    {
-      key: 'storie-buonanotte',
-      title: 'Storie della Buonanotte',
-      badge: 'Albo Illustrato',
-      description: 'Una raccolta di tavole notturne sui sogni, le stelle e gli animali dormiglioni.',
-      coverUrl: 'assets/home/character.png',
-      backColor: '#b8d4e3',
-      frontColor: '#fce1d2',
-      stitchColor: '#fffaf2',
-      c1Color: '#dce8f1',
-      c2Color: '#f3d6dd',
-      c3Color: '#fbedd2'
-    },
-    {
-      key: 'viaggio-lunare',
-      title: 'Viaggio Lunare',
-      badge: 'Character Design',
-      description: 'Esplorazioni grafiche e personaggi fantastici in viaggio verso paesaggi magici.',
-      coverUrl: 'assets/home/profile_it.png',
-      backColor: '#e8d0db',
-      frontColor: '#d5e5d5',
-      stitchColor: '#fffaf2',
-      c1Color: '#fbedd2',
-      c2Color: '#dce8f1',
-      c3Color: '#f3d6dd'
-    }
-  ];
+  /** true finché GET /portfolio non ha risposto: mostra il loader al posto delle bustine */
+  isLoading: Signal<boolean> = computed(() => !this.contentService.loaded());
 
-  get gridClass(): string {
-    const count = this.projects.length;
+  /** Progetti personali dal BE (GET /portfolio) */
+  projects: Signal<PersonalProject[]> = computed(() => {
+    const fromApi = this.contentService.personalProjects()
+      .filter(p => this.contentService.isPublishable(p))
+      .sort((a, b) => a.order - b.order);
+
+    return fromApi.map(p => ({
+      key: p.id,
+      title: this.contentService.resolveText(p.title),
+      badge: this.contentService.resolveText(p.badge),
+      description: this.contentService.resolveText(p.shortText),
+      coverUrl: p.coverUrl || '',
+      coverHasBg: p.coverHasBg !== false,
+      backColor: p.colors.back,
+      frontColor: p.colors.front,
+      stitchColor: p.colors.stitch,
+      c1Color: p.colors.c1,
+      c2Color: p.colors.c2,
+      c3Color: p.colors.c3,
+    }));
+  });
+
+  gridClass: Signal<string> = computed(() => {
+    const count = this.projects().length;
     if (count === 1) {
       return 'flex justify-center items-start';
     }
@@ -78,6 +64,10 @@ export class PersonalProjectsComponent {
       return 'flex flex-col md:flex-row items-start justify-center gap-10 sm:gap-12 lg:gap-14';
     }
     return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-12 lg:gap-14 items-start justify-items-center';
+  });
+
+  goToGallery(): void {
+    this.router.navigate(['/gallery']);
   }
 
   openProject(key: string): void {

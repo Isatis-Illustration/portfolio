@@ -128,3 +128,18 @@
 .scroll-hint .wheel {
   animation: wheelScroll 1.6s ease-in-out infinite;
 }
+
+/* Tavola senza foglio (hasBg: false): immagine libera sullo sfondo, es. PNG trasparente */
+.project-sheet.no-card {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.project-sheet.no-card .sheet-canvas {
+  background: transparent !important;
+}
+
+.project-sheet.no-card .sheet-canvas img {
+  filter: drop-shadow(0 10px 24px rgba(62, 62, 62, 0.16));
+}

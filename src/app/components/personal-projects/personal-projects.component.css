@@ -183,3 +183,21 @@
     transition-delay: 0s !important;
   }
 }
+
+/* Cartolina senza cartoncino (coverHasBg: false): immagine libera, es. PNG trasparente */
+.cover.no-card {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.sleeve:hover .cover.no-card,
+.sleeve:focus-visible .cover.no-card {
+  box-shadow: none;
+}
+
+.cover.no-card .cover-img {
+  object-fit: contain;
+  border-radius: 0;
+  filter: drop-shadow(0 4px 8px rgba(110, 90, 120, 0.22));
+}

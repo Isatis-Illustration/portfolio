@@ -1,23 +1,4 @@
 /* ═════════════════════════════════════════════════════════
-   TEMI COLORE SACCHETTI DI FELTRO (Palette pastello morbido)
-   ═════════════════════════════════════════════════════════ */
-.theme-lavender {
-  --back: #b7c8da;
-  --front: #f2c7d0;
-  --stitch: #fff9f4;
-  --pouch-badge-bg: rgba(255, 255, 255, 0.75);
-  --pouch-badge-fg: #5a6a9c;
-}
-
-.theme-mint {
-  --back: #c8e6c9;
-  --front: #ffecb3;
-  --stitch: #fff9f4;
-  --pouch-badge-bg: rgba(255, 255, 255, 0.75);
-  --pouch-badge-fg: #3f7a44;
-}
-
-/* ═════════════════════════════════════════════════════════
    CONTENITORE SACCHETTO (POUCH)
    ═════════════════════════════════════════════════════════ */
 .pouch-wrapper {
@@ -85,7 +66,7 @@
   z-index: var(--z, 2);
   box-shadow: 0 8px 18px rgba(62, 62, 62, 0.08), 0 2px 5px rgba(0, 0, 0, 0.03);
   transform-origin: 50% 115%;
-  transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r0, 0deg));
+  transform: translate3d(var(--x, 0px), var(--y, 0px), 0) rotate(var(--r0, 0deg)) scale(var(--s, 1));
   transition: transform .65s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow .45s ease;
   will-change: transform, box-shadow;
   display: flex;
@@ -158,49 +139,7 @@
 /* ═════════════════════════════════════════════════════════
    POSIZIONAMENTO VARIABILI CSS A RIPOSO E HOVER
    ═════════════════════════════════════════════════════════ */
-.pouch .card-0 {
-  --x: -64px;
-  --y: -12px;
-  --r0: -9deg;
-  --hx: -96px;
-  --hy: -92px;
-  --hr: -16deg;
-  --z: 2;
-  --delay: .04s;
-}
-
-.pouch .card-1 {
-  --x: -22px;
-  --y: -24px;
-  --r0: -3deg;
-  --hx: -34px;
-  --hy: -116px;
-  --hr: -5deg;
-  --z: 3;
-  --delay: .08s;
-}
-
-.pouch .card-2 {
-  --x: 22px;
-  --y: -24px;
-  --r0: 3deg;
-  --hx: 34px;
-  --hy: -116px;
-  --hr: 5deg;
-  --z: 3;
-  --delay: .12s;
-}
-
-.pouch .card-3 {
-  --x: 64px;
-  --y: -12px;
-  --r0: 9deg;
-  --hx: 96px;
-  --hy: -92px;
-  --hr: 16deg;
-  --z: 2;
-  --delay: .16s;
-}
+/* Posizioni --x/--y/--r0, --hx/--hy/--hr, --z e --delay di ogni foto: calcolate da fanLayout() (services/pouch-fan.ts) */
 
 /* ═════════════════════════════════════════════════════════
    STATI HOVER & IS-TOGGLED & FOCUS-VISIBLE
@@ -221,7 +160,7 @@
 .pouch-wrapper:hover .pouch .card,
 .pouch-wrapper.is-toggled .pouch .card,
 .pouch-wrapper:focus-visible .pouch .card {
-  transform: translate3d(var(--hx, 0px), var(--hy, -100px), 0) rotate(var(--hr, 0deg)) scale(1.05);
+  transform: translate3d(var(--hx, 0px), var(--hy, -100px), 0) rotate(var(--hr, 0deg)) scale(calc(var(--s, 1) * 1.05));
   box-shadow: 0 16px 28px rgba(62, 62, 62, 0.16);
   transition-delay: var(--delay, 0s);
 }

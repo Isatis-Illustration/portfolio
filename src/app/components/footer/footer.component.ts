@@ -6,11 +6,12 @@ import { IconService } from '../../services/icon.service';
 import { User } from '../../services/models/models';
 import { SafeHtml } from '@angular/platform-browser';
 import { environment } from '../../environment/environment';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })

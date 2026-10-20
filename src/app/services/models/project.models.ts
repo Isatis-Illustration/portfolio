@@ -67,6 +67,11 @@ export interface ViewerSlide {
   imageUrl: string;
   /** Titolo o didascalia della tavola mostrata nel footer */
   title?: LocalizedText;
+  /**
+   * true (default) = tavola su foglio bianco con ombra
+   * false = immagine libera senza foglio (es. PNG trasparente)
+   */
+  hasBg?: boolean;
   /** Ordine sequenziale di scorrimento verticale (1, 2, 3...) */
   order: number;
 }
@@ -79,13 +84,9 @@ export interface ViewerHeaderConfig {
   title: LocalizedText;
   /**
    * URL opzionale immagine/logo: se valorizzato SOSTITUISCE il titolo testuale
-   * nell'header del viewer (es. logo Slap-It)
+   * nell'header del viewer (es. logo Slap-It). L'header mostra solo titolo o logo.
    */
   headerImageUrl?: string | null;
-  /** Etichetta/badge pill (es. 'Collaborazione', 'Albo Illustrato', 'Serie Illustrata') */
-  badge?: LocalizedText;
-  /** Breve testo descrittivo opzionale */
-  description?: LocalizedText;
 }
 
 /**
@@ -147,6 +148,8 @@ export interface PersonalProjectModel {
   badge: LocalizedText;
   /** URL immagine cartolina al centro della bustina */
   coverUrl: string;
+  /** true (default) = cartolina con cartoncino bianco; false = immagine libera (es. PNG trasparente) */
+  coverHasBg?: boolean;
   /** Colori esadecimali di tutte le parti in feltro e delle card estetiche interne */
   colors: PersonalPouchColors;
   /** Configurazione e slide per il lettore a tutta pagina (Project Viewer) */
@@ -173,4 +176,6 @@ export interface GalleryItemModel {
   /** Posizione ordinamento sequenziale crescente (1, 2, 3...) */
   order: number;
   isGif?: boolean;
+  /** Se false l'opera non viene mostrata (oscurata dall'app). Il BE oggi esclude già le opere nascoste. */
+  visible?: boolean;
 }

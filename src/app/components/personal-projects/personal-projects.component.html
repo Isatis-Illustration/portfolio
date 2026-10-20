@@ -22,9 +22,25 @@
   </header>
 
   <!-- Griglia delle bustine di feltro: centratura dinamica (1 centro, 2 centro, 3+ griglia da sinistra) -->
-  <div [ngClass]="gridClass">
+  <!-- Loader finché i progetti non sono arrivati dal BE -->
+  <div *ngIf="isLoading()" class="flex items-center justify-center py-24">
+    <div class="loader"></div>
+  </div>
 
-    <article *ngFor="let proj of projects" class="project-card-wrapper flex flex-col items-center w-full max-w-sm">
+  <!-- Nessun progetto pubblicato -->
+  <div *ngIf="!isLoading() && !projects().length" class="flex flex-col items-center text-center py-16 px-4">
+    <p class="font-fredoka text-2xl text-title mb-2">{{ 'PERSONAL_PROJECTS_EMPTY_TITLE' | translate }}</p>
+    <p class="font-quicksand text-title/70 max-w-md mb-6">{{ 'PERSONAL_PROJECTS_EMPTY_TEXT' | translate }}</p>
+    <button (click)="goToGallery()" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
+                   border-2 border-crema-scuro shadow-[0_4px_16px_rgba(0,0,0,0.04)]
+                   hover:border-arancione hover:-translate-y-0.5 active:scale-95 transition-all duration-300 cursor-pointer">
+      {{ 'GALLERY' | translate }}
+    </button>
+  </div>
+
+  <div *ngIf="!isLoading() && projects().length" [ngClass]="gridClass()">
+
+    <article *ngFor="let proj of projects()" class="project-card-wrapper flex flex-col items-center w-full max-w-sm">
 
       <!-- Contenitore Bustina con estetica fedele a Bustina di feltro.html -->
       <div class="sleeve group" tabindex="0" (click)="openProject(proj.key)" (keydown.enter)="openProject(proj.key)"
@@ -55,8 +71,8 @@
           </svg>
 
           <!-- Cartolina di presentazione al centro della bustina -->
-          <div class="cover">
-            <img [src]="proj.coverUrl" [alt]="proj.title" loading="lazy" class="cover-img" />
+          <div class="cover" [class.no-card]="!proj.coverHasBg">
+            <img *ngIf="proj.coverUrl" [src]="proj.coverUrl" [alt]="proj.title" loading="lazy" class="cover-img" />
           </div>
         </div>
 

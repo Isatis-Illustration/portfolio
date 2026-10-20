@@ -8,20 +8,17 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TranslationService } from '../../services/translation.service';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
-import { Type } from '../../services/models/enums';
-
 import { CollabPouchColors } from '../../services/models/project.models';
+import { fanLayout, MAX_FAN_IMAGES } from '../../services/pouch-fan';
 
 export interface ProjectFolder {
   key: string;
-  type: Type | string;
   title: string;
-  theme?: string;
-  badgeKey?: string;
-  descKey?: string;
-  shortText?: string;
-  colors?: CollabPouchColors;
+  shortText: string;
+  colors: CollabPouchColors;
   images: Content[];
+  /** Variabili CSS di posizione per ogni foto del ventaglio (vedi pouch-fan.ts) */
+  fan: Record<string, string>[];
 }
 
 @Component({
@@ -60,61 +57,40 @@ export class HomeComponent {
     return `assets/home/${fileName}.gif`;
   });
 
-  /** Fallback per Slap-It durante caricamento API */
-  private fallbackSlapIt: Content[] = [
-    { id: 101, title: 'Slap-It Preview 1', imageUrl: 'assets/home/illustration_it.png', type: Type.SLAP_IT, isGif: false, position: 1, prev: 1, hasBg: true },
-    { id: 102, title: 'Slap-It Preview 2', imageUrl: 'assets/home/character.png', type: Type.SLAP_IT, isGif: false, position: 2, prev: 2, hasBg: false },
-    { id: 103, title: 'Slap-It Preview 3', imageUrl: 'assets/home/profile_it.png', type: Type.SLAP_IT, isGif: false, position: 3, prev: 3, hasBg: true },
-    { id: 104, title: 'Slap-It Preview 4', imageUrl: 'assets/home/contacts_it.png', type: Type.SLAP_IT, isGif: false, position: 4, prev: 4, hasBg: false },
-  ];
+  /** true finché GET /portfolio non ha risposto: mostra il loader al posto delle bustine */
+  isLoading: Signal<boolean> = computed(() => !this.contentService.loaded());
 
-  /** Fallback per Navarra Editore durante caricamento API */
-  private fallbackNavarra: Content[] = [
-    { id: 201, title: 'Navarra Preview 1', imageUrl: 'assets/home/illustration_en.png', type: Type.NAVARRA, isGif: false, position: 1, prev: 1, hasBg: true },
-    { id: 202, title: 'Navarra Preview 2', imageUrl: 'assets/home/contacts_en.png', type: Type.NAVARRA, isGif: false, position: 2, prev: 2, hasBg: false },
-    { id: 203, title: 'Navarra Preview 3', imageUrl: 'assets/home/profile_en.png', type: Type.NAVARRA, isGif: false, position: 3, prev: 3, hasBg: true },
-    { id: 204, title: 'Navarra Preview 4', imageUrl: 'assets/home/character.png', type: Type.NAVARRA, isGif: false, position: 4, prev: 4, hasBg: true },
-  ];
+  /** Bustine delle collaborazioni dal BE (GET /portfolio) */
+  projects: Signal<ProjectFolder[]> = computed(() => {
+    const collaborations = this.contentService.collaborations()
+      .filter(p => this.contentService.isPublishable(p))
+      .sort((a, b) => a.order - b.order);
 
-  /** Immagini per Slap-It dal BE (filtrate per prev e ordinate) */
-  slapItImages: Signal<Content[]> = computed(() => {
-    const previewItems = this.contentService.getPouchPreviewsByType(Type.SLAP_IT);
-    if (previewItems.length > 0) {
-      return previewItems.slice(0, 4);
-    }
-    return this.fallbackSlapIt;
+    return collaborations.map(p => {
+      const images = [...p.previewImages]
+        .sort((a, b) => a.order - b.order)
+        .slice(0, MAX_FAN_IMAGES)
+        .map((img, i): Content => ({
+          id: i,
+          title: this.contentService.resolveText(img.caption),
+          imageUrl: img.url,
+          type: p.id,
+          isGif: /\.gif$/i.test(img.url),
+          position: img.order,
+          prev: img.order,
+          hasBg: img.hasBg,
+        }));
+
+      return {
+        key: p.id,
+        title: this.contentService.resolveText(p.title),
+        shortText: this.contentService.resolveText(p.shortText),
+        colors: p.colors,
+        images,
+        fan: fanLayout(images.length),
+      };
+    });
   });
-
-  /** Immagini per Navarra Editore dal BE (filtrate per prev e ordinate) */
-  navarraImages: Signal<Content[]> = computed(() => {
-    const previewItems = this.contentService.getPouchPreviewsByType(Type.NAVARRA);
-    if (previewItems.length > 0) {
-      return previewItems.slice(0, 4);
-    }
-    return this.fallbackNavarra;
-  });
-
-  /** Progetti per layout blob */
-  projects: Signal<ProjectFolder[]> = computed(() => [
-    {
-      key: 'slap-it',
-      type: Type.SLAP_IT,
-      title: 'Slap-It',
-      theme: 'theme-lavender',
-      badgeKey: 'FOLDER_SLAP_IT_BADGE',
-      descKey: 'FOLDER_SLAP_IT_DESC',
-      images: this.slapItImages(),
-    },
-    {
-      key: 'navarra',
-      type: Type.NAVARRA,
-      title: 'Navarra Editore',
-      theme: 'theme-mint',
-      badgeKey: 'FOLDER_NAVARRA_BADGE',
-      descKey: 'FOLDER_NAVARRA_DESC',
-      images: this.navarraImages(),
-    },
-  ]);
 
   gridClass: Signal<string> = computed(() => {
     const count = this.projects().length;

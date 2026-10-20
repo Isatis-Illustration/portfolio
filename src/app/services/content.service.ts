@@ -1,10 +1,26 @@
 import { computed, inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
-import { ClaudinaryImage, Content } from './models/models';
+import { Content } from './models/models';
 import { HttpClient } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { environment } from '../environment/environment';
 import { StorageKey, Type, normalizeContentType } from './models/enums';
 import { UserService } from './user.service';
+import { TranslationService } from './translation.service';
+import {
+  CollaborationProject,
+  GalleryItemModel,
+  LocalizedText,
+  PersonalProjectModel,
+  resolveLocalizedText,
+} from './models/project.models';
+
+/** Risposta di GET /portfolio: tutti i dati del sito in una sola chiamata */
+interface PortfolioResponse {
+  collaborations: CollaborationProject[];
+  personal: PersonalProjectModel[];
+  gallery: GalleryItemModel[];
+  profile: any | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +29,30 @@ export class ContentService {
 
   http: HttpClient = inject(HttpClient);
   userService: UserService = inject(UserService);
-    
-                                                                                                              
-  private cloudinaryEndpoint: string = environment.baseUrl+environment.imagesUrl;
-  
-  contents: WritableSignal<Content[]> = signal([])
+  translateService: TranslationService = inject(TranslationService);
+
+
+  private portfolioEndpoint: string = environment.baseUrl+environment.portfolioUrl;
+
+  /** true dopo la prima risposta (o errore) di GET /portfolio */
+  loaded: WritableSignal<boolean> = signal(false);
+  private resolveLoaded!: () => void;
+  private loadedPromise: Promise<void> = new Promise(resolve => this.resolveLoaded = resolve);
+
+  collaborations: WritableSignal<CollaborationProject[]> = signal([]);
+  personalProjects: WritableSignal<PersonalProjectModel[]> = signal([]);
+  galleryItems: WritableSignal<GalleryItemModel[]> = signal([]);
+
+  /** Opere della galleria nella lingua corrente (id = indice, usato dalla route detail/:id) */
+  contents: Signal<Content[]> = computed(() => {
+    const lang = this.translateService.currentLanguage();
+    return this.galleryItems()
+      .filter(item => item.visible !== false)
+      .map((item, index) => this.createContent(item, index, lang));
+  });
+
   contentToView: WritableSignal<Content | null> = signal(null);
-  
+
   filter: WritableSignal<string> = signal('');
 
   setFilter(f: string): void{
@@ -41,39 +74,52 @@ export class ContentService {
       .sort((a, b) => a.position - b.position);
   });
 
-  /**
-   * Recupera contenuti filtrati per tipologia specifica, ordinati per posizione.
-   */
-  getContentsByType(type: Type | string): Content[] {
-    const targetType = normalizeContentType(type);
-    return this.contents()
-      .filter(c => c.type === targetType)
-      .sort((a, b) => a.position - b.position);
+  /** Progetto (collaborazione o personale) per slug: gli id sono univoci tra le due liste */
+  getProject(id: string): CollaborationProject | PersonalProjectModel | undefined {
+    return this.collaborations().find(p => p.id === id) || this.personalProjects().find(p => p.id === id);
   }
 
   /**
-   * Recupera contenuti preview per il sacchetto:
-   * devono avere context.prev definito, ordinati per prev crescente.
+   * Progetto mostrabile: visibile, con titolo, almeno una tavola, la copertina (personali)
+   * e almeno una foto nella bustina (collaborazioni). Il BE invia già solo i progetti completi
+   * (traduzioni incluse, vedi BACKEND_CONTRACT.md §7): questo è un controllo di sicurezza.
    */
-  getPouchPreviewsByType(type: Type | string): Content[] {
-    const targetType = normalizeContentType(type);
-    return this.contents()
-      .filter(c => c.type === targetType && c.prev !== undefined && c.prev !== null)
-      .sort((a, b) => (a.prev ?? 0) - (b.prev ?? 0));
+  isPublishable(project: CollaborationProject | PersonalProjectModel): boolean {
+    if (project.visible === false) return false;
+    if (!resolveLocalizedText(project.title)) return false;
+    if (!project.viewer?.slides?.length) return false;
+    return project.type === 'collaboration'
+      ? project.previewImages?.length > 0
+      : !!project.coverUrl;
   }
-  
+
+  /** Il progetto esiste ed è mostrabile (usato dalla guard del Project Viewer) */
+  canOpenProject(id: string): boolean {
+    const project = this.getProject(id);
+    return !!project && this.isPublishable(project);
+  }
+
+  /** Si risolve quando i dati del portfolio sono arrivati (usato dalle guard) */
+  whenLoaded(): Promise<void> {
+    return this.loadedPromise;
+  }
+
+  /** Testo localizzato nella lingua corrente (legge il signal della lingua, quindi è reattivo) */
+  resolveText(text?: LocalizedText | null): string {
+    const lang = this.translateService.currentLanguage() === 'en' ? 'en' : 'it';
+    return resolveLocalizedText(text, lang);
+  }
+
 
   private hasRefresh: boolean = environment.hasRefresh;
   private refreshTime: number = environment.refreshTime*1000 //in millisecondi
 
 
   constructor(){
-    // this.getDriveImages()
-    this.getCloudinaryImages()
+    this.getPortfolio()
     if(this.hasRefresh)
       interval(this.refreshTime).subscribe(() => {
-      // this.getDriveImages()
-      this.getCloudinaryImages()
+      this.getPortfolio()
     });
   }
 
@@ -110,150 +156,57 @@ export class ContentService {
   }
 
 
-  getCloudinaryImages(): void {
-    
-    this.http.get<{images: any}>(this.cloudinaryEndpoint).subscribe((res) => {
-      
-      let cloudContents: Content[] = [];
-
-      filler: for (let i = 0; i < res.images.length; i++) {
-        
-        //get user
-        if(this.isUserImage(res.images[i])){
-          this.userService.setUserByClaudinary(res.images[i]);
-          continue filler;
+  getPortfolio(): void {
+    this.http.get<PortfolioResponse>(this.portfolioEndpoint).subscribe({
+      next: (res) => {
+        if (res.profile) {
+          this.userService.setUserByClaudinary(res.profile);
         }
 
-        let img: ClaudinaryImage = res.images[i];
-        let cont: Content = this.createContent(img, i);
-        
-        cloudContents.push(cont);
-      }
-
-
-      const currentIds = this.contents().map(f => f.id).sort();
-      const newIds = cloudContents.map(f => f.id).sort();
-
-      const isSame = currentIds.length === newIds.length &&
-                    currentIds.every((id, i) => id === newIds[i]);
-
-      if (!isSame) {
-        this.contents.set(cloudContents);
+        // aggiorna i signal solo se i dati sono cambiati (evita re-render col polling)
+        this.setIfChanged(this.collaborations, res.collaborations || []);
+        this.setIfChanged(this.personalProjects, res.personal || []);
+        this.setIfChanged(this.galleryItems, res.gallery || []);
+        this.markLoaded();
+      },
+      error: (err) => {
+        console.error('Errore caricamento portfolio:', err);
+        this.markLoaded();
       }
     });
   }
 
 
-  private createContent(img: any, id: number): Content{
-    const resolvedType = this.resolveType(img.context?.type, img.url);
+  private markLoaded(): void {
+    this.loaded.set(true);
+    this.resolveLoaded();
+  }
 
-    // Parsing context.prev (ordine all'interno del sacchetto)
-    let prevNumber: number | undefined = undefined;
-    if (img.context?.prev !== undefined && img.context?.prev !== null && img.context?.prev !== '') {
-      const parsed = Number(img.context.prev);
-      if (!isNaN(parsed)) {
-        prevNumber = parsed;
-      }
+
+  private setIfChanged<T>(target: WritableSignal<T>, value: T): void {
+    if (JSON.stringify(target()) !== JSON.stringify(value)) {
+      target.set(value);
     }
+  }
 
-    // Parsing context.bg (1 = con card, 0 = no card / solo img)
-    // Default a true (con card) se non specificato
-    let hasBg = true;
-    if (img.context?.bg !== undefined && img.context?.bg !== null && img.context?.bg !== '') {
-      const rawBg = String(img.context.bg).trim().toLowerCase();
-      hasBg = rawBg === '1' || rawBg === 'true';
-    }
 
-    let cont: Content = {
+  private createContent(item: GalleryItemModel, id: number, lang: string): Content{
+    const language = lang === 'en' ? 'en' : 'it';
+
+    return {
       id: id,
-      imageUrl: img.url,
-      title: img.context?.caption || this.getTitleByUrl(img.url),
-      description: img.context?.alt || '',
-      type: resolvedType,
-      position: Number(img.context?.position) || this.getPosition(img.url),
-      isGif: this.checkIfGif(img.url),
-      prev: prevNumber,
-      hasBg: hasBg,
+      imageUrl: item.imageUrl,
+      title: resolveLocalizedText(item.title, language),
+      description: resolveLocalizedText(item.description, language),
+      type: normalizeContentType(item.category),
+      position: item.order ?? 0,
+      isGif: item.isGif ?? false,
     };
-
-    return cont;
-  }
-
-  private resolveType(contextType?: string, url?: string): string {
-    if (contextType) {
-      return normalizeContentType(contextType);
-    }
-    if (url) {
-      const typeFromUrl = this.getTypeFromUrl(url);
-      if (typeFromUrl) {
-        return normalizeContentType(typeFromUrl);
-      }
-    }
-    return Type.ILLUSTRATION;
-  }
-
-  private getTypeFromUrl(url: string): string {
-    const parts = url.split("/");
-    const filenameWithExt = parts[parts.length - 1];  
-    const segments = filenameWithExt.split(".");
-    if (segments.length > 2) {
-      return segments[1];
-    }
-    return '';
-  }
-
-  private checkIfGif(url: string): boolean {
-    const parts: string[] = url.split('.');
-    if (!parts.length) return false;
-    return parts[parts.length - 1] === 'gif';
-  }
-
-  isUserImage(img: any): boolean {
-    return img.context?.caption && img.context.caption === 'user';
-  }
-
-  getPosition(url: string): number {
-    const parts: string[] = url.split('.');
-    if (!parts.length) return 0;
-    return Number(parts[parts.length - 2]) || 0;
-  }
-
-
-  private getTitleByUrl(url: string): string {
-    const parts = url.split("/");
-    const filenameWithExt = parts[parts.length - 1];  
-    const name = filenameWithExt.split(".")[0];       
-    return name;
   }
 
 
   private getMaxContentsIndex(): number{
     return this.filteredContent().length - 1;
   }
-
-  //(id,name,webContentLink,description)  -> indica la forma del json che mi invierà il drive  
-
-  // getDriveImages(): void {
-  //   this.http.get<any>(this.DB_URL).subscribe((googleFiles) => 
-  //     {
-  //       let files: Content[] = googleFiles.files as Content[];
-  //       // files.forEach(file => file.webContentLink = file.webContentLink.split('&')[0])
-  //       files.forEach(file => {
-  //         // file.imageUrl = this.googleUrl+file.id;
-  //         file.imageUrl = file.imageUrl
-  //         file.name = file.name.split('.')[0];
-  //       })
-
-  //       const currentIds = this.contents().map(f => f.id).sort();
-  //       const newIds = files.map(f => f.id).sort();
-
-  //       const isSame = currentIds.length === newIds.length &&
-  //                     currentIds.every((id, i) => id === newIds[i]);
-
-  //       if (!isSame){
-  //         this.contents.set(files);
-  //       }
-  //     });
-  // }
 
 }

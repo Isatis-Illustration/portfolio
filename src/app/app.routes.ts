@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ShellComponent } from './layout/shell/shell.component';
+import { projectGuard } from './guards/project.guard';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,7 @@ export const routes: Routes = [
             },
             {
                 path: 'project/:key',
+                canActivate: [projectGuard],
                 loadComponent: () => import('./components/project-viewer/project-viewer.component').then(m => m.ProjectViewerComponent),
             }
         ]

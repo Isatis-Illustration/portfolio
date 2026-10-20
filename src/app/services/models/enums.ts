@@ -7,8 +7,6 @@ export enum StorageKey{
 export enum Type{
     ILLUSTRATION = 'illustration',
     CHARACTER = 'character',
-    SLAP_IT = 'slap-it',
-    NAVARRA = 'navarra',
 }
 
 export const TYPE_ALIASES: Record<string, Type> = {
@@ -19,9 +17,6 @@ export const TYPE_ALIASES: Record<string, Type> = {
     'character': Type.CHARACTER,
     'character-design': Type.CHARACTER,
     'characters': Type.CHARACTER,
-    'slap-it': Type.SLAP_IT,
-    'slapit': Type.SLAP_IT,
-    'navarra': Type.NAVARRA,
 };
 
 export function normalizeContentType(raw?: string | null): string {
@@ -33,4 +28,4 @@ export function normalizeContentType(raw?: string | null): string {
 export enum Language{
     IT = 'it',
     EN = 'en',
-}
+}
