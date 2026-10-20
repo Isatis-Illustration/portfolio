@@ -30,7 +30,11 @@ export class ContentService {
   filteredContent: Signal<Content[]> = computed(() => {
     const f = this.filter()?.toLowerCase().trim();
     const all = this.contents();
-    if (!f || f === 'all') return all;
+    if (!f || f === 'all' || f === 'gallery') {
+      return all
+        .filter(c => c.type === Type.ILLUSTRATION || c.type === Type.CHARACTER)
+        .sort((a, b) => a.position - b.position);
+    }
     const targetType = normalizeContentType(f);
     return all
       .filter(c => c.type === targetType || f.includes(c.type))

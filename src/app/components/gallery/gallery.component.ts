@@ -6,12 +6,15 @@ import { CommonModule } from '@angular/common';
 import { CardComponent } from '../card/card.component';
 import { Type } from '../../services/models/enums';
 import { TranslationService } from '../../services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-gallery',
+  standalone: true,
   imports: [
     CommonModule,
-    CardComponent
+    CardComponent,
+    TranslatePipe
   ],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.css'
@@ -24,7 +27,6 @@ export class GalleryComponent {
   translateService: TranslationService = inject(TranslationService);
 
   contents: Signal<Content[]> = computed(() => this.contentService.filteredContent());
-  filter: string = '';
 
   windowWidth = signal(typeof window !== 'undefined' ? window.innerWidth : 1200);
 
@@ -51,30 +53,12 @@ export class GalleryComponent {
     return result;
   });
 
-  /** Immagine titolo che cambia con la lingua */
-  titleImage: Signal<string> = computed(() => {
-    const lang = this.translateService.currentLanguage();
-    const filter = this.contentService.filter();
-    if (filter.includes(Type.CHARACTER)) {
-      return 'assets/home/character.png';
-    }
-    return `assets/home/illustration_${lang}.png`;
-  });
-
   constructor() {
-    this.route.paramMap.subscribe(params => {
-      const f = params.get('filter')?.toLowerCase()!;
-      this.filter = f;
-      this.contentService.setFilter(f);
-    });
+    this.contentService.setFilter('all');
   }
 
-  isCharactersGallery(): boolean {
-    return this.filter.includes(Type.CHARACTER);
-  }
-
-  getTitle(): string {
-    return this.isCharactersGallery() ? 'Character Design' : 'Illustrazioni';
+  isCharacterItem(c: Content): boolean {
+    return c.type === Type.CHARACTER;
   }
 
   openImageViewer(content: Content) {

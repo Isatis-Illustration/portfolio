@@ -19,17 +19,17 @@ export class ButtonService {
     },
     {
       id: 1,
-      label: 'ILLUSTRATIONS',
-      path: 'gallery/illustrations',
-      imageUrl: `assets/home/illustration_${this.lang()}.png`,
-      imageSVG: 'illustration'
+      label: 'PERSONAL_PROJECTS',
+      path: 'personal-projects',
+      imageUrl: '',
+      imageSVG: 'projects'
     },
     {
       id: 2,
-      label: 'CHARACTER',
-      path: 'gallery/character-design', 
-      imageUrl: 'assets/home/character.png',
-      imageSVG: 'character'
+      label: 'GALLERY',
+      path: 'gallery',
+      imageUrl: `assets/home/illustration_${this.lang()}.png`,
+      imageSVG: 'illustration'
     },
     {
       id: 3,

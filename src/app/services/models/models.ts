@@ -1,3 +1,5 @@
+export * from './project.models';
+
 export interface ClaudinaryImage{
     url: string,
     context: Context

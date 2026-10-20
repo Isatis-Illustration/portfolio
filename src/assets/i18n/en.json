@@ -1,5 +1,12 @@
 {
     "HOME": "Home",
+    "PERSONAL_PROJECTS": "Personal Projects",
+    "PERSONAL_PROJECTS_TITLE": "Personal Projects",
+    "PERSONAL_PROJECTS_SUBTITLE": "Explore envelopes dedicated to illustrated projects, postcards, and personal stories",
+    "EXPLORE_PROJECT": "Open envelope",
+    "GALLERY": "Gallery",
+    "GALLERY_TITLE": "Gallery",
+    "GALLERY_SUBTITLE": "A collection of all illustrations and character design",
     "ILLUSTRATIONS": "Illustrations",
     "CHARACTER": "Character Design",
     "PROFILE": "Profile",

@@ -20,8 +20,11 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 interface ProjectMeta {
   key: string;
   title: string;
-  badgeKey: string;
-  descKey: string;
+  badge?: string;
+  badgeKey?: string;
+  descKey?: string;
+  description?: string;
+  headerImageUrl?: string | null;
 }
 
 @Component({
@@ -58,6 +61,24 @@ export class ProjectViewerComponent implements OnInit {
       badgeKey: 'FOLDER_NAVARRA_BADGE',
       descKey: 'FOLDER_NAVARRA_DESC',
     },
+    'piccolo-bosco': {
+      key: 'piccolo-bosco',
+      title: 'Il Piccolo Bosco',
+      badgeKey: 'PERSONAL_PROJECTS',
+      descKey: 'PERSONAL_PROJECTS_SUBTITLE',
+    },
+    'storie-buonanotte': {
+      key: 'storie-buonanotte',
+      title: 'Storie della Buonanotte',
+      badgeKey: 'PERSONAL_PROJECTS',
+      descKey: 'PERSONAL_PROJECTS_SUBTITLE',
+    },
+    'viaggio-lunare': {
+      key: 'viaggio-lunare',
+      title: 'Viaggio Lunare',
+      badgeKey: 'PERSONAL_PROJECTS',
+      descKey: 'PERSONAL_PROJECTS_SUBTITLE',
+    },
   };
 
   /** Fallback Slap-It */
@@ -76,14 +97,33 @@ export class ProjectViewerComponent implements OnInit {
     { id: 204, title: 'Navarra — Tavola interna 2', imageUrl: 'assets/home/character.png', type: Type.NAVARRA, isGif: false, position: 4 },
   ];
 
+  /** Fallback Progetti Personali */
+  private fallbackPersonal: Record<string, Content[]> = {
+    'piccolo-bosco': [
+      { id: 301, title: 'Il Piccolo Bosco — Atmosfera', imageUrl: 'assets/home/illustration_it.png', type: Type.ILLUSTRATION, isGif: false, position: 1 },
+      { id: 302, title: 'Il Piccolo Bosco — Dettagli', imageUrl: 'assets/home/illustration_en.png', type: Type.ILLUSTRATION, isGif: false, position: 2 },
+      { id: 303, title: 'Il Piccolo Bosco — Personaggi', imageUrl: 'assets/home/character.png', type: Type.CHARACTER, isGif: false, position: 3 },
+    ],
+    'storie-buonanotte': [
+      { id: 401, title: 'Storie della Buonanotte — Protagonista', imageUrl: 'assets/home/character.png', type: Type.CHARACTER, isGif: false, position: 1 },
+      { id: 402, title: 'Storie della Buonanotte — Notte Stellata', imageUrl: 'assets/home/profile_it.png', type: Type.ILLUSTRATION, isGif: false, position: 2 },
+      { id: 403, title: 'Storie della Buonanotte — Chiusura', imageUrl: 'assets/home/contacts_it.png', type: Type.ILLUSTRATION, isGif: false, position: 3 },
+    ],
+    'viaggio-lunare': [
+      { id: 501, title: 'Viaggio Lunare — Esploratore', imageUrl: 'assets/home/profile_it.png', type: Type.CHARACTER, isGif: false, position: 1 },
+      { id: 502, title: 'Viaggio Lunare — Paesaggio', imageUrl: 'assets/home/illustration_it.png', type: Type.ILLUSTRATION, isGif: false, position: 2 },
+      { id: 503, title: 'Viaggio Lunare — Ritorno', imageUrl: 'assets/home/character.png', type: Type.ILLUSTRATION, isGif: false, position: 3 },
+    ],
+  };
+
   currentMeta = computed<ProjectMeta>(() => {
     const key = this.projectKey();
     return (
       this.metaMap[key] || {
         key,
         title: key.charAt(0).toUpperCase() + key.slice(1),
-        badgeKey: 'FOLDER_SLAP_IT_BADGE',
-        descKey: 'FOLDER_SLAP_IT_DESC',
+        badgeKey: 'PERSONAL_PROJECTS',
+        descKey: 'PERSONAL_PROJECTS_SUBTITLE',
       }
     );
   });
@@ -93,6 +133,9 @@ export class ProjectViewerComponent implements OnInit {
     const fromApi = this.contentService.getContentsByType(key);
     if (fromApi && fromApi.length > 0) {
       return fromApi;
+    }
+    if (this.fallbackPersonal[key]) {
+      return this.fallbackPersonal[key];
     }
     if (key === 'navarra') {
       return this.fallbackNavarra;

@@ -1,0 +1,90 @@
+<!-- Filtri SVG globali per grana feltro e sagomatura bustina -->
+<svg width="0" height="0" class="absolute pointer-events-none" aria-hidden="true">
+  <filter id="feltro-bustina" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="11" />
+    <feColorMatrix values="0 0 0 0 .45  0 0 0 0 .35  0 0 0 0 .4  0 0 0 .55 -.08" />
+  </filter>
+  <clipPath id="cf-bustina">
+    <path d="M0,34C50,14 90,26 130,28C170,26 210,14 260,34L260,224Q260,262 222,262L38,262Q0,262 0,224Z" />
+  </clipPath>
+</svg>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+  <!-- Header Sezione -->
+  <header class="text-center mb-12 sm:mb-16">
+    <h1 class="font-barriecito text-3xl sm:text-4xl md:text-5xl text-title font-bold tracking-wide mb-3">
+      {{ 'PERSONAL_PROJECTS_TITLE' | translate }}
+    </h1>
+    <p class="font-quicksand text-base sm:text-lg text-title/70 max-w-2xl mx-auto">
+      {{ 'PERSONAL_PROJECTS_SUBTITLE' | translate }}
+    </p>
+  </header>
+
+  <!-- Griglia delle bustine di feltro: centratura dinamica (1 centro, 2 centro, 3+ griglia da sinistra) -->
+  <div [ngClass]="gridClass">
+
+    <article *ngFor="let proj of projects" class="project-card-wrapper flex flex-col items-center w-full max-w-sm">
+
+      <!-- Contenitore Bustina con estetica fedele a Bustina di feltro.html -->
+      <div class="sleeve group" tabindex="0" (click)="openProject(proj.key)" (keydown.enter)="openProject(proj.key)"
+        (keydown.space)="openProject(proj.key)" [attr.aria-label]="proj.title" [style.--back]="proj.backColor"
+        [style.--front]="proj.frontColor" [style.--stitch]="proj.stitchColor" [style.--c1]="proj.c1Color"
+        [style.--c2]="proj.c2Color" [style.--c3]="proj.c3Color">
+
+        <!-- Ombra sfumata inferiore -->
+        <div class="shadow"></div>
+
+        <!-- Pannello posteriore in feltro -->
+        <div class="back"></div>
+
+        <!-- Card estetiche interne con animazione morbida -->
+        <div class="card c1"></div>
+        <div class="card c2"></div>
+        <div class="card c3"></div>
+
+        <!-- Tasca frontale sagomata in feltro con cuciture -->
+        <div class="front">
+          <svg viewBox="0 0 260 262" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,34C50,14 90,26 130,28C170,26 210,14 260,34L260,224Q260,262 222,262L38,262Q0,262 0,224Z"
+              [attr.fill]="proj.frontColor" />
+            <rect width="260" height="262" filter="url(#feltro-bustina)" clip-path="url(#cf-bustina)" opacity=".5" />
+            <path d="M12,44C54,28 92,38 130,40C168,38 206,28 248,44L248,224Q248,250 222,250L38,250Q12,250 12,224Z"
+              fill="none" [attr.stroke]="proj.stitchColor" stroke-width="2" stroke-linecap="round"
+              stroke-dasharray="1 7" opacity=".9" />
+          </svg>
+
+          <!-- Cartolina di presentazione al centro della bustina -->
+          <div class="cover">
+            <img [src]="proj.coverUrl" [alt]="proj.title" loading="lazy" class="cover-img" />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Didascalia e controlli sotto la bustina -->
+      <div class="flex flex-col items-center text-center mt-6 px-3">
+        <!-- Badge -->
+        <span
+          class="font-fredoka text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full bg-verde-pastello/60 text-title mb-2">
+          {{ proj.badge }}
+        </span>
+
+        <!-- Titolo -->
+        <h2 (click)="openProject(proj.key)"
+          class="font-barriecito text-2xl text-title font-bold tracking-wide cursor-pointer hover:text-verde-scuro transition-colors duration-200">
+          {{ proj.title }}
+        </h2>
+
+        <!-- Descrizione -->
+        <p class="font-quicksand text-sm text-title/70 mt-1 line-clamp-2 max-w-xs">
+          {{ proj.description }}
+        </p>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>

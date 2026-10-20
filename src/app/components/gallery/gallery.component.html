@@ -1,14 +1,14 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
 
-  <!-- Gallery title con immagine -->
-  <div class="flex items-center gap-4 mb-8 md:mb-12">
-    <!-- <img [src]="titleImage()"
-         [alt]="getTitle()"
-         class="h-10 md:h-14 w-auto object-contain select-none"> -->
-    <h1 class="font-fredoka text-3xl md:text-4xl font-semibold text-title">
-      {{ getTitle() }}
+  <!-- Header Galleria centrato identico a Progetti Personali -->
+  <header class="text-center mb-12 sm:mb-16">
+    <h1 class="font-barriecito text-3xl sm:text-4xl md:text-5xl text-title font-bold tracking-wide mb-3">
+      {{ 'GALLERY' | translate }}
     </h1>
-  </div>
+    <p class="font-quicksand text-base sm:text-lg text-title/70 max-w-2xl mx-auto">
+      {{ 'GALLERY_SUBTITLE' | translate }}
+    </p>
+  </header>
 
   <!-- Masonry grid with row-to-column order -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -19,7 +19,7 @@
            [style.opacity]="0">
         <app-card
           [content]="c"
-          [isCharacter]="isCharactersGallery()"
+          [isCharacter]="isCharacterItem(c)"
           (onClickImageEvent)="openImageViewer($event)">
         </app-card>
       </div>

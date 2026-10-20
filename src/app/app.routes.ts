@@ -16,6 +16,10 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent),
             },
             {
+                path: 'gallery',
+                loadComponent: () => import('./components/gallery/gallery.component').then(m => m.GalleryComponent),
+            },
+            {
                 path: 'gallery/:filter',
                 loadComponent: () => import('./components/gallery/gallery.component').then(m => m.GalleryComponent),
             },
@@ -30,6 +34,10 @@ export const routes: Routes = [
             {
                 path: 'detail/:id',
                 loadComponent: () => import('./components/card-detail/card-detail.component').then(m => m.CardDetailComponent),
+            },
+            {
+                path: 'personal-projects',
+                loadComponent: () => import('./components/personal-projects/personal-projects.component').then(m => m.PersonalProjectsComponent),
             },
             {
                 path: 'privacy-policy',

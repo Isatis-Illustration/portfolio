@@ -34,19 +34,19 @@
     <!-- CTA buttons -->
     <div class="flex flex-wrap items-center justify-center gap-4 mt-2
                 animate-hero-entrance" style="animation-delay: 400ms; opacity: 0;">
-      <button (click)="navigate('gallery/illustrations')" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
+      <button (click)="navigate('personal-projects')" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
                      border-2 border-crema-scuro
                      shadow-[0_4px_16px_rgba(0,0,0,0.04)]
                      hover:border-arancione hover:shadow-[0_6px_24px_rgba(242,176,163,0.2)] hover:-translate-y-0.5
                      active:scale-95 transition-all duration-300 cursor-pointer">
-        {{ 'ILLUSTRATIONS' | translate }}
+        {{ 'PERSONAL_PROJECTS' | translate }}
       </button>
-      <button (click)="navigate('gallery/character-design')" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
+      <button (click)="navigate('gallery')" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
                      border-2 border-crema-scuro
                      shadow-[0_4px_16px_rgba(0,0,0,0.04)]
                      hover:border-arancione hover:shadow-[0_6px_24px_rgba(242,176,163,0.2)] hover:-translate-y-0.5
                      active:scale-95 transition-all duration-300 cursor-pointer">
-        {{ 'CHARACTER' | translate }}
+        {{ 'GALLERY' | translate }}
       </button>
     </div>
   </div>
@@ -56,7 +56,7 @@
 <!-- ═══════════════════════════════════════════
      PROJECT FOLDERS SECTION — Cartoon Art Binder
      ═══════════════════════════════════════════ -->
-<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 md:pb-12">
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 md:pb-12">
 
   <!-- Section Title & Subtitle -->
   <div class="text-center mb-2">
@@ -79,11 +79,14 @@
     </clipPath>
   </svg>
 
-  <!-- Progetti a Sacchetto di Feltro -->
-  <div class="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 lg:gap-24 pt-16 pb-6">
+  <!-- Progetti a Sacchetto di Feltro: centratura dinamica (1 centro, 2 centrati, 3+ griglia da sinistra) -->
+  <div [ngClass]="gridClass()">
 
     <div *ngFor="let p of projects(); let pi = index"
-      class="pouch-wrapper {{ p.theme }} select-none flex flex-col items-center"
+      class="pouch-wrapper {{ p.theme || '' }} select-none flex flex-col items-center w-full max-w-sm"
+      [style.--back]="p.colors?.back || null"
+      [style.--front]="p.colors?.front || null"
+      [style.--stitch]="p.colors?.stitch || null"
       [class.is-toggled]="toggledFolder() === p.key" (click)="handleBlobClick(p.key)" tabindex="0" role="button"
       [attr.aria-label]="p.title">
 
@@ -95,10 +98,8 @@
         <div class="back"></div>
 
         <!-- Foto polaroid o immagini raw che sbucano dalla tasca e vanno a ventaglio -->
-        <div *ngFor="let img of p.images; let i = index; trackBy: trackById"
-             class="card card-{{ i }}"
-             [class.no-card]="img.hasBg === false"
-             [style.--i]="i">
+        <div *ngFor="let img of p.images; let i = index; trackBy: trackById" class="card card-{{ i }}"
+          [class.no-card]="img.hasBg === false" [style.--i]="i">
           <ng-container *ngIf="img.hasBg !== false; else rawImage">
             <div class="photo">
               <img [src]="img.imageUrl" [alt]="img.title" loading="lazy" />
@@ -128,7 +129,7 @@
             {{ p.title }}
           </h3>
           <p class="font-quicksand text-xs sm:text-sm text-title/75 mt-1 max-w-[220px] truncate">
-            {{ p.descKey | translate }}
+            {{ p.shortText ? p.shortText : (p.descKey ? (p.descKey | translate) : '') }}
           </p>
         </div>
       </div>
@@ -137,11 +138,11 @@
 
   </div>
 
-  <!-- CTA Link generale "Vedi tutte le illustrazioni" -->
+  <!-- CTA Link generale "Galleria" -->
   <div class="text-center mt-4">
-    <button (click)="navigate('gallery/illustrations')" class="group inline-flex items-center gap-2 px-6 py-3 text-verde-scuro font-fredoka font-medium text-lg
+    <button (click)="navigate('gallery')" class="group inline-flex items-center gap-2 px-6 py-3 text-verde-scuro font-fredoka font-medium text-lg
                    hover:text-verde-scuro/80 transition-colors duration-200 cursor-pointer">
-      {{ 'HOME_SEE_ALL' | translate }}
+      {{ 'GALLERY' | translate }}
       <svg class="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor"
         viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

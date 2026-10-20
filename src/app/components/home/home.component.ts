@@ -10,13 +10,17 @@ import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
 import { Type } from '../../services/models/enums';
 
+import { CollabPouchColors } from '../../services/models/project.models';
+
 export interface ProjectFolder {
   key: string;
   type: Type | string;
   title: string;
-  theme: string;
-  badgeKey: string;
-  descKey: string;
+  theme?: string;
+  badgeKey?: string;
+  descKey?: string;
+  shortText?: string;
+  colors?: CollabPouchColors;
   images: Content[];
 }
 
@@ -111,6 +115,17 @@ export class HomeComponent {
       images: this.navarraImages(),
     },
   ]);
+
+  gridClass: Signal<string> = computed(() => {
+    const count = this.projects().length;
+    if (count === 1) {
+      return 'flex justify-center items-start pt-8 pb-6';
+    }
+    if (count === 2) {
+      return 'flex flex-col md:flex-row items-start justify-center gap-10 md:gap-16 lg:gap-20 pt-8 pb-6';
+    }
+    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 items-start justify-items-center pt-8 pb-6';
+  });
 
   constructor() {
     effect(() => {
