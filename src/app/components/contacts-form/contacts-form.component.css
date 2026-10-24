@@ -1,0 +1,57 @@
+/* ── Campi con etichetta sopra ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field-label {
+  font-family: var(--font-fredoka);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--color-title);
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.9rem;
+  border: 2px solid var(--color-crema-scuro);
+  background: #fffdf7;
+  font-family: var(--font-quicksand);
+  font-size: 1rem;
+  color: var(--color-title);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field-input:focus {
+  border-color: var(--color-verde-scuro);
+  box-shadow: 0 0 0 4px rgba(129, 199, 132, 0.2);
+}
+
+.field-input.is-invalid {
+  border-color: #f87171;
+}
+
+.field-error {
+  font-family: var(--font-quicksand);
+  font-size: 0.8rem;
+  color: #dc2626;
+}
+
+/* ── Esito invio ── */
+.feedback {
+  padding: 0.75rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(200, 230, 201, 0.6);
+  color: #2e7d32;
+  font-family: var(--font-quicksand);
+  font-weight: 600;
+  text-align: center;
+}
+
+.feedback.is-error {
+  background: rgba(242, 176, 163, 0.35);
+  color: #b23b26;
+}

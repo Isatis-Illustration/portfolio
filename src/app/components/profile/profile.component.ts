@@ -1,14 +1,17 @@
 import { Component, computed, inject, Signal } from '@angular/core';
-import { User } from '../../services/models/models';
-import { TranslationService } from '../../services/translation.service';
-import { Language } from '../../services/models/enums';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { SafeHtml } from '@angular/platform-browser';
+import { User } from '../../services/models/models';
 import { UserService } from '../../services/user.service';
+import { IconService } from '../../services/icon.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 
 @Component({
   selector: 'app-profile',
   imports: [
-    CommonModule
+    CommonModule,
+    TranslatePipe,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
@@ -16,25 +19,24 @@ import { UserService } from '../../services/user.service';
 export class ProfileComponent {
 
   userService: UserService = inject(UserService);
-  translateService: TranslationService = inject(TranslationService);
+  iconService: IconService = inject(IconService);
+  router: Router = inject(Router);
 
   imgLoaded: boolean = false;
 
   user: Signal<User> = computed(() => this.userService.user());
 
-  description: Signal<string> = computed(() => {
+  /** Titoli delle opere: restano in lingua originale */
+  publications = [
+    { title: 'Benvenuti a Trentacapre', details: 'Cinzia Montagna, Navarra Editore', year: 2023 },
+    { title: 'Bentornati a Trentacapre', details: 'Cinzia Montagna, Navarra Editore', year: 2025 },
+  ];
 
-    switch(this.translateService.currentLanguage()){
+  getIcon(name: string): SafeHtml {
+    return this.iconService.getIcon(name);
+  }
 
-      case Language.IT: 
-        return this.user().description.it;
-
-      case Language.EN: 
-        return this.user().description.en;
-
-      default:
-        return this.user().description.it;
-    }
-  });
-  
+  goToContacts(): void {
+    this.router.navigate(['contacts']);
+  }
 }

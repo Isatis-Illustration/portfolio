@@ -45,6 +45,11 @@ export class HomeComponent {
 
   buttons: CustomButton[] = [];
 
+  /** Card illustrate in fondo alla Home: le voci del menu che hanno un disegno (Galleria, Profilo, Contatti) */
+  exploreButtons: Signal<CustomButton[]> = computed(() =>
+    this.buttonService.buttons().filter(b => !!b.imageUrl)
+  );
+
   /** Cartella attiva per interazione touch/mobile */
   toggledFolder = signal<string | null>(null);
 

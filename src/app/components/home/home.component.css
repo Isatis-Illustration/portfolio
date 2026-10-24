@@ -218,3 +218,58 @@
     transform: scale(.88);
   }
 }
+
+/* ═════════════════════════════════════════════════════════
+   HERO E CARD ESPLORA (restyle)
+   ═════════════════════════════════════════════════════════ */
+
+/* Finestra ad arco dietro l'autoritratto, con i colori del sito */
+.hero-arch {
+  border-radius: 999px 999px 28px 28px;
+  border: 3px solid #fff;
+  box-shadow: 0 18px 40px rgba(54, 43, 43, 0.1);
+  background:
+    radial-gradient(circle at 30% 25%, rgba(242, 176, 163, 0.55), transparent 55%),
+    radial-gradient(circle at 75% 70%, rgba(200, 230, 201, 0.85), transparent 60%),
+    #ffecb3;
+  overflow: hidden;
+}
+
+/* Il disegno è tagliato dritto in basso: poggia sul fondo dell'arco e sborda un po' ai lati */
+.hero-portrait {
+  transform: translateX(-50%);
+  transform-origin: bottom center;
+  animation: hero-sway 6s ease-in-out infinite;
+}
+
+@keyframes hero-sway {
+  0%, 100% { transform: translateX(-50%) rotate(-1.5deg); }
+  50% { transform: translateX(-50%) rotate(1.5deg); }
+}
+
+/* Sticker decorativo sul bordo dell'arco (fuori dall'arco, che ha overflow hidden) */
+.hero-sticker {
+  z-index: 2;
+  animation: hero-spin 14s linear infinite;
+}
+
+@keyframes hero-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Card leggermente ruotate come fogli appoggiati, si raddrizzano in hover */
+.explore-card {
+  transform: rotate(var(--tilt, 0deg));
+}
+
+.explore-card:hover,
+.explore-card:focus-visible {
+  transform: rotate(0deg) translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portrait,
+  .hero-sticker {
+    animation: none;
+  }
+}

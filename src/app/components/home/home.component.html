@@ -1,54 +1,70 @@
 <!-- ═══════════════════════════════════════════
-     HERO SECTION
+     HERO — due colonne: presentazione a sinistra, autoritratto a destra
      ═══════════════════════════════════════════ -->
-<section class="relative w-full flex flex-col items-center justify-center
-                px-6 pt-8 pb-6 md:pt-12 md:pb-8 overflow-hidden
-                bg-gradient-to-b">
+<section class="relative w-full px-6 pt-8 pb-10 md:pt-14 md:pb-16 overflow-hidden">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr] items-center gap-10 md:gap-6">
 
-  <!-- Hero content -->
-  <div class="relative z-10 flex flex-col items-center gap-4 max-w-4xl mx-auto">
+    <!-- Presentazione -->
+    <div class="flex flex-col items-center md:items-start text-center md:text-left gap-5">
 
-    <!-- Nome: GIF mode -->
-    <div *ngIf="useGifName" class="flex flex-col md:flex-row items-center justify-center gap-x-8 gap-y-2
-                animate-hero-entrance">
-      <div class="w-3/5 sm:w-1/2 xl:w-2/5">
+      <span class="animate-hero-entrance inline-block px-4 py-1 rounded-full bg-verde-pastello/60 text-title
+                   font-fredoka text-xs sm:text-sm font-semibold uppercase tracking-wider">
+        Isatis Illustration
+      </span>
+
+      <!-- Nome: GIF mode -->
+      <div *ngIf="useGifName" class="hero-name animate-hero-entrance w-full max-w-md lg:max-w-lg">
         <img [src]="nameGif" alt="Isabella" class="select-none w-full" />
+        <img [src]="lNameGif" alt="Laurenzi" class="select-none w-full -mt-2 sm:-mt-4" />
       </div>
-      <div class="w-3/5 sm:w-1/2 xl:w-2/5">
-        <img [src]="lNameGif" alt="Laurenzi" class="select-none w-full" />
-      </div>
-    </div>
 
-    <!-- Nome: Testo Fredoka mode -->
-    <div *ngIf="!useGifName" class="text-center animate-hero-entrance">
-      <h1 class="font-fredoka text-5xl md:text-7xl xl:text-8xl font-bold text-title tracking-tight">
+      <!-- Nome: Testo Fredoka mode -->
+      <h1 *ngIf="!useGifName" class="animate-hero-entrance font-fredoka text-5xl md:text-7xl font-bold text-title tracking-tight">
         Isabella Laurenzi
       </h1>
+
+      <!-- Sottotitolo -->
+      <div class="w-40 sm:w-48 animate-hero-entrance" style="animation-delay: 150ms; opacity: 0;">
+        <img [src]="subTitle()" alt="Illustratrice" class="w-full select-none">
+      </div>
+
+      <p class="animate-hero-entrance font-quicksand text-title/75 text-lg leading-relaxed max-w-md"
+         style="animation-delay: 250ms; opacity: 0;">
+        {{ 'HOME_BIO_SHORT' | translate }}
+      </p>
+
+      <!-- CTA: azione principale piena, secondaria a contorno -->
+      <div class="animate-hero-entrance flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 mt-1"
+           style="animation-delay: 350ms; opacity: 0;">
+        <button (click)="navigate('personal-projects')"
+          class="px-7 py-3 rounded-full bg-verde-scuro text-white font-fredoka font-medium text-lg
+                 shadow-[0_6px_20px_rgba(129,199,132,0.35)]
+                 hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(129,199,132,0.45)]
+                 active:scale-95 transition-all duration-300 cursor-pointer">
+          {{ 'PERSONAL_PROJECTS' | translate }}
+        </button>
+        <button (click)="navigate('gallery')"
+          class="px-7 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
+                 border-2 border-crema-scuro shadow-[0_4px_16px_rgba(0,0,0,0.04)]
+                 hover:border-arancione hover:-translate-y-0.5
+                 active:scale-95 transition-all duration-300 cursor-pointer">
+          {{ 'GALLERY' | translate }}
+        </button>
+      </div>
     </div>
 
-    <!-- Sottotitolo -->
-    <div class="w-48 sm:w-56 md:w-64 animate-hero-entrance" style="animation-delay: 200ms; opacity: 0;">
-      <img [src]="subTitle()" alt="Illustratrice" class="w-full select-none">
+    <!-- Autoritratto illustrato in una finestra ad arco: il bordo dritto del disegno poggia sul fondo -->
+    <div class="flex justify-center md:justify-end animate-hero-entrance" style="animation-delay: 200ms; opacity: 0;">
+      <div class="relative w-64 sm:w-72 md:w-80 lg:w-96">
+        <div class="hero-arch relative w-full aspect-[4/5]">
+          <img src="assets/personal/artist-char.png" alt="Isabella Laurenzi"
+               class="hero-portrait absolute bottom-0 left-1/2 w-[118%] max-w-none select-none" />
+        </div>
+        <img src="assets/stickers/sticker_flower.png" alt="" aria-hidden="true"
+             class="hero-sticker absolute -top-4 -right-4 w-16 sm:w-20 select-none" />
+      </div>
     </div>
 
-    <!-- CTA buttons -->
-    <div class="flex flex-wrap items-center justify-center gap-4 mt-2
-                animate-hero-entrance" style="animation-delay: 400ms; opacity: 0;">
-      <button (click)="navigate('personal-projects')" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
-                     border-2 border-crema-scuro
-                     shadow-[0_4px_16px_rgba(0,0,0,0.04)]
-                     hover:border-arancione hover:shadow-[0_6px_24px_rgba(242,176,163,0.2)] hover:-translate-y-0.5
-                     active:scale-95 transition-all duration-300 cursor-pointer">
-        {{ 'PERSONAL_PROJECTS' | translate }}
-      </button>
-      <button (click)="navigate('gallery')" class="px-8 py-3 rounded-full bg-white text-title font-fredoka font-medium text-lg
-                     border-2 border-crema-scuro
-                     shadow-[0_4px_16px_rgba(0,0,0,0.04)]
-                     hover:border-arancione hover:shadow-[0_6px_24px_rgba(242,176,163,0.2)] hover:-translate-y-0.5
-                     active:scale-95 transition-all duration-300 cursor-pointer">
-        {{ 'GALLERY' | translate }}
-      </button>
-    </div>
   </div>
 </section>
 
@@ -150,29 +166,27 @@
 
 
 <!-- ═══════════════════════════════════════════
-     MINI BIO + CTA
+     ESPLORA — card illustrate (mt-auto: restano in fondo, sopra il footer,
+     anche quando la sezione Collaborazioni non c'è)
      ═══════════════════════════════════════════ -->
-<!-- mt-auto: resta attaccata in fondo, sopra il footer, anche quando la sezione Collaborazioni non c'è -->
-<section class="mt-auto bg-[#fff2c8] py-10 md:py-12">
-  <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-12">
+<section class="mt-auto bg-[#fff2c8] py-10 md:py-14">
+  <div class="max-w-5xl mx-auto px-6">
+    <h2 class="font-fredoka text-2xl md:text-3xl font-semibold text-title text-center mb-8">
+      {{ 'HOME_EXPLORE_TITLE' | translate }}
+    </h2>
 
-    <div class="flex-1 text-center md:text-left">
-      <h2 class="font-fredoka text-2xl md:text-3xl font-semibold text-title mb-4">
-        {{ 'HOME_BIO_TITLE' | translate }}
-      </h2>
-      <p class="font-quicksand text-title/70 text-lg leading-relaxed">
-        {{ 'HOME_BIO_SHORT' | translate }}
-      </p>
-      <div class="mt-6 flex flex-wrap gap-4 justify-center md:justify-start">
-        <button (click)="navigate('profile')" class="px-6 py-2.5 rounded-full bg-arancione/20 text-title font-fredoka font-medium
-                       hover:bg-arancione/30 transition-colors duration-200 cursor-pointer">
-          {{ 'PROFILE' | translate }}
-        </button>
-        <button (click)="navigate('contacts')" class="px-6 py-2.5 rounded-full border-2 border-arancione/30 text-title font-fredoka font-medium
-                       hover:bg-arancione/10 transition-colors duration-200 cursor-pointer">
-          {{ 'CONTACTS' | translate }}
-        </button>
-      </div>
+    <div class="grid grid-cols-3 gap-3 sm:gap-6">
+      <button *ngFor="let b of exploreButtons(); let i = index" (click)="navigate(b.path)"
+        class="explore-card group flex flex-col items-center gap-2 p-2 sm:p-5 rounded-2xl sm:rounded-3xl bg-white
+               border-2 border-crema-scuro shadow-[0_6px_20px_rgba(0,0,0,0.05)]
+               hover:border-arancione hover:shadow-[0_10px_28px_rgba(242,176,163,0.3)]
+               transition-all duration-300 cursor-pointer"
+        [style.--tilt]="(i - 1) * 1.5 + 'deg'">
+        <img [src]="b.imageUrl" [alt]="b.label | translate"
+             class="w-full max-w-[200px] aspect-square object-contain select-none
+                    transition-transform duration-300 group-hover:scale-105" />
+        <span class="sr-only">{{ b.label | translate }}</span>
+      </button>
     </div>
   </div>
 </section>
