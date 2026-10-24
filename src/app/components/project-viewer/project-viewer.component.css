@@ -35,17 +35,66 @@
   max-height: 100%;
 }
 
+/* La slide è il riferimento per le misure della cornice (unità cqw/cqh) */
+.project-page-slide {
+  container-type: size;
+}
+
+/* Spessore cornice (padding) e altezza della barra "Tavola N": stessi valori di prima */
 .project-sheet {
-  aspect-ratio: auto;
+  --sheet-pad: 10px;
+  --sheet-footer: 28px;
+  padding: var(--sheet-pad);
+  max-width: 100%;
+  max-height: 100%;
   box-shadow:
     0 10px 30px -5px rgba(54, 43, 43, 0.08),
     0 20px 45px -10px rgba(54, 43, 43, 0.06);
+}
+
+@media (min-width: 640px) {
+  .project-sheet { --sheet-pad: 16px; }
+}
+
+@media (min-width: 768px) {
+  .project-sheet { --sheet-pad: 20px; }
+}
+
+/*
+ * Area dell'immagine con le proporzioni dell'immagine (--ratio = larghezza/altezza, dal load):
+ * larghezza = la più piccola tra lo spazio disponibile in orizzontale e quella che entra in altezza.
+ * Così il foglio bianco attorno segue i bordi dell'immagine invece di riempire la slide.
+ */
+.sheet-canvas {
+  --max-w: min(calc(100cqw - 2 * var(--sheet-pad)), calc(64rem - 2 * var(--sheet-pad)));
+  --max-h: calc(100cqh - 2 * var(--sheet-pad) - var(--sheet-footer));
+  width: min(var(--max-w), calc(var(--max-h) * var(--ratio)));
+  aspect-ratio: var(--ratio);
+  flex: none;
+}
+
+.sheet-canvas.is-zoomed {
+  cursor: grab;
+}
+
+.sheet-canvas.is-zoomed:active {
+  cursor: grabbing;
+}
+
+.sheet-footer {
+  height: var(--sheet-footer);
+  padding-top: 8px;
 }
 
 /* ═══════════════════════════════════════════
    SCROLLBAR PERSONALIZZATA GALLEGGIANTE
    ═══════════════════════════════════════════ */
 .custom-scrollbar {
+  /* PC: verticale sul lato destro */
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
   background: rgba(255, 248, 225, 0.75);
   backdrop-filter: blur(8px);
   padding: 6px 4px;
@@ -54,11 +103,64 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
+/* Tappe della barra: numero dentro un cerchietto bianco */
+.page-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid rgba(54, 43, 43, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-fredoka, 'Fredoka', sans-serif);
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(54, 43, 43, 0.6);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.page-stop:hover .page-dot {
+  color: var(--color-title);
+  border-color: rgba(54, 43, 43, 0.3);
+}
+
+/* Tappa attiva: il cerchietto diventa trasparente e si vede la goccia verde sotto */
+.page-stop.active .page-dot {
+  background: transparent;
+  border-color: transparent;
+  color: #ffffff;
+}
+
+/* Traccia: verticale da PC; touch-action none così trascinare non scorre la pagina */
+.page-track {
+  flex-direction: column;
+  height: var(--track-len);
+  margin: 4px 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.track-line {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+/* --pos = posizione della goccia lungo la traccia (top da PC, left da telefono) */
 .droplet-indicator {
   position: absolute;
   left: 50%;
-  width: 18px;
-  height: 22px;
+  top: var(--pos);
+  width: 22px;
+  height: 26px;
   border-radius: 9999px !important;
   background-color: var(--color-verde-scuro);
   border: 1.5px solid #ffffff;
@@ -69,41 +171,76 @@
   transform-origin: center center;
   transition:
     top 0.44s cubic-bezier(0.34, 1.35, 0.64, 1),
+    left 0.44s cubic-bezier(0.34, 1.35, 0.64, 1),
     transform 0.44s cubic-bezier(0.34, 1.35, 0.64, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   z-index: 15;
-  will-change: top, transform;
+  will-change: top, left, transform;
 }
 
-.droplet-number {
-  font-family: var(--font-fredoka, 'Fredoka', sans-serif);
-  font-size: 9.5px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1;
-  user-select: none;
-  transition: transform 0.25s ease;
-}
-
-/* Sgusciata fluida verso il basso: allungamento morbido con estremi sempre perfettamente arrotondati */
-.droplet-indicator.moving-down {
-  transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
-}
-
-.droplet-indicator.moving-down .droplet-number {
-  transform: scaleY(0.88) scaleX(1.05);
-}
-
-/* Sgusciata fluida verso l'alto: allungamento morbido con estremi sempre perfettamente arrotondati */
+/* Sgusciata fluida (su e giù): allungamento morbido con estremi sempre arrotondati */
+.droplet-indicator.moving-down,
 .droplet-indicator.moving-up {
   transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
 }
 
-.droplet-indicator.moving-up .droplet-number {
-  transform: scaleY(0.88) scaleX(1.05);
+/* ── Telefono: barra orizzontale in basso, larga quanto lo schermo meno i margini ── */
+@media (max-width: 639px) {
+  .custom-scrollbar {
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 12px;
+    transform: none;
+    flex-direction: row;
+    padding: 4px 6px;
+  }
+
+  /* frecce su/giù ruotate in sinistra/destra */
+  .bar-arrow svg {
+    transform: rotate(-90deg);
+  }
+
+  .page-track {
+    flex-direction: row;
+    flex: 1;
+    height: 26px;
+    margin: 0 4px;
+  }
+
+  .track-line {
+    left: 10px;
+    right: 10px;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 4px;
+    transform: translateY(-50%);
+  }
+
+  .droplet-indicator {
+    top: 50%;
+    left: var(--pos);
+    width: 26px;
+    height: 22px;
+  }
+
+  .droplet-indicator.moving-down,
+  .droplet-indicator.moving-up {
+    transform: translate(-50%, -50%) scaleX(1.22) scaleY(0.88);
+  }
+
+  /* spazio sotto le tavole per la barra; il suggerimento "rotella del mouse" non serve */
+  .has-bar .project-page-slide {
+    padding-bottom: 64px;
+  }
+
+  .has-bar .scroll-hint {
+    display: none;
+  }
 }
 
 

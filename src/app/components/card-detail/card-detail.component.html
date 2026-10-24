@@ -1,55 +1,91 @@
-<section class="relative flex flex-col h-[calc(100vh-5rem)] sm:h-[calc(100vh-6rem)] bg-crema"
-          (touchstart)="onTouchStart($event)"
-          (touchend)="onTouchEnd($event)">
+<!-- Dettaglio illustrazione: stesso stile del Project Viewer (barra in alto, foglio bianco che segue
+     i bordi dell'immagine, zoom dentro la cornice) -->
+<section class="relative w-full h-full overflow-hidden bg-crema flex flex-col"
+  (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
 
-  <!-- Top bar -->
-  <div class="absolute top-0 inset-x-0 z-20 flex items-center justify-between px-4 py-3 pointer-events-none">
-    <button class="p-2 rounded-full bg-crema-scuro shadow-sm text-title
-                   hover:bg-crema-scuro/80 transition-colors duration-200 cursor-pointer pointer-events-auto"
-            (click)="goBack()"
-            aria-label="Torna alla galleria">
+  <!-- Top bar: indietro, titolo, contatore e info -->
+  <header
+    class="flex-shrink-0 z-30 flex items-center justify-between gap-3 px-4 sm:px-8 py-3 bg-crema/90 backdrop-blur-md border-b border-black/5">
+    <button (click)="goBack()" type="button" [attr.aria-label]="'GALLERY' | translate"
+      class="group inline-flex flex-shrink-0 items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-white text-title shadow-sm border border-black/5 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer">
+      <svg class="w-4 h-4 transition-transform duration-200 group-hover:-translate-x-1" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span class="font-fredoka text-xs sm:text-sm font-medium">{{ 'GALLERY' | translate }}</span>
+    </button>
+
+    <h1 class="min-w-0 truncate text-center font-barriecito text-xl sm:text-2xl md:text-3xl font-bold text-title tracking-wide">
+      {{ content?.title }}
+    </h1>
+
+    <div class="flex flex-shrink-0 items-center gap-2">
+      <!-- Contatore nella lista filtrata della galleria -->
+      <div *ngIf="total() > 0" class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-black/5 shadow-sm">
+        <span class="font-fredoka text-xs sm:text-sm font-bold text-verde-scuro">{{ pad(index() + 1) }}</span>
+        <span class="text-title/30 text-xs">/</span>
+        <span class="font-fredoka text-xs sm:text-sm text-title/60 font-medium">{{ pad(total()) }}</span>
+      </div>
+
+      <button *ngIf="descriptionLayout === 'panel'" (click)="toggleInfo()" type="button" aria-label="Info"
+        class="p-1.5 rounded-full bg-white/80 hover:bg-white text-title shadow-sm border border-black/5 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Area immagine con frecce ai lati (desktop) -->
+  <main class="flex-1 min-h-0 flex items-center gap-2 sm:gap-4 px-2 sm:px-6 md:px-10">
+
+    <button (click)="goToPrevious()" type="button" aria-label="Precedente" class="nav-btn hidden sm:flex">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
       </svg>
     </button>
 
-    <button class="p-2 rounded-full bg-crema-scuro shadow-sm text-title
-                   hover:bg-crema-scuro/80 transition-colors duration-200 cursor-pointer pointer-events-auto"
-            (click)="toggleInfo()"
-            aria-label="Mostra info">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-    </button>
-  </div>
+    <div #stage class="detail-stage relative flex-1 h-full min-w-0 flex items-center justify-center py-2 sm:py-4 md:py-6"
+      (click)="onStageClick($event)" (mouseleave)="onStageLeave()">
+      <!-- Foglio + nuvoletta (il wrap non ritaglia, così i batuffoli possono uscire dal foglio).
+           Da PC, se a destra non c'è posto per la nuvola, il foglio scivola a sinistra (--thought-shift) -->
+      <div #sheetWrap *ngIf="content; else noImage" class="sheet-wrap relative transition-opacity duration-300"
+        [class.opacity-0]="!hasLoaded" [class.thought-open]="hasThought && thoughtOpen"
+        [style.--thought-shift.px]="thoughtShift">
+        <article class="detail-sheet relative flex flex-col items-center bg-white rounded-2xl sm:rounded-3xl border border-black/5 overflow-hidden box-border">
+          <!-- Zoom dentro la cornice (pinch / Ctrl+rotella / doppio tap, trascina per spostare) -->
+          <div [appZoomPan]="hasLoaded" [style.--ratio]="ratio"
+            class="sheet-canvas relative flex items-center justify-center rounded-xl sm:rounded-2xl bg-crema/40 overflow-hidden">
+            <img [src]="content.imageUrl" [alt]="content.title" draggable="false" (load)="loaded($event)"
+              class="w-full h-full object-contain select-none" />
+          </div>
+        </article>
 
-  <!-- Image container (Flex layout per evitare sovrapposizione dell'immagine con i tasti desktop) -->
-  <div class="flex-1 flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-24 py-6 sm:py-8 overflow-hidden"
-       [ngClass]="{ 'opacity-100': hasLoaded, 'opacity-0': !hasLoaded }">
+        <!-- Nuvoletta dei pensieri: tastino sul bordo del foglio, due batuffoli e il box col testo
+             (da PC a destra fuori dalla cornice, da telefono sopra) -->
+        <ng-container *ngIf="hasThought">
+          <span class="puff puff-sm" aria-hidden="true"></span>
+          <span class="puff puff-md" aria-hidden="true"></span>
+          <div #deskBox class="thought-box thought-box--desk" (mouseenter)="onThoughtEnter()" (mouseleave)="onThoughtLeave()"
+            [attr.aria-hidden]="!thoughtOpen">
+            <div class="cloud-body"><p>{{ content.description }}</p></div>
+          </div>
+          <button type="button" class="thought-btn" [class.active]="thoughtOpen"
+            (mouseenter)="onThoughtEnter()" (mouseleave)="onThoughtLeave()" (click)="toggleThought($event)"
+            [attr.aria-expanded]="thoughtOpen" aria-label="Descrizione">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="6.5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="17.5" cy="12" r="1.8" />
+            </svg>
+          </button>
+        </ng-container>
+      </div>
 
-    <!-- Prev button (desktop) -->
-    <button class="hidden sm:flex flex-shrink-0 w-12 h-12 items-center justify-center rounded-full
-                   bg-crema-scuro shadow-md text-title
-                   hover:bg-crema-scuro/80 hover:shadow-lg transition-all duration-200 cursor-pointer"
-            (click)="goToPrevious()" aria-label="Precedente">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-    </button>
-
-    <!-- Center image frame (limita la larghezza massima dell'immagine allo spazio tra i tasti) -->
-    <div class="flex-1 h-full flex items-center justify-center overflow-hidden px-4">
-      <!-- Image -->
-      <img *ngIf="content; else noImage"
-           #imageElement
-           [src]="content.imageUrl"
-           [alt]="content.title"
-           (load)="loaded()"
-           (click)="showViewer()"
-           class="max-w-full max-h-full object-contain select-none cursor-zoom-in
-                  rounded-xl shadow-[var(--shadow-card)]
-                  transition-opacity duration-300" />
+      <!-- Telefono: il box si apre nello spazio liberato in alto, il foglio scende e si rimpicciolisce -->
+      <div *ngIf="content && hasThought" class="thought-box thought-box--mobile" [class.open]="thoughtOpen"
+        [attr.aria-hidden]="!thoughtOpen">
+        <div class="cloud-body"><p>{{ content.description }}</p></div>
+      </div>
 
       <ng-template #noImage>
         <div class="text-center font-quicksand text-title/60 text-lg p-6">
@@ -59,49 +95,38 @@
       </ng-template>
     </div>
 
-    <!-- Next button (desktop) -->
-    <button class="hidden sm:flex flex-shrink-0 w-12 h-12 items-center justify-center rounded-full
-                   bg-crema-scuro shadow-md text-title
-                   hover:bg-crema-scuro/80 hover:shadow-lg transition-all duration-200 cursor-pointer"
-            (click)="goToNext()" aria-label="Successiva">
+    <button (click)="goToNext()" type="button" aria-label="Successiva" class="nav-btn hidden sm:flex">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
       </svg>
     </button>
+  </main>
 
+  <!-- Mobile: indicatore swipe e contatore -->
+  <div class="flex sm:hidden flex-shrink-0 justify-center items-center gap-3 pb-3 text-title/40 text-xs font-quicksand pointer-events-none">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+    </svg>
+    <span *ngIf="total() > 0" class="font-fredoka font-semibold">{{ index() + 1 }} / {{ total() }}</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+    </svg>
   </div>
 
-  <!-- Mobile swipe hint (solo indicatore visivo discreto) -->
-  <div class="absolute bottom-4 inset-x-0 z-20 flex sm:hidden justify-center pointer-events-none">
-    <div class="flex items-center gap-2 text-title/30 text-xs font-quicksand">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
-      </svg>
-      <span>swipe</span>
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
-      </svg>
-    </div>
-  </div>
-
-  <!-- Slide-up info panel -->
-  <div class="fixed inset-x-0 bottom-0 z-30 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
-       [ngClass]="{
-         'translate-y-0': showInfo,
-         'translate-y-full': !showInfo
-       }">
+  <!-- Pannello info che sale dal basso -->
+  <div class="fixed inset-x-0 bottom-0 z-40 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]"
+    [ngClass]="showInfo ? 'translate-y-0' : 'translate-y-full'">
     <div class="bg-white rounded-t-2xl shadow-[0_-4px_32px_rgba(0,0,0,0.1)] max-h-[50vh] overflow-y-auto p-6">
       <div class="flex justify-between items-start mb-4">
-        <h2 class="font-fredoka text-2xl font-semibold text-title">{{ content.title }}</h2>
-        <button class="p-1.5 rounded-full hover:bg-crema-scuro/50 transition-colors cursor-pointer"
-                (click)="toggleInfo()">
+        <h2 class="font-fredoka text-2xl font-semibold text-title">{{ content?.title }}</h2>
+        <button class="p-1.5 rounded-full hover:bg-crema-scuro/50 transition-colors cursor-pointer" (click)="toggleInfo()" aria-label="Chiudi">
           <svg class="w-5 h-5 text-title/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
       <p *ngIf="content?.description" class="font-quicksand text-title/70 text-lg leading-relaxed">
-        {{ content.description }}
+        {{ content?.description }}
       </p>
       <p *ngIf="!content?.description" class="font-quicksand text-title/40 italic">
         {{ 'NO_DESCRIPTION' | translate }}
@@ -110,8 +135,3 @@
   </div>
 
 </section>
-
-<!-- Viewer overlay (pan/zoom intatto) -->
-<div *ngIf="contentToView()" class="fixed inset-0 z-[100]">
-  <app-viewer [content]="contentToView()"></app-viewer>
-</div>

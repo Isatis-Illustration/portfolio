@@ -14,6 +14,15 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ContentService } from '../../services/content.service';
 import { Content } from '../../services/models/models';
+import { ZoomPanDirective } from '../../directives/zoom-pan.directive';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+
+/** Proporzioni di una tavola prima che l'immagine sia caricata (A4 verticale) */
+const DEFAULT_RATIO = 1 / Math.SQRT2;
+/** Sblocco di sicurezza dello scorrimento programmato se scrollend non arriva */
+const SCROLL_LOCK_TIMEOUT = 1200;
+/** Movimento minimo (px) perché un tocco sulla barra diventi un trascinamento */
+const SCRUB_THRESHOLD = 6;
 
 interface ProjectMeta {
   key: string;
@@ -24,7 +33,7 @@ interface ProjectMeta {
 @Component({
   selector: 'app-project-viewer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ZoomPanDirective, TranslatePipe],
   templateUrl: './project-viewer.component.html',
   styleUrl: './project-viewer.component.css',
 })
@@ -36,11 +45,28 @@ export class ProjectViewerComponent implements OnInit {
 
   viewportRef = viewChild<ElementRef<HTMLDivElement>>('viewport');
   slideRefs = viewChildren<ElementRef<HTMLDivElement>>('slideItem');
+  trackRef = viewChild<ElementRef<HTMLDivElement>>('track');
+
+  /** Trascinamento in corso sulla traccia della barra */
+  private scrubbing = false;
+  private scrubStart = { x: 0, y: 0 };
+  /** Il dito/mouse si è mosso abbastanza da essere un trascinamento e non un tocco */
+  private scrubMoved = false;
 
   projectKey = signal<string>('');
   currentPage = signal<number>(0);
   scrollProgress = signal<number>(0);
   hasUserScrolled = signal<boolean>(false);
+
+  /**
+   * Pagina da cui si è aperto il viewer (Home o Progetti Personali), letta dalla navigazione
+   * precedente; se si arriva da un link diretto si torna alla Home.
+   */
+  readonly backUrl: string = this.previousUrl();
+  readonly backLabel: string = this.backUrl.startsWith('/personal-projects') ? 'PERSONAL_PROJECTS' : 'HOME';
+
+  /** Proporzioni (larghezza/altezza) delle tavole caricate: la cornice segue i bordi dell'immagine */
+  ratios = signal<Record<number, number>>({});
 
   /** Progetto dal BE (collaborazione o personale): projectGuard garantisce che esista e abbia tavole */
   private apiProject = computed(() => this.contentService.getProject(this.projectKey()));
@@ -105,7 +131,24 @@ export class ProjectViewerComponent implements OnInit {
     }, 450);
   }
 
-  private observer?: IntersectionObserver;
+  /** Pagina verso cui sta scorrendo un clic sulla barra: fino all'arrivo lo scroll non cambia pagina */
+  private scrollTarget: number | null = null;
+  private scrollLockTimer: any = null;
+
+  private previousUrl(): string {
+    const url = this.router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
+    return url && !url.startsWith('/project/') ? url : '/home';
+  }
+
+  ratio(index: number): number {
+    return this.ratios()[index] ?? DEFAULT_RATIO;
+  }
+
+  onImageLoad(index: number, event: Event): void {
+    const img = event.target as HTMLImageElement;
+    if (!img.naturalWidth || !img.naturalHeight) return;
+    this.ratios.update(r => ({ ...r, [index]: img.naturalWidth / img.naturalHeight }));
+  }
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
@@ -123,10 +166,11 @@ export class ProjectViewerComponent implements OnInit {
       this.isMoving.set(false);
       this.scrollProgress.set(0);
       this.hasUserScrolled.set(false);
+      this.ratios.set({});
+      this.releaseScrollLock();
       setTimeout(() => {
         const vp = this.viewportRef()?.nativeElement;
         if (vp) vp.scrollTop = 0;
-        this.setupObserver();
       }, 100);
     });
 
@@ -135,52 +179,10 @@ export class ProjectViewerComponent implements OnInit {
         document.documentElement.classList.remove('overflow-hidden', 'h-full');
         document.body.classList.remove('overflow-hidden', 'h-full');
       }
-      this.observer?.disconnect();
       if (this.moveTimer) {
         clearTimeout(this.moveTimer);
       }
-    });
-  }
-
-  private setupObserver(): void {
-    this.observer?.disconnect();
-
-    const vp = this.viewportRef()?.nativeElement;
-    if (!vp) return;
-
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        let bestEntry: IntersectionObserverEntry | null = null;
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
-              bestEntry = entry;
-            }
-          }
-        }
-
-        if (bestEntry) {
-          const indexStr = (bestEntry as IntersectionObserverEntry).target.getAttribute('data-index');
-          if (indexStr !== null) {
-            const idx = parseInt(indexStr, 10);
-            if (idx !== this.currentPage()) {
-              this.changePage(idx);
-            }
-            if (idx > 0) {
-              this.hasUserScrolled.set(true);
-            }
-          }
-        }
-      },
-      {
-        root: vp,
-        threshold: [0.3, 0.5, 0.7],
-      }
-    );
-
-    const slides = this.slideRefs();
-    slides.forEach((slide) => {
-      this.observer?.observe(slide.nativeElement);
+      this.releaseScrollLock();
     });
   }
 
@@ -197,6 +199,10 @@ export class ProjectViewerComponent implements OnInit {
       const prog = Math.min(1, Math.max(0, vp.scrollTop / maxScroll));
       this.scrollProgress.set(prog);
     }
+
+    // scorrimento avviato dalla barra: la goccia è già sulla pagina di arrivo, le pagine
+    // attraversate non devono spostarla avanti e indietro
+    if (this.scrollTarget !== null) return;
 
     const slides = this.slideRefs();
     if (!slides || slides.length === 0) return;
@@ -221,6 +227,61 @@ export class ProjectViewerComponent implements OnInit {
     }
   }
 
+  // ── Trascinamento sulla traccia (verticale da PC, orizzontale da telefono) ──
+  // Un tocco senza movimento resta un click sulla tappa; trascinando, la tavola segue il dito
+  // (salto immediato) e al rilascio si allinea con lo scorrimento morbido.
+
+  onTrackPointerDown(event: PointerEvent): void {
+    if (event.button !== 0) return;
+    this.scrubbing = true;
+    this.scrubMoved = false;
+    this.scrubStart = { x: event.clientX, y: event.clientY };
+  }
+
+  onTrackPointerMove(event: PointerEvent): void {
+    if (!this.scrubbing) return;
+    if (!this.scrubMoved) {
+      if (Math.hypot(event.clientX - this.scrubStart.x, event.clientY - this.scrubStart.y) < SCRUB_THRESHOLD) return;
+      this.scrubMoved = true;
+      // da qui il gesto è della traccia: niente click sulle tappe al rilascio
+      (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    }
+    event.preventDefault();
+    this.scrubTo(event);
+  }
+
+  onTrackPointerUp(event: PointerEvent): void {
+    if (!this.scrubbing) return;
+    this.scrubbing = false;
+    if (!this.scrubMoved) return;
+    const index = this.indexAt(event);
+    if (index !== null) this.scrollToPage(index);
+  }
+
+  /** Tappa sotto il puntatore, lungo l'asse della traccia */
+  private indexAt(event: PointerEvent): number | null {
+    const track = this.trackRef()?.nativeElement;
+    const total = this.totalPages();
+    if (!track || total < 2) return null;
+    const rect = track.getBoundingClientRect();
+    const horizontal = rect.width > rect.height;
+    // le tappe sono centrate a 10px dalle estremità (metà di un pallino da 20px)
+    const ratio = horizontal
+      ? (event.clientX - rect.left - 10) / (rect.width - 20)
+      : (event.clientY - rect.top - 10) / (rect.height - 20);
+    return Math.round(Math.min(1, Math.max(0, ratio)) * (total - 1));
+  }
+
+  private scrubTo(event: PointerEvent): void {
+    const index = this.indexAt(event);
+    const vp = this.viewportRef()?.nativeElement;
+    const slide = index !== null ? this.slideRefs()[index]?.nativeElement : null;
+    if (index === null || !vp || !slide || index === this.currentPage()) return;
+    this.lockScroll(index);
+    this.changePage(index);
+    vp.scrollTo({ top: slide.offsetTop, behavior: 'instant' as ScrollBehavior });
+  }
+
   onAsideWheel(event: WheelEvent): void {
     const vp = this.viewportRef()?.nativeElement;
     if (vp) {
@@ -233,11 +294,33 @@ export class ProjectViewerComponent implements OnInit {
     const slides = this.slideRefs();
     if (vp && slides && slides[index]) {
       const target = slides[index].nativeElement;
+      this.lockScroll(index);
       vp.scrollTo({
         top: target.offsetTop,
         behavior: 'smooth',
       });
       this.changePage(index);
+    }
+  }
+
+  /** Fine dello scorrimento (scrollend, dove supportato): sblocca il cambio pagina da scroll */
+  onViewportScrollEnd(): void {
+    if (this.scrollTarget === null) return;
+    this.releaseScrollLock();
+    this.onViewportScroll();
+  }
+
+  private lockScroll(index: number): void {
+    this.releaseScrollLock();
+    this.scrollTarget = index;
+    this.scrollLockTimer = setTimeout(() => this.onViewportScrollEnd(), SCROLL_LOCK_TIMEOUT);
+  }
+
+  private releaseScrollLock(): void {
+    this.scrollTarget = null;
+    if (this.scrollLockTimer) {
+      clearTimeout(this.scrollLockTimer);
+      this.scrollLockTimer = null;
     }
   }
 
@@ -254,7 +337,7 @@ export class ProjectViewerComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/home']);
+    this.router.navigateByUrl(this.backUrl);
   }
 
   @HostListener('window:keydown', ['$event'])

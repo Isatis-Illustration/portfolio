@@ -95,12 +95,12 @@ export class HomeComponent {
   gridClass: Signal<string> = computed(() => {
     const count = this.projects().length;
     if (count === 1) {
-      return 'flex justify-center items-start pt-8 pb-6';
+      return 'flex justify-center items-start';
     }
     if (count === 2) {
-      return 'flex flex-col md:flex-row items-start justify-center gap-10 md:gap-16 lg:gap-20 pt-8 pb-6';
+      return 'flex flex-col md:flex-row items-start justify-center gap-10 md:gap-16 lg:gap-20';
     }
-    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 items-start justify-items-center pt-8 pb-6';
+    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 items-start justify-items-center';
   });
 
   constructor() {

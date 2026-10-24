@@ -39,8 +39,9 @@ export class ContactsFormComponent {
   });
 
   onSubmit() {
-    console.log("inviata")
+    if (this.isButtonDisabled()) return;
     this.isSending = true;
+    this.formFeedback = '';
     const contact: Contact = this.userForm.value;
 
     this.emailService.sendContact(contact).subscribe({
