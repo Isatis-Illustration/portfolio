@@ -90,6 +90,11 @@
    SCROLLBAR PERSONALIZZATA GALLEGGIANTE
    ═══════════════════════════════════════════ */
 .custom-scrollbar {
+  /* PC: verticale sul lato destro */
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
   background: rgba(255, 248, 225, 0.75);
   backdrop-filter: blur(8px);
   padding: 6px 4px;
@@ -128,9 +133,32 @@
   color: #ffffff;
 }
 
+/* Traccia: verticale da PC; touch-action none così trascinare non scorre la pagina */
+.page-track {
+  flex-direction: column;
+  height: var(--track-len);
+  margin: 4px 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.track-line {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+/* --pos = posizione della goccia lungo la traccia (top da PC, left da telefono) */
 .droplet-indicator {
   position: absolute;
   left: 50%;
+  top: var(--pos);
   width: 22px;
   height: 26px;
   border-radius: 9999px !important;
@@ -143,19 +171,76 @@
   transform-origin: center center;
   transition:
     top 0.44s cubic-bezier(0.34, 1.35, 0.64, 1),
+    left 0.44s cubic-bezier(0.34, 1.35, 0.64, 1),
     transform 0.44s cubic-bezier(0.34, 1.35, 0.64, 1);
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   z-index: 15;
-  will-change: top, transform;
+  will-change: top, left, transform;
 }
 
 /* Sgusciata fluida (su e giù): allungamento morbido con estremi sempre arrotondati */
 .droplet-indicator.moving-down,
 .droplet-indicator.moving-up {
   transform: translate(-50%, -50%) scaleY(1.22) scaleX(0.88);
+}
+
+/* ── Telefono: barra orizzontale in basso, larga quanto lo schermo meno i margini ── */
+@media (max-width: 639px) {
+  .custom-scrollbar {
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 12px;
+    transform: none;
+    flex-direction: row;
+    padding: 4px 6px;
+  }
+
+  /* frecce su/giù ruotate in sinistra/destra */
+  .bar-arrow svg {
+    transform: rotate(-90deg);
+  }
+
+  .page-track {
+    flex-direction: row;
+    flex: 1;
+    height: 26px;
+    margin: 0 4px;
+  }
+
+  .track-line {
+    left: 10px;
+    right: 10px;
+    top: 50%;
+    bottom: auto;
+    width: auto;
+    height: 4px;
+    transform: translateY(-50%);
+  }
+
+  .droplet-indicator {
+    top: 50%;
+    left: var(--pos);
+    width: 26px;
+    height: 22px;
+  }
+
+  .droplet-indicator.moving-down,
+  .droplet-indicator.moving-up {
+    transform: translate(-50%, -50%) scaleX(1.22) scaleY(0.88);
+  }
+
+  /* spazio sotto le tavole per la barra; il suggerimento "rotella del mouse" non serve */
+  .has-bar .project-page-slide {
+    padding-bottom: 64px;
+  }
+
+  .has-bar .scroll-hint {
+    display: none;
+  }
 }
 
 

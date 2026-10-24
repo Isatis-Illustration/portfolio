@@ -21,6 +21,8 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 const DEFAULT_RATIO = 1 / Math.SQRT2;
 /** Sblocco di sicurezza dello scorrimento programmato se scrollend non arriva */
 const SCROLL_LOCK_TIMEOUT = 1200;
+/** Movimento minimo (px) perché un tocco sulla barra diventi un trascinamento */
+const SCRUB_THRESHOLD = 6;
 
 interface ProjectMeta {
   key: string;
@@ -43,6 +45,13 @@ export class ProjectViewerComponent implements OnInit {
 
   viewportRef = viewChild<ElementRef<HTMLDivElement>>('viewport');
   slideRefs = viewChildren<ElementRef<HTMLDivElement>>('slideItem');
+  trackRef = viewChild<ElementRef<HTMLDivElement>>('track');
+
+  /** Trascinamento in corso sulla traccia della barra */
+  private scrubbing = false;
+  private scrubStart = { x: 0, y: 0 };
+  /** Il dito/mouse si è mosso abbastanza da essere un trascinamento e non un tocco */
+  private scrubMoved = false;
 
   projectKey = signal<string>('');
   currentPage = signal<number>(0);
@@ -216,6 +225,61 @@ export class ProjectViewerComponent implements OnInit {
     if (closestIndex !== this.currentPage()) {
       this.changePage(closestIndex);
     }
+  }
+
+  // ── Trascinamento sulla traccia (verticale da PC, orizzontale da telefono) ──
+  // Un tocco senza movimento resta un click sulla tappa; trascinando, la tavola segue il dito
+  // (salto immediato) e al rilascio si allinea con lo scorrimento morbido.
+
+  onTrackPointerDown(event: PointerEvent): void {
+    if (event.button !== 0) return;
+    this.scrubbing = true;
+    this.scrubMoved = false;
+    this.scrubStart = { x: event.clientX, y: event.clientY };
+  }
+
+  onTrackPointerMove(event: PointerEvent): void {
+    if (!this.scrubbing) return;
+    if (!this.scrubMoved) {
+      if (Math.hypot(event.clientX - this.scrubStart.x, event.clientY - this.scrubStart.y) < SCRUB_THRESHOLD) return;
+      this.scrubMoved = true;
+      // da qui il gesto è della traccia: niente click sulle tappe al rilascio
+      (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    }
+    event.preventDefault();
+    this.scrubTo(event);
+  }
+
+  onTrackPointerUp(event: PointerEvent): void {
+    if (!this.scrubbing) return;
+    this.scrubbing = false;
+    if (!this.scrubMoved) return;
+    const index = this.indexAt(event);
+    if (index !== null) this.scrollToPage(index);
+  }
+
+  /** Tappa sotto il puntatore, lungo l'asse della traccia */
+  private indexAt(event: PointerEvent): number | null {
+    const track = this.trackRef()?.nativeElement;
+    const total = this.totalPages();
+    if (!track || total < 2) return null;
+    const rect = track.getBoundingClientRect();
+    const horizontal = rect.width > rect.height;
+    // le tappe sono centrate a 10px dalle estremità (metà di un pallino da 20px)
+    const ratio = horizontal
+      ? (event.clientX - rect.left - 10) / (rect.width - 20)
+      : (event.clientY - rect.top - 10) / (rect.height - 20);
+    return Math.round(Math.min(1, Math.max(0, ratio)) * (total - 1));
+  }
+
+  private scrubTo(event: PointerEvent): void {
+    const index = this.indexAt(event);
+    const vp = this.viewportRef()?.nativeElement;
+    const slide = index !== null ? this.slideRefs()[index]?.nativeElement : null;
+    if (index === null || !vp || !slide || index === this.currentPage()) return;
+    this.lockScroll(index);
+    this.changePage(index);
+    vp.scrollTo({ top: slide.offsetTop, behavior: 'instant' as ScrollBehavior });
   }
 
   onAsideWheel(event: WheelEvent): void {

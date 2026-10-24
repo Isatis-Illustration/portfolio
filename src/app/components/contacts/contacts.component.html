@@ -11,14 +11,14 @@
       </p>
 
       <!-- Email in evidenza -->
-      <a [href]="'mailto:' + user().email.email"
-         class="group inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border-2 border-crema-scuro
+      <a [href]="'mailto:' + user().email.email" class="group inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border-2 border-crema-scuro
                 shadow-[0_6px_20px_rgba(0,0,0,0.04)] hover:border-verde-scuro hover:-translate-y-0.5
                 transition-all duration-200 max-w-full">
         <span class="contact-icon bg-verde-pastello/70" [innerHTML]="getIcon('contacts')"></span>
         <span class="flex flex-col items-start min-w-0">
           <span class="font-quicksand text-xs text-title/60">{{ 'CONTACT_EMAIL_LABEL' | translate }}</span>
-          <span class="font-fredoka font-semibold text-title truncate max-w-[16rem] sm:max-w-none">{{ user().email.email }}</span>
+          <span class="font-fredoka font-semibold text-title truncate max-w-[16rem] sm:max-w-none">{{ user().email.email
+            }}</span>
         </span>
       </a>
 
@@ -33,10 +33,6 @@
           {{ user().telegram.nick }}
         </a>
       </div>
-
-      <!-- Disegno decorativo (solo da desktop, su mobile allungherebbe la pagina) -->
-      <img [src]="contactsDrawing()" alt="" aria-hidden="true"
-           class="hidden lg:block w-48 -rotate-6 opacity-90 select-none mt-2" />
     </div>
 
     <!-- ── Form ── -->

@@ -44,7 +44,8 @@
   </header>
 
   <!-- Viewport a scorrimento verticale con Scroll-Snap -->
-  <main #viewport (scroll)="onViewportScroll()" (scrollend)="onViewportScrollEnd()" class="project-reader-viewport flex-1 w-full overflow-y-auto">
+  <main #viewport (scroll)="onViewportScroll()" (scrollend)="onViewportScrollEnd()" class="project-reader-viewport flex-1 w-full overflow-y-auto"
+    [class.has-bar]="totalPages() > 1">
 
     <div *ngFor="let page of pages(); let i = index" #slideItem [attr.data-index]="i"
       class="project-page-slide flex-shrink-0 w-full h-full flex flex-col items-center justify-center p-2 sm:p-4 md:p-6 relative box-border">
@@ -89,32 +90,32 @@
 
   <!-- Scrollbar personalizzata galleggiante sul lato destro -->
   <aside *ngIf="totalPages() > 1" (wheel)="onAsideWheel($event)"
-    class="custom-scrollbar fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center select-none pointer-events-auto">
+    class="custom-scrollbar fixed z-40 flex items-center select-none pointer-events-auto">
 
-    <!-- Tasto pagina precedente -->
+    <!-- Tasto pagina precedente (freccia su da PC, sinistra da telefono) -->
     <button (click)="prevPage()" [disabled]="currentPage() === 0"
-      class="p-1.5 rounded-full text-title/60 hover:text-title hover:bg-white/80 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer"
+      class="bar-arrow p-1.5 rounded-full text-title/60 hover:text-title hover:bg-white/80 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer"
       aria-label="Pagina precedente">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" />
       </svg>
     </button>
 
-    <!-- Traccia verticale con punti pagina e goccia scorrevole -->
-    <!-- Altezza in base al numero di tavole (26px a tappa), al massimo il 60% dello schermo -->
-    <div class="page-track relative flex flex-col items-center justify-between my-1"
-      [style.height]="'min(' + totalPages() * 26 + 'px, 60vh)'">
+    <!-- Traccia con le tappe e la goccia: tocca una tappa o trascina il dito lungo la traccia.
+         Da PC è verticale (26px a tappa, max 60% dello schermo), da telefono orizzontale a tutta larghezza -->
+    <div #track class="page-track relative flex items-center justify-between"
+      [style.--track-len]="'min(' + totalPages() * 26 + 'px, 60vh)'"
+      (pointerdown)="onTrackPointerDown($event)" (pointermove)="onTrackPointerMove($event)"
+      (pointerup)="onTrackPointerUp($event)" (pointercancel)="onTrackPointerUp($event)">
 
-      <!-- Linea traccia di fondo: inizia al centro del primo pallino e termina al centro dell'ultimo -->
-      <div
-        class="absolute left-1/2 -translate-x-1/2 top-2.5 bottom-2.5 w-1 bg-black/15 rounded-full pointer-events-none">
-      </div>
+      <!-- Linea di fondo: dal centro della prima tappa al centro dell'ultima -->
+      <div class="track-line"></div>
 
       <!-- Goccia verde che sguscia tra le tappe, sotto i numeri -->
       <div class="droplet-indicator" [ngClass]="{
              'moving-down': isMoving() && moveDirection() === 'down',
              'moving-up': isMoving() && moveDirection() === 'up'
-           }" [style.top]="dropletTop()">
+           }" [style.--pos]="dropletTop()">
       </div>
 
       <!-- Tappe: numero in un cerchietto bianco; sulla tappa attiva il cerchietto lascia vedere la goccia -->
@@ -129,7 +130,7 @@
 
     <!-- Tasto pagina successiva -->
     <button (click)="nextPage()" [disabled]="currentPage() === totalPages() - 1"
-      class="p-1.5 rounded-full text-title/60 hover:text-title hover:bg-white/80 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer"
+      class="bar-arrow p-1.5 rounded-full text-title/60 hover:text-title hover:bg-white/80 disabled:opacity-20 disabled:pointer-events-none transition-all duration-200 cursor-pointer"
       aria-label="Pagina successiva">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />

@@ -3,6 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { ContentService } from '../../services/content.service';
+import { cloudinaryResized } from '../../services/cloudinary-image';
+
+/** Larghezza della copertina richiesta a Cloudinary: la cartolina è ~220px, ×2.7 per gli schermi retina */
+const COVER_WIDTH = 600;
 
 export interface PersonalProject {
   key: string;
@@ -44,7 +48,7 @@ export class PersonalProjectsComponent {
       title: this.contentService.resolveText(p.title),
       badge: this.contentService.resolveText(p.badge),
       description: this.contentService.resolveText(p.shortText),
-      coverUrl: p.coverUrl || '',
+      coverUrl: cloudinaryResized(p.coverUrl || '', COVER_WIDTH),
       coverHasBg: p.coverHasBg !== false,
       backColor: p.colors.back,
       frontColor: p.colors.front,

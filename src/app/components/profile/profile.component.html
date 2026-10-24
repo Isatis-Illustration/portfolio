@@ -7,30 +7,27 @@
     <!-- Foto -->
     <div class="flex justify-center">
       <div class="relative w-60 sm:w-72">
-        <div class="photo-arch relative w-full aspect-[4/5]">
+        <!-- Foto intera alle sue proporzioni (niente object-cover): ritagliarne una parte fa perdere
+             al browser il ridimensionamento di qualità su un'immagine così grande e la foto si sgrana -->
+        <div class="photo-arch relative w-full">
           <img [src]="user().imageUrl" (load)="imgLoaded = true" alt="Isabella Laurenzi"
-               class="profile-photo absolute inset-0 w-full h-full object-cover"
-               [class.opacity-0]="!imgLoaded" />
+            class="profile-photo block w-full h-auto" [class.opacity-0]="!imgLoaded" />
         </div>
         <!-- Il personaggio sbuca dal bordo della cornice -->
         <img src="assets/personal/artist-char.png" alt="" aria-hidden="true"
-             class="peek-char absolute -bottom-6 -right-10 w-32 sm:w-36 select-none" />
+          class="peek-char absolute -bottom-6 -right-10 w-32 sm:w-36 select-none" />
       </div>
     </div>
 
     <!-- Bio -->
     <div class="flex flex-col items-center md:items-start text-center md:text-left gap-5">
-      <span class="inline-block px-4 py-1 rounded-full bg-verde-pastello/60 text-title
-                   font-fredoka text-xs sm:text-sm font-semibold uppercase tracking-wider">
-        {{ 'PROFILE' | translate }}
-      </span>
 
       <h1 class="font-fredoka text-4xl md:text-5xl font-bold text-title tracking-tight">
         {{ 'HOME_BIO_TITLE' | translate }}
       </h1>
 
       <p class="profile-text font-quicksand text-lg text-title/80 leading-relaxed max-w-xl"
-         [innerHTML]="'PROFILE_BIO' | translate"></p>
+        [innerHTML]="'PROFILE_BIO' | translate"></p>
 
       <!-- Contatti rapidi -->
       <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-1">
@@ -57,25 +54,33 @@
 
     <article class="info-card">
       <div class="info-card-head">
-        <span class="info-icon bg-verde-pastello/70">🎓</span>
         <h2 class="info-title">{{ 'PROFILE_EDUCATION_TITLE' | translate }}</h2>
       </div>
       <p class="profile-text font-quicksand text-title/80 leading-relaxed"
-         [innerHTML]="'PROFILE_EDUCATION_TEXT' | translate"></p>
+        [innerHTML]="'PROFILE_EDUCATION_TEXT' | translate"></p>
     </article>
 
-    <article class="info-card">
+    <!-- CV: le collaborazioni pubblicate (dal BE); la card sparisce se non ce ne sono -->
+    <article *ngIf="collaborations().length" class="info-card">
       <div class="info-card-head">
-        <span class="info-icon bg-arancione/30">📚</span>
-        <h2 class="info-title">{{ 'PROFILE_PUBLICATIONS_TITLE' | translate }}</h2>
+        <h2 class="info-title">{{ 'PROFILE_CV_TITLE' | translate }}</h2>
       </div>
-      <p class="font-quicksand text-title/70 mb-3">{{ 'PROFILE_PUBLICATIONS_INTRO' | translate }}</p>
+
+      <h3 class="cv-subtitle">{{ 'PROFILE_CV_COLLABS' | translate }}</h3>
       <ul class="flex flex-col gap-3">
-        <li *ngFor="let pub of publications" class="flex gap-3 items-start">
-          <span class="pub-star">★</span>
-          <span class="font-quicksand text-title/85 leading-snug">
-            <b class="font-semibold text-title">{{ pub.title }}</b>
-            <span class="block text-sm text-title/60">{{ pub.details }}, {{ pub.year }}</span>
+        <li *ngFor="let c of collaborations()" class="cv-item relative w-fit">
+          <button type="button" (click)="openProject(c.id)"
+            class="cv-link flex gap-3 items-start text-left cursor-pointer">
+            <span class="pub-star">★</span>
+            <span class="font-quicksand text-title/85 leading-snug">
+              <b class="font-semibold text-title">{{ c.title }}</b>
+              <span *ngIf="c.shortText" class="block text-sm text-title/60">{{ c.shortText }}</span>
+            </span>
+          </button>
+
+          <!-- Al passaggio del mouse: miniatura della prima tavola, a destra (solo PC) -->
+          <span *ngIf="c.thumbUrl" class="cv-thumb" aria-hidden="true">
+            <img [src]="c.thumbUrl" alt="" loading="lazy" />
           </span>
         </li>
       </ul>
@@ -94,8 +99,7 @@
       <h2 class="font-fredoka text-2xl md:text-3xl font-semibold text-title">{{ 'PROFILE_CTA_TITLE' | translate }}</h2>
       <p class="font-quicksand text-title/70 mt-1">{{ 'PROFILE_CTA_TEXT' | translate }}</p>
     </div>
-    <button (click)="goToContacts()"
-      class="shrink-0 px-7 py-3 rounded-full bg-verde-scuro text-white font-fredoka font-medium text-lg
+    <button (click)="goToContacts()" class="shrink-0 px-7 py-3 rounded-full bg-verde-scuro text-white font-fredoka font-medium text-lg
              shadow-[0_6px_20px_rgba(129,199,132,0.35)] hover:-translate-y-0.5
              active:scale-95 transition-all duration-300 cursor-pointer">
       {{ 'PROFILE_CTA_BUTTON' | translate }}

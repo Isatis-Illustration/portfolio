@@ -144,35 +144,45 @@
   display: block;
 }
 
-/* Cartolina di presentazione al centro */
+/* Cartolina di presentazione al centro: .cover è lo spazio massimo, la cartolina vera
+   (cartoncino crema + ombra) è l'immagine stessa, che ci sta dentro intera senza ritagli
+   e prende le sue proporzioni */
 .cover {
   position: absolute;
   left: 20px;
   right: 20px;
   top: 58px;
   bottom: 24px;
-  padding: 6px;
-  background: #fffaf5;
-  border-radius: 12px 14px 11px 15px;
-  box-shadow: 0 3px 8px rgba(110, 90, 120, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform: rotate(-0.8deg);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  overflow: hidden;
+  transition: transform 0.4s ease;
 }
 
 .sleeve:hover .cover,
 .sleeve:focus-visible .cover {
   transform: rotate(-0.2deg) scale(1.015);
-  box-shadow: 0 6px 14px rgba(110, 90, 120, 0.28);
 }
 
 .cover-img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
+  box-sizing: border-box;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  padding: 6px;
+  background: #fffaf5;
+  border-radius: 12px 14px 11px 15px;
+  box-shadow: 0 3px 8px rgba(110, 90, 120, 0.22);
+  transition: box-shadow 0.4s ease;
   user-select: none;
+}
+
+.sleeve:hover .cover-img,
+.sleeve:focus-visible .cover-img {
+  box-shadow: 0 6px 14px rgba(110, 90, 120, 0.28);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -185,19 +195,12 @@
 }
 
 /* Cartolina senza cartoncino (coverHasBg: false): immagine libera, es. PNG trasparente */
-.cover.no-card {
+.cover.no-card .cover-img,
+.sleeve:hover .cover.no-card .cover-img,
+.sleeve:focus-visible .cover.no-card .cover-img {
   padding: 0;
   background: transparent;
   box-shadow: none;
-}
-
-.sleeve:hover .cover.no-card,
-.sleeve:focus-visible .cover.no-card {
-  box-shadow: none;
-}
-
-.cover.no-card .cover-img {
-  object-fit: contain;
   border-radius: 0;
   filter: drop-shadow(0 4px 8px rgba(110, 90, 120, 0.22));
 }
