@@ -1,13 +1,10 @@
 <router-outlet></router-outlet>
 
 <!-- Sticker on right-click -->
-<div *ngFor="let sticker of stickers"
-  [ngClass]="{
+<div *ngFor="let sticker of stickers" [ngClass]="{
     'opacity-0': sticker.fade,
     'opacity-100': !sticker.fade
-  }"
-  class="fixed pointer-events-none transition-opacity duration-500 z-[9999]"
-  [ngStyle]="{
+  }" class="fixed pointer-events-none transition-opacity duration-500 z-[9999]" [ngStyle]="{
     left: sticker.x + 'px',
     top: sticker.y + 'px',
     transform: 'translate(-50%, -50%) rotate(' + sticker.rotation + 'deg)'

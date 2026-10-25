@@ -23,6 +23,12 @@ export class AppComponent {
   iconService: IconService = inject(IconService);
 
   stickers: Sticker[] = [];
+  readonly stickerImages: string[] = [
+    'assets/stickers/topo_cappuccino.png',
+    'assets/stickers/topo_cornetto.png',
+    'assets/stickers/topo_pizza.png',
+  ];
+  private currentStickerIndex = 0;
 
   @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
@@ -33,13 +39,16 @@ export class AppComponent {
 
     event.preventDefault();
 
-    // Rotazione casuale tra -20° e +20°
+    // Rotazione casuale tra -40° e +40°
     const min = -40;
     const max = 40;
     const rotation = Math.floor(Math.random() * (max - min + 1)) + min;
 
+    const imageUrl = this.stickerImages[this.currentStickerIndex];
+    this.currentStickerIndex = (this.currentStickerIndex + 1) % this.stickerImages.length;
+
     const sticker: Sticker = { 
-      imageUrl: 'assets/stickers/sticker_flower.png',
+      imageUrl,
       x: event.clientX, 
       y: event.clientY,
       fade: false, 
